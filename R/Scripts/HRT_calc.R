@@ -29,10 +29,8 @@ checkForPVC = function(x) {
       if (all(i_RRnorm > 300)) {
         if (all(i_RRnorm < 2000)) {
           if (all(i_RRnorm >= ref*0.8) & all(i_RRnorm <= ref*1.2)) {
-            if (all(rollapply(i_pre, 2, function(x) x[2]-200 <= x[1] && x[1]<= x[2]+200 ))) { # checks for difference to preceding interval
-              if (all(rollapply(i_post, 2, function(x) x[1]-200 <= x[2] && x[2]<= x[1]+200 ))) { # checks for difference to following interval
+            if (all(rollapply(i_pre, 2, diff)) && all(rollapply(i_post, 2, diff))) { # checks for difference to preceding / following interval
                 PVC =c(PVC, i_coupl)
-              }
             }
           }
         }

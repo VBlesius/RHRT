@@ -4,17 +4,20 @@ chf201 = read.table(file.path(path , "chf201.ecg.txt"))
 chf201 = unlist(chf201*1000)
 
 require(zoo)
-rollapply(chf201, 22, checkForPVC) # 5 RR needed before PVC, 1 compensatory interval, 15 after PVC = 26, see http://www.h-r-t.com/hrt/en/calc.html
+rollapply(chf201, 24, checkForPVC) # 6 RR needed before PVC, 1 compensatory interval, 16 after PVC = 26, see http://www.h-r-t.com/hrt/en/calc.html
 # Stattdessen
 ## wapply? http://www.r-bloggers.com/wapply-a-faster-but-less-functional-rollapply-for-vector-setups/ 
 ## RcppRoll package?
 
+PVCs = NULL
+
 checkForPVC = function(x) { 
   
-  i_coupl= x[6] # coupling interval
-  i_comp = x[7] # compensatory interval
-  i_pre = x[1:5] # preceding intervals
-  i_post = x[8:22] # following intervals (after comp. interval)
+  i_coupl= x[7] # coupling interval
+  i_comp = x[8] # compensatory interval
+  i_pre = x[2:6] # preceding intervals
+  i_post = x[9:24] # following intervals (after comp. interval)
+  i_RRnorm = c(i_pre, i_post) # all RR-intervals that need to be filtered and aren't coupling or comp. interval
   
   ref = mean(i_pre)
 
@@ -23,16 +26,18 @@ checkForPVC = function(x) {
     if (i_comp >= ref*1.2) { # Lengthening of post PVC interval
       
       # checks for arrhythmias and artefacts
-      if (all(i_pre > 300)) {
-        if (all(i_pre < 2000)) {
-          if (all(rollapply())) {
-            
+      if (all(i_RRnorm > 300)) {
+        if (all(i_RRnorm < 2000)) {
+          if (all(i_RRnorm >= ref*0.8) & all(i_RRnorm <= ref*1.2)) {
+            if (all(rollapply(i_pre, 2, function(x) x[2]-200 <= x[1] && x[1]<= x[2]+200 ))) { # checks for difference to preceding interval
+              if (all(rollapply(i_post, 2, function(x) x[1]-200 <= x[2] && x[2]<= x[1]+200 ))) { # checks for difference to following interval
+                PVC =c(PVC, i_coupl)
+              }
+            }
           }
         }
       }
     }
   }
-  
-  
 }
 

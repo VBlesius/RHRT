@@ -22,7 +22,7 @@ checkForPVC = function(x) {
   
   ref = mean(i_pre)
   
-  is.near = function(x, distance) {
+  is.lessDistant = function(x, distance) {
     diff(x) <= distance
   }
   
@@ -30,10 +30,8 @@ checkForPVC = function(x) {
   isCompInt = i_comp >= ref*1.2
   isInRange = all(i_RRnorm > 300 && i_RRnorm < 2000)
   isNotDeviating = all(
-    all(i_RRnorm >= ref*0.8) & all(i_RRnorm <= ref*1.2),
-    all(rollapply(i_pre, 2, is.near, 200)) && all(rollapply(i_post, 2, is.near, 200)))
-  
-  
+   i_RRnorm >= ref*0.8, i_RRnorm <= ref*1.2,
+    rollapply(i_pre, 2, is.lessDistant, 200), rollapply(i_post, 2, is.lessDistant, 200))
   
   # checks for PVC
   if (isCouplInt & isCompInt) { # Prematurity of 20% & Lengthening to 120 %

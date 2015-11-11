@@ -1,23 +1,35 @@
 path = "/home/etz/Documents/Promotion/Data/"
 require(zoo)
 
+# Read in data
+# TODO: substitue with data input from command line!
 data = read.table(file.path(path , "Testdat_PVC"))
 data = unlist(data*1000)
 
-PVCs = NULL
 
-rollapply(data, 24, checkForPVC) # 6 RR needed before PVC, 1 compensatory interval, 16 after PVC = 26, see http://www.h-r-t.com/hrt/en/calc.html
+# Variable declaration
+n_RRpre = 6 # number of "normal" RR-intervals before the coupling interval
+n_RRpost = 16 # number of "normal" RR-intervals after the coupling interval
+windowsize = n_RRpre + n_RRpost + 2 # adds coupling and compensatory interval
+
+
+# Pipeline
+PVCs_all = rollapply(data, windowsize, checkForPVC)
+
+PVCs = which(PVCs_all == TRUE)+n_RRpre
 # Stattdessen
 ## wapply? http://www.r-bloggers.com/wapply-a-faster-but-less-functional-rollapply-for-vector-setups/ 
 ## RcppRoll package?
 
 
+# Function declaration
+
 checkForPVC = function(x) {
   
-  i_coupl= x[7] # coupling interval
-  i_comp = x[8] # compensatory interval
-  i_pre = x[2:6] # preceding intervals
-  i_post = x[9:24] # following intervals (after comp. interval)
+  i_coupl= x[n_RRpre+1] # coupling interval
+  i_comp = x[n_RRpre+2] # compensatory interval
+  i_pre = x[1:n_RRpre] # preceding intervals
+  i_post = x[n_RRpre+3:n_RRpost] # following intervals (after comp. interval)
   i_RRnorm = c(i_pre, i_post) # all RR-intervals that need to be filtered and aren't coupling or comp. interval
   
   ref = mean(i_pre)
@@ -33,13 +45,11 @@ checkForPVC = function(x) {
    i_RRnorm >= ref*0.8, i_RRnorm <= ref*1.2,
     rollapply(i_pre, 2, is.lessDistant, 200), rollapply(i_post, 2, is.lessDistant, 200))
   
-  # checks for PVC
-  if (isCouplInt & isCompInt) { # Prematurity of 20% & Lengthening to 120 %
-      
-      # checks for arrhythmias and artefacts
-    if (isInRange & isNotDeviating) {
-      return(TRUE)
-    }
+  if (isCouplInt & isCompInt  # checks for PVC
+      & isInRange & isNotDeviating) { # checks for arrhythmias and artefacts
+    return(TRUE)
+  } else {
+    return(FALSE)
   }
 }
 

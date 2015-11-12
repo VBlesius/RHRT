@@ -1,10 +1,10 @@
-path = "/home/etz/Documents/Promotion/Data/"
+path = "/home/etz/Documents/Promotion/"
 require(zoo)
-source("PVC.R")
+source(file.path(path, "R/Scripts/PVC.R"))
 
 # Read in data
 # TODO: substitue with data input from command line!
-data = read.table(file.path(path , "Testdat_PVC"))
+data = read.table(file.path(path , "Data/Testdat_PVC"))
 data = unlist(data*1000)
 
 

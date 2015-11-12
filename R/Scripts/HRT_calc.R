@@ -1,7 +1,7 @@
 path = "/home/etz/Documents/Promotion/"
 require(zoo)
 source(file.path(path, "R/Scripts/PVC.R"))
-source(file.path(path, "R/Scripts/HRT_calc_Functions"))
+source(file.path(path, "R/Scripts/HRT_calc_Functions.R"))
 
 # Read in data
 # TODO: substitue with data input from command line!

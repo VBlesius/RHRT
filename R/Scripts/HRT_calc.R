@@ -1,5 +1,6 @@
 path = "/home/etz/Documents/Promotion/Data/"
 require(zoo)
+source("PVC.R")
 
 # Read in data
 # TODO: substitue with data input from command line!
@@ -16,7 +17,7 @@ windowsize = n_RRpre + n_RRpost + 2 # adds coupling and compensatory interval
 # Pipeline
 PVCs_all = rollapply(data, windowsize, checkForPVC)
 
-PVCs = which(PVCs_all == TRUE)+n_RRpre
+#PVCs = which(PVCs_all == TRUE)+n_RRpre
 # Stattdessen
 ## wapply? http://www.r-bloggers.com/wapply-a-faster-but-less-functional-rollapply-for-vector-setups/ 
 ## RcppRoll package?
@@ -42,14 +43,16 @@ checkForPVC = function(x) {
   isCompInt = i_comp >= ref*1.2
   isInRange = all(i_RRnorm > 300 && i_RRnorm < 2000)
   isNotDeviating = all(
-   i_RRnorm >= ref*0.8, i_RRnorm <= ref*1.2,
-    rollapply(i_pre, 2, is.lessDistant, 200), rollapply(i_post, 2, is.lessDistant, 200))
+    i_RRnorm >= ref*0.8, i_RRnorm <= ref*1.2,
+    rollapply(i_pre, 2, is.lessDistant, 200), rollapply(i_post, 2, is.lessDistant, 200)
+  )
   
   if (isCouplInt & isCompInt  # checks for PVC
       & isInRange & isNotDeviating) { # checks for arrhythmias and artefacts
-    return(TRUE)
+    tempPVC = PVC(couplI=i_coupl, compI=i_comp, postRR=i_post[1:15])
+    return(tempPVC)
   } else {
-    return(FALSE)
+    return(FALSE) #TODO: delete when good sliding window method is found and functioning!
   }
 }
 

@@ -15,12 +15,6 @@ windowsize = n_RRpre + n_RRpost + 2 # adds coupling and compensatory interval
 
 
 # Pipeline
-PVCs_all = rollapply(data, windowsize, checkForPVC)
-
-#PVCs = which(PVCs_all == TRUE)+n_RRpre
-# Stattdessen
-## wapply? http://www.r-bloggers.com/wapply-a-faster-but-less-functional-rollapply-for-vector-setups/ 
-## RcppRoll package?
 
 
 # Function declaration
@@ -55,4 +49,5 @@ checkForPVC = function(x) {
     return(FALSE) #TODO: delete when good sliding window method is found and functioning!
   }
 }
-
+PVCs = rollapply(data, windowsize, checkForPVC)
+PVCs = vectorToPVC(as.vector(t(PVCs)))

@@ -1,10 +1,12 @@
 PVC = setClass("PVC", slots=list(couplI="numeric", compI="numeric", postRR="vector"))
 
 
-setGeneric("getHRTParameters", def=function(thisObject, string) {standardGeneric("getHRTParameters")})
-setMethod("getHRTParameters", "PVC", function(thisObject, string) {
-  print(thisObject)
-  })
+setGeneric("getHRTParameters", def=function(thisObject) {standardGeneric("getHRTParameters")})
+setMethod("getHRTParameters", "PVC", function(thisObject) {
+  thisObject@TO = 1
+  thisObject@TS = 2
+  return(thisObject)
+})
 
 
 setGeneric("vectorToPVC", def=function(vector) {standardGeneric("vectorToPVC")})

@@ -13,8 +13,14 @@ setGeneric("getHRTParameters", def=function(thisObject) {standardGeneric("getHRT
 setMethod("getHRTParameters", "PVC", function(thisObject) {
   preRR = thisObject@preRR
   postRR = thisObject@postRR
+  
+  # Calculate TO
   thisObject@TO = ( (sum(postRR[1:2]) - sum(preRR) ) / sum(preRR) ) *100
-  thisObject@TS = 2
+  
+  #Calculate TS
+  slopes = rollapply(postRR, 5, function(y) return(lm(seq(1,5) ~ y)$coefficients[2]))
+  thisObject@TS = max(slopes, na.rm = TRUE)
+  
   return(thisObject)
 })
 

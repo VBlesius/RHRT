@@ -18,3 +18,4 @@ windowsize = n_RRpre + n_RRpost + 2 # adds coupling and compensatory interval
 # Pipeline
 PVCs = rollapply(data, windowsize, checkForPVC)
 PVCs = vectorToPVC(as.vector(t(PVCs)))
+PVCs = lapply(PVCs, getHRTParameters)

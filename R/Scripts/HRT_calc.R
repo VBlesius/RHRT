@@ -17,7 +17,7 @@ windowsize = n_RRpre + n_RRpost + 2 # adds coupling and compensatory interval
 
 
 # Pipeline
-PVCs = vectorToPVC(as.vector(t(PVCs)))
 PVCs = lapply(PVCs, getHRTParameters)
 PVCs = wapply(data, windowsize, by = 1, FUN = checkForPVC)
 PVCs = PVCs[!sapply(PVCs, is.null)] # removes NULL entries
+PVCs = lapply(PVCs, listToPVC) # saves lists as PVC-objects

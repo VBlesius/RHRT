@@ -25,7 +25,7 @@ checkForPVC = function(x) {
     #tempPVC = PVC(couplI=i_coupl, compI=i_comp, postRR=i_post[1:15])
     #return(tempPVC)
     #return(list(i_coupl=i_coupl, i_comp=i_comp, i_post=i_post[1:15]))
-    return(c(i_coupl, i_comp, i_post[1:15]))
+    return(c(i_pre[-(n_RRpre-2):0], i_coupl, i_comp, i_post[1:15]))
   } else {
     #return(FALSE) #TODO: delete when good sliding window method is found and functioning!
   }

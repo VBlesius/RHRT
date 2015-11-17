@@ -11,7 +11,9 @@ PVC = setClass("PVC",
 
 setGeneric("getHRTParameters", def=function(thisObject) {standardGeneric("getHRTParameters")})
 setMethod("getHRTParameters", "PVC", function(thisObject) {
-  thisObject@TO = 1
+  preRR = thisObject@preRR
+  postRR = thisObject@postRR
+  thisObject@TO = ( (sum(postRR[1:2]) - sum(preRR) ) / sum(preRR) ) *100
   thisObject@TS = 2
   return(thisObject)
 })

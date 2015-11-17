@@ -2,6 +2,7 @@ path = "/home/etz/Documents/Promotion/"
 require(zoo)
 source(file.path(path, "R/Scripts/PVC.R"))
 source(file.path(path, "R/Scripts/HRT_calc_Functions.R"))
+source(file.path(path, "R/Scripts/wapply.R"))
 
 # Read in data
 # TODO: substitue with data input from command line!
@@ -16,6 +17,7 @@ windowsize = n_RRpre + n_RRpost + 2 # adds coupling and compensatory interval
 
 
 # Pipeline
-PVCs = rollapply(data, windowsize, checkForPVC)
 PVCs = vectorToPVC(as.vector(t(PVCs)))
 PVCs = lapply(PVCs, getHRTParameters)
+PVCs = wapply(data, windowsize, by = 1, FUN = checkForPVC)
+PVCs = PVCs[!sapply(PVCs, is.null)] # removes NULL entries

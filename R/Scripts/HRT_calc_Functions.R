@@ -3,7 +3,7 @@ checkForPVC = function(x) {
   i_coupl= x[n_RRpre+1] # coupling interval
   i_comp = x[n_RRpre+2] # compensatory interval
   i_pre = x[1:n_RRpre] # preceding intervals
-  i_post = x[n_RRpre+3:n_RRpost] # following intervals (after comp. interval)
+  i_post = x[(n_RRpre+3):length(x)] # following intervals (after comp. interval)
   i_RRnorm = c(i_pre, i_post) # all RR-intervals that need to be filtered and aren't coupling or comp. interval
   
   ref = mean(i_pre)

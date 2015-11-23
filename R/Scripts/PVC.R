@@ -18,7 +18,8 @@ setMethod("getHRTParameters", "PVC", function(thisObject) {
   thisObject@TO = ( (sum(postRR[1:2]) - sum(preRR) ) / sum(preRR) ) *100
   
   #Calculate TS
-  slopes = rollapply(postRR, 5, function(y) return(lm(seq(1,5) ~ y)$coefficients[2]))
+  #slopes = rollapply(postRR, 5, function(y) return(lm(seq(1,5) ~ y)$coefficients[2]))
+  slopes = wapply(postRR, 5, by = 1, FUN = function(y) return(lm(seq(1,5) ~ y)$coefficients[2]))
   thisObject@TS = max(slopes, na.rm = TRUE)
   
   return(thisObject)

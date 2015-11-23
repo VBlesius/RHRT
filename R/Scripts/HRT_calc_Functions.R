@@ -17,7 +17,8 @@ checkForPVC = function(x) {
   isInRange = all(i_RRnorm > 300 && i_RRnorm < 2000)
   isNotDeviating = all(
     i_RRnorm >= ref*0.8, i_RRnorm <= ref*1.2,
-    rollapply(i_pre, 2, is.lessDistant, 200), rollapply(i_post, 2, is.lessDistant, 200)
+    #rollapply(i_pre, 2, is.lessDistant, 200), rollapply(i_post, 2, is.lessDistant, 200)
+    wapply(i_pre, 2, by=1, FUN=is.lessDistant, 200), wapply(i_post, 2, by=1, FUN=is.lessDistant, 200)
   )
   
   if (isCouplInt & isCompInt  # checks for PVC

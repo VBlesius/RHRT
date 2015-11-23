@@ -27,19 +27,3 @@ checkForPVC = function(x) {
     return(list(i_pre=i_pre[-(n_RRpre-2):0], i_coupl=i_coupl, i_comp=i_comp, i_post=i_post[1:15]))
   }
 }
-
-
-wapply <- function(x, width, by = NULL, FUN = NULL, ...)
-{
-  FUN <- match.fun(FUN)
-  if (is.null(by)) by <- width
-  
-  lenX <- length(x)
-  SEQ1 <- seq(1, lenX - width + 1, by = by)
-  SEQ2 <- lapply(SEQ1, function(x) x:(x + width - 1))
-  
-  OUT <- lapply(SEQ2, function(a) FUN(x[a], ...))
-  OUT <- base:::simplify2array(OUT, higher = TRUE)
-  return(OUT)
-}
-# from http://www.r-bloggers.com/wapply-a-faster-but-less-functional-rollapply-for-vector-setups/

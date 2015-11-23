@@ -7,6 +7,7 @@ source(file.path(path, "R/Scripts/HRT_calc_Functions.R"))
 data = read.table(file.path(path , "Data/Testdat_PVC"))
 data = unlist(data*1000)
 
+source(file.path(sourcepath, "R/Scripts/wapply.R"))
 
 # Variable declaration
 n_RRpre = 6 # number of "normal" RR-intervals before the coupling interval

@@ -7,8 +7,8 @@ data = unlist(data*1000)
 library(methods)
 sourcepath = "/home/etz/Documents/Promotion/"
 source(file.path(sourcepath, "R/Scripts/wapply.R"))
-source(file.path(sourcepath, "R/Scripts/HRT_calc_Functions.R"))
-source(file.path(sourcepath, "R/Scripts/PVC.R"))
+source(file.path(sourcepath, "R/Scripts/RHRT_Functions.R"))
+source(file.path(sourcepath, "R/Scripts/RHRT_PVC.R"))
 
 
 # Variable declaration

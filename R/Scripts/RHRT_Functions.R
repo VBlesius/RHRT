@@ -23,8 +23,8 @@ checkForPVC = function(x) {
   
   if (isCouplInt & isCompInt  # checks for PVC
       & isInRange & isNotDeviating) { # checks for arrhythmias and artefacts
-    #tempPVC = PVC(couplI=i_coupl, compI=i_comp, postRR=i_post[1:15])
-    #return(tempPVC)
-    return(list(i_pre=i_pre[-(n_RRpre-2):0], i_coupl=i_coupl, i_comp=i_comp, i_post=i_post[1:15]))
+    tempPVC = PVC(couplI=i_coupl, compI=i_comp, preRR=i_pre[-(n_RRpre-2):0], postRR=i_post[1:15])
+    return(tempPVC)
+    #return(list(i_pre=i_pre[-(n_RRpre-2):0], i_coupl=i_coupl, i_comp=i_comp, i_post=i_post[1:15]))
   }
 }

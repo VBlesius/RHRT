@@ -26,16 +26,16 @@ setMethod("getHRTParameters", "PVC", function(thisObject) {
 })
 
 
-setGeneric("listToPVC", def=function(list) {standardGeneric("listToPVC")})
-setMethod("listToPVC", NULL, function(list) {
-  if(is.null(list)) {
-    return(NULL)
-  } else {# TODO: Check for usable format!
-    return(PVC(
-      couplI=list$i_coupl,
-      compI=list$i_comp,
-      preRR=list$i_pre,
-      postRR=list$i_post
-    ))
-  }
-})
+# setGeneric("listToPVC", def=function(list) {standardGeneric("listToPVC")})
+# setMethod("listToPVC", NULL, function(list) {
+#   if(is.null(list)) {
+#     return(NULL)
+#   } else {# TODO: Check for usable format!
+#     return(PVC(
+#       couplI=list$i_coupl,
+#       compI=list$i_comp,
+#       preRR=list$i_pre,
+#       postRR=list$i_post
+#     ))
+#   }
+# })

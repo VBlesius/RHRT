@@ -20,7 +20,7 @@ windowsize = n_RRpre + n_RRpost + 2 # adds coupling and compensatory interval
 # Pipeline
 PVCs = wapply(data, windowsize, by = 1, FUN = checkForPVC)
 PVCs = PVCs[!sapply(PVCs, is.null)] # removes NULL entries
-PVCs = lapply(PVCs, listToPVC) # saves lists as PVC-objects
+#PVCs = lapply(PVCs, listToPVC) # saves lists as PVC-objects
 PVCs = lapply(PVCs, getHRTParameters) #calculates TO and TS
 
 cat(length(PVCs), "\t", mean(sapply(PVCs, slot, "TO")), "\t", mean(sapply(PVCs, slot, "TS")), "\n")

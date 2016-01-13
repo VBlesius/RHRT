@@ -1,30 +1,31 @@
-checkForPVC = function(x) {
+## Checks number of RR-intervals for PVC-criteria published by Schmidt et. al (see http://www.h-r-t.com/hrt/en/calc.html)
+
+checkForPVC <- function(x) {
   
-  i_coupl= x[n_RRpre+1] # coupling interval
-  i_comp = x[n_RRpre+2] # compensatory interval
-  i_pre = x[1:n_RRpre] # preceding intervals
-  i_post = x[(n_RRpre+3):length(x)] # following intervals (after comp. interval)
-  i_RRnorm = c(i_pre, i_post) # all RR-intervals that need to be filtered and aren't coupling or comp. interval
+  # Defines coupling, compensatory, preceding and following intervals and sums up regular intervals
+  couplRR <- x[numPreRRs+1]
+  compenRR <- x[numPreRRs+2]
+  preRRs <- x[1:numPreRRs]
+  postRRs <- x[(numPreRRs+3):length(x)]
+  regRR <- c(preRRs, postRRs)
   
-  ref = mean(i_pre)
+  # Reference interval
+  ref <- mean(preRRs)
   
-  is.lessDistant = function(x, distance) {
-    diff(x) <= distance
-  }
-  
-  isCouplInt = i_coupl <= ref*0.8
-  isCompInt = i_comp >= ref*1.2
-  isInRange = all(i_RRnorm > 300 && i_RRnorm < 2000)
-  isNotDeviating = all(
-    i_RRnorm >= ref*0.8, i_RRnorm <= ref*1.2,
-    #rollapply(i_pre, 2, is.lessDistant, 200), rollapply(i_post, 2, is.lessDistant, 200)
-    wapply(i_pre, 2, by=1, FUN=is.lessDistant, 200), wapply(i_post, 2, by=1, FUN=is.lessDistant, 200)
+  ## Filtering methods
+  # checks for PVC
+  isCouplInterv <- couplRR <= ref*0.8
+  isCompenInterv <- compenRR >= ref*1.2
+  # checks for arrhythmias and artefacts
+  isInRange <- all(regRR > 300 && regRR < 2000)
+  isNotDeviating <- all(
+    regRR >= ref*0.8, regRR <= ref*1.2,
+    wapply(preRRs, 2, by=1, FUN=function(x) diff(x)<=200), wapply(postRRs, 2, by=1, FUN=function(x) diff(x)<=200)
   )
   
-  if (isCouplInt & isCompInt  # checks for PVC
-      & isInRange & isNotDeviating) { # checks for arrhythmias and artefacts
-    tempPVC = PVC(couplI=i_coupl, compI=i_comp, preRR=i_pre[-(n_RRpre-2):0], postRR=i_post[1:15])
+  # Checks for criteria and saves PVC as object
+  if (isCouplInterv & isCompenInterv & isInRange & isNotDeviating) {
+    tempPVC <- PVC(couplRR=couplRR, compRR=compenRR, preRRs=preRRs[-(numPreRRs-2):0], postRRs=postRRs[1:15])
     return(tempPVC)
-    #return(list(i_pre=i_pre[-(n_RRpre-2):0], i_coupl=i_coupl, i_comp=i_comp, i_post=i_post[1:15]))
   }
 }

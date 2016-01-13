@@ -12,9 +12,9 @@ source(file.path(sourcepath, "R/Scripts/RHRT_PVC.R"))
 
 
 # Variable declaration
-numPreRRs <- 6 # number of "normal" RR-intervals before the coupling interval
-numPostRRs <- 16 # number of "normal" RR-intervals after the coupling interval
-windowsize <- numPreRRs + numPostRRs + 2 # adds coupling and compensatory interval
+numPreRRs <- 6 # number of regular RR-intervals before the coupling interval
+numPostRRs <- 16 # number of regular RR-intervals after the coupling interval
+windowsize <- numPreRRs + numPostRRs + 2 # sums up coupling and compensatory interval
 
 
 # Pipeline

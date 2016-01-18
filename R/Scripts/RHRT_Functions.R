@@ -25,7 +25,7 @@ checkForPVC <- function(x) {
   
   # Checks for criteria and saves PVC as object
   if (isCouplInterv & isCompenInterv & isInRange & isNotDeviating) {
-    tempPVC <- PVC(couplRR=couplRR, compRR=compenRR, preRRs=preRRs[-(numPreRRs-2):0], postRRs=postRRs[1:15])
+    tempPVC <- PVC(couplRR=couplRR, compenRR=compenRR, preRRs=preRRs[-(numPreRRs-2):0], postRRs=postRRs[1:15])
     return(tempPVC)
   }
 }

@@ -1,7 +1,7 @@
 PVC <- setClass("PVC", 
                slots=list(
                  couplRR="numeric",
-                 compRR="numeric",
+                 compenRR="numeric",
                  preRRs="vector",
                  postRRs="vector",
                  TO="numeric",

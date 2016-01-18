@@ -29,3 +29,14 @@ checkForPVC <- function(x) {
     return(tempPVC)
   }
 }
+
+## 
+calcAveragedPVC <- function() {
+  couplRR <- mean(sapply(PVCs, slot, "couplRR"))
+  compenRR <- mean(sapply(PVCs, slot, "compenRR"))
+  preRRs <- rowMeans(sapply(PVCs, slot, "preRRs"))
+  postRRs <- rowMeans(sapply(PVCs, slot, "postRRs"))
+  
+  tempPVC <- PVC(couplRR=couplRR, compenRR=compenRR, preRRs=preRRs, postRRs=postRRs)
+  return(tempPVC)
+}

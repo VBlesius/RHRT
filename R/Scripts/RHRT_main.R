@@ -21,6 +21,9 @@ windowsize <- numPreRRs + numPostRRs + 2 # sums up coupling and compensatory int
 PVCs <- wapply(data, windowsize, by=1, FUN=checkForPVC)
 PVCs <- PVCs[!sapply(PVCs, is.null)] # removes NULL entries
 PVCs <- lapply(PVCs, getHRTParameters) # calculates TO and TS
+averagedPVC <- calcAveragedPVC()
+averagedPVC <- getHRTParameters(averagedPVC)
 
 # Output
 cat(length(PVCs), "\t", mean(sapply(PVCs, slot, "TO")), "\t", mean(sapply(PVCs, slot, "TS")), "\n")
+cat("Average", "\t", averagedPVC@TO, "\t", averagedPVC@TS, "\n")

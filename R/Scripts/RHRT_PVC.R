@@ -44,10 +44,20 @@ setMethod("plot", "PVC", function(x, type="cropped") {
   RRs <- getRRs(x)
 
   plot(seq(1:length(RRs)), RRs, 
-                "o", pch=20, 
-                xlab="# of RR interval", ylab="length of RR interval (ms)",
-                ylim = if(type!="full") c(mean(RRs)-sd(RRs)/2, mean(RRs)+sd(RRs)/2))
+       "o", pch=20,
+       xlab="# of RR interval", ylab="length of RR interval (ms)", xaxt="n",
+       ylim=if(type!="full") c(mean(RRs)-sd(RRs)/2, mean(RRs)+sd(RRs)/2))
  
-  abline(coef=x@ablineCoefficients)
-
+  axis(1, at=seq(1:length(RRs)), labels=seq(-2,length(RRs)-3,1))
+  legend("bottomright", c("Turbulence onset", "Turbulence slope"), 
+         lty=c(3), pch=c(19, NA), col=c("red", "blue"))
+  
+  # Turbulence onset
+  points(c(1,6), c(RRs[1], RRs[6]), col="red", pch=19)
+  arrows(1, RRs[1], 6, RRs[1], lty=3, col="red", code=0)
+  arrows(6, RRs[1], 6, RRs[6], lty=3, col="red", code=2)
+  
+  # Turbulence slope
+  abline(coef=x@ablineCoefficients, lty=3, col="blue")
+  
 })

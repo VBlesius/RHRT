@@ -43,16 +43,10 @@ setMethod("plot", "PVC", function(x, type="cropped") {
 
   RRs <- getRRs(x)
 
-  if(type=="full") {
-    plot(seq(1:length(RRs)), RRs, 
-         "o", pch=20, 
-         xlab="# of RR interval", ylab="length of RR interval (ms)")
-  } else {
-    plot(seq(1:length(RRs)), RRs, 
-         "o", pch=20, 
-         ylim = c(mean(RRs)-sd(RRs)/2, mean(RRs)+sd(RRs)/2),
-         xlab="# of RR interval", ylab="length of RR interval (ms)")
-  }
+  plot(seq(1:length(RRs)), RRs, 
+                "o", pch=20, 
+                xlab="# of RR interval", ylab="length of RR interval (ms)",
+                ylim = if(type!="full") c(mean(RRs)-sd(RRs)/2, mean(RRs)+sd(RRs)/2))
  
   abline(coef=x@ablineCoefficients)
 

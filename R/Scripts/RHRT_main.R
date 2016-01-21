@@ -1,6 +1,9 @@
 # Load input data
 args <- commandArgs(TRUE)
-data <- read.table(args[1])
+suppressWarnings(tryCatch(
+  data <- read.table(file.path(getwd(), args[1])),
+  error = function(e) { stop("File could not be found! Path incorrect or file not existing! Please try again and pass a valid relative path!", call. = FALSE) }
+))
 data <- unlist(data*1000)
 
 # Load dependencies

@@ -16,17 +16,8 @@ source(file.path(sourcepath, "R/Scripts/wapply.R"))
 source(file.path(sourcepath, "R/Scripts/RHRT_Functions.R"))
 source(file.path(sourcepath, "R/Scripts/RHRT_PVC.R"))
 
-
-# Variable declaration
-num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval
-num_post_rrs <- 16 # number of regular RR-intervals after the coupling interval
-windowsize <- num_pre_rrs + num_post_rrs + 2 # sums up coupling and compensatory interval
-
-
 # Pipeline
-pvcs <- wapply(data, windowsize, by = 1, FUN = check_for_pvc)
-pvcs <- pvcs[!sapply(pvcs, is.null)] # removes NULL entries
-pvcs <- lapply(pvcs, get_hrt_params) # calculates TO and TS
+pvcs <- get_pvcs(data)
 averaged_pvc <- calc_averaged_pvc()
 averaged_pvc <- get_hrt_params(averaged_pvc)
 

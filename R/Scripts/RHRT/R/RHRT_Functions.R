@@ -1,5 +1,4 @@
 ## Checks number of RR-intervals for PVC-criteria published by Schmidt et. al (see http://www.h-r-t.com/hrt/en/calc.html)
-
 check_for_pvc <- function(x) {
 
   # Defines coupling, compensatory, preceding and following intervals
@@ -45,4 +44,15 @@ calc_averaged_pvc <- function() {
   temp_pvc <- PVC(coupl_rr = coupl_rr, compen_rr = compen_rr,
                   pre_rrs = pre_rrs, post_rrs = post_rrs)
   return(temp_pvc)
+}
+
+## Finds PVCs in Vector and returns a list of PVC-Objects
+get_pvcs <- function(intervals) {
+  num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval
+  num_post_rrs <- 16 # number of regular RR-intervals after the coupling interval
+  windowsize <- num_pre_rrs + num_post_rrs + 2 # sums up coupling and compensatory interval
+
+  pvcs <- wapply(intervals, windowsize, by = 1, FUN = check_for_pvc)
+  pvcs <- pvcs[!sapply(pvcs, is.null)] # removes NULL entries
+  return(pvcs)
 }

@@ -1,12 +1,12 @@
 pvc <- setClass("pvc",
-               slots = list(
-                 coupl_rr = "numeric",
-                 compen_rr = "numeric",
-                 pre_rrs="vector",
-                 post_rrs = "vector",
-                 to = "numeric",
-                 ts = "numeric",
-                 abline_coefficients = "vector")
+                slots = list(
+                coupl_rr = "numeric",
+                compen_rr = "numeric",
+                pre_rrs="vector",
+                post_rrs = "vector",
+                to = "numeric",
+                ts = "numeric",
+                abline_coefficients = "vector")
 )
 
 

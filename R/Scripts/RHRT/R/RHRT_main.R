@@ -2,9 +2,12 @@
 args <- commandArgs(TRUE)
 suppressWarnings(tryCatch(
   data <- read.table(file.path(getwd(), args[1])),
-  error = function(e) { stop("File could not be found! Path incorrect or file not existing! Please try again and pass a valid relative path!", call. = FALSE) }
+  error = function(e) {
+    stop("File could not be found! Path incorrect or file not existing!
+      Please try again and pass a valid relative path!", call. = FALSE)
+  }
 ))
-data <- unlist(data*1000)
+data <- unlist(data * 1000)
 
 # Load dependencies
 library(methods)
@@ -21,7 +24,7 @@ windowsize <- num_pre_rrs + num_post_rrs + 2 # sums up coupling and compensatory
 
 
 # Pipeline
-pvcs <- wapply(data, windowsize, by=1, FUN=check_for_pvc)
+pvcs <- wapply(data, windowsize, by = 1, FUN = check_for_pvc)
 pvcs <- pvcs[!sapply(pvcs, is.null)] # removes NULL entries
 pvcs <- lapply(pvcs, get_hrt_params) # calculates TO and TS
 averaged_pvc <- calc_averaged_pvc()

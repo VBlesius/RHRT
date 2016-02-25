@@ -13,7 +13,7 @@ pvc <- setClass("pvc",
 setGeneric("get_hrt_params", def = function(thisObject) {
   standardGeneric("get_hrt_params")
 })
-setMethod("get_hrt_params", "PVC", function(thisObject) {
+setMethod("get_hrt_params", "pvc", function(thisObject) {
   pre_rrs <- thisObject@pre_rrs
   post_rrs <- thisObject@post_rrs
 
@@ -42,7 +42,7 @@ setMethod("get_hrt_params", "PVC", function(thisObject) {
 setGeneric("get_rrs", def = function(thisObject) {
   standardGeneric("get_rrs")
 })
-setMethod("get_rrs", "PVC", function(thisObject) {
+setMethod("get_rrs", "pvc", function(thisObject) {
   return(c(thisObject@pre_rrs,
            thisObject@coupl_rr,
            thisObject@compen_rr,

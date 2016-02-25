@@ -1,6 +1,25 @@
-## Checks number of RR-intervals for PVC-criteria published by Schmidt et. al (see http://www.h-r-t.com/hrt/en/calc.html)
-check_for_pvc <- function(x) {
+#' @title Finds PVCs
+#' @description
+#' Scans for PVCs in a vector of RR-intervals and returns a list of PVC-Objects.
+#' The PVC-criteria used were published by Schmidt et. al
+#' (see \code{\link{http://www.h-r-t.com/hrt/en/calc.html}})
+#' @param vector
+#' @return List of pvc-objects
+get_pvcs <- function(intervals) {
+  num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval
+  num_post_rrs <- 16 # number of regular RR-intervals after the coupling interval
+  windowsize <- num_pre_rrs + num_post_rrs + 2 # sums up coupling and compensatory interval
 
+  pvcs <- wapply(intervals, windowsize, by = 1, FUN = check_for_pvc)
+  pvcs <- pvcs[!sapply(pvcs, is.null)] # removes NULL entries
+  return(pvcs)
+}
+
+#––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+# Checks specified number of RR-intervals for PVC-criteria
+# and returns a pvc-object
+check_for_pvc <- function(x) {
+  num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval # TODO: remove redundancy!!!
   # Defines coupling, compensatory, preceding and following intervals
   # and sums up regular intervals
   coupl_rr <- x[num_pre_rrs + 1]
@@ -34,25 +53,18 @@ check_for_pvc <- function(x) {
   }
 }
 
-##
-calc_averaged_pvc <- function() {
+#' @title Creates an averaged PVC
+#' @description For each index the mean of the intervals across all PVCs in a
+#' list is calculated and the averaged PVC returned.
+#' @param List of pvc-objects
+#' @return The averaged pvc
+calc_averaged_pvc <- function(pvcs) {
   coupl_rr <- mean(sapply(pvcs, slot, "coupl_rr"))
   compen_rr <- mean(sapply(pvcs, slot, "compen_rr"))
   pre_rrs <- rowMeans(sapply(pvcs, slot, "pre_rrs"))
   post_rrs <- rowMeans(sapply(pvcs, slot, "post_rrs"))
 
-  temp_pvc <- PVC(coupl_rr = coupl_rr, compen_rr = compen_rr,
+  temp_pvc <- pvc(coupl_rr = coupl_rr, compen_rr = compen_rr,
                   pre_rrs = pre_rrs, post_rrs = post_rrs)
   return(temp_pvc)
-}
-
-## Finds PVCs in Vector and returns a list of PVC-Objects
-get_pvcs <- function(intervals) {
-  num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval
-  num_post_rrs <- 16 # number of regular RR-intervals after the coupling interval
-  windowsize <- num_pre_rrs + num_post_rrs + 2 # sums up coupling and compensatory interval
-
-  pvcs <- wapply(intervals, windowsize, by = 1, FUN = check_for_pvc)
-  pvcs <- pvcs[!sapply(pvcs, is.null)] # removes NULL entries
-  return(pvcs)
 }

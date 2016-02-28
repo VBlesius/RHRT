@@ -8,7 +8,7 @@ wapply <- function(x, width, by = NULL, FUN = NULL, ...)
   SEQ2 <- lapply(SEQ1, function(x) x:(x + width - 1))
   
   OUT <- lapply(SEQ2, function(a) FUN(x[a], ...))
-  OUT <- base:::simplify2array(OUT, higher = TRUE)
+  OUT <- base::simplify2array(OUT, higher = TRUE)
   return(OUT)
 }
-# from http://www.r-bloggers.com/wapply-a-faster-but-less-functional-rollapply-for-vector-setups/
+# modified, from http://www.r-bloggers.com/wapply-a-faster-but-less-functional-rollapply-for-vector-setups/

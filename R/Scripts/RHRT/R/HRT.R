@@ -26,25 +26,30 @@ hrt <- setClass("hrt",
                 abline_coefficients = "vector")
 )
 
-
-setGeneric("get_hrt_params", def = function(thisObject) {
+#' Calculate HRT parameters
+#' 
+#' Calculates the HRT parameters turbulence onset (TO) and turbulence slope (TS)
+#' and the ab-line parameters of TS and saves them in the corresponding slots.
+#' 
+#' @param hrtObj The HRT object of which the parameters should be calculated
+#' 
 #' @export
+setGeneric("get_hrt_params", def = function(hrtObj) {
   standardGeneric("get_hrt_params")
 })
-#' @describeIn hrt Calculates HRT parameters turbulence onset (to) and
-#' turbulence slope (ts) and the ab-line parameters of ts
-setMethod("get_hrt_params", "hrt", function(thisObject) {
-  pre_rrs <- thisObject@pre_rrs
-  post_rrs <- thisObject@post_rrs
+
+setMethod("get_hrt_params", "hrt", function(hrtObj) {
+  pre_rrs <- hrtObj@pre_rrs
+  post_rrs <- hrtObj@post_rrs
 
   # Calculate TO
-  thisObject@to <- ( (sum(post_rrs[1:2]) - sum(pre_rrs) ) / sum(pre_rrs) ) * 100
+  hrtObj@to <- ( (sum(post_rrs[1:2]) - sum(pre_rrs) ) / sum(pre_rrs) ) * 100
 
   # Calculate TS
   slopes <- wapply(post_rrs, 5, by = 1, FUN = function(y)
     return(lm(y ~ seq(1,5))$coefficients[2])
   )
-  thisObject@ts <- max(slopes, na.rm = TRUE)
+  hrtObj@ts <- max(slopes, na.rm = TRUE)
 
   # Calculate coefficients for regression line in plot
   index <- which.max(slopes)
@@ -54,25 +59,32 @@ setMethod("get_hrt_params", "hrt", function(thisObject) {
   intercept <- model$coefficients[1] - (slope * (3 + index))
     # 3 = #pre_rrs + #irregular_rrs - 1
 
-  thisObject@abline_coefficients <- c(intercept, slope)
+  hrtObj@abline_coefficients <- c(intercept, slope)
 
-  return(thisObject)
+  return(hrtObj)
 })
 
-setGeneric("get_rrs", def = function(thisObject) {
+setGeneric("get_rrs", def = function(hrtObj) {
   standardGeneric("get_rrs")
 })
-setMethod("get_rrs", "hrt", function(thisObject) {
-  return(c(thisObject@pre_rrs,
-           thisObject@coupl_rr,
-           thisObject@compen_rr,
-           thisObject@post_rrs))
+setMethod("get_rrs", "hrt", function(hrtObj) {
+  return(c(hrtObj@pre_rrs,
+           hrtObj@coupl_rr,
+           hrtObj@compen_rr,
+           hrtObj@post_rrs))
 })
 
-#' @describeIn hrt Plots RR-intervals saved in the hrt object and marks
+#' Plot a HRT object
+#' 
+#' Plots RR-intervals saved in the HRT object and marks
 #' turbulence onset and turbulence slope.
-setMethod("plot", "hrt", function(x, y = NULL, type = "cropped") {
+#' 
+#' @param x Either a single HRT object or a list of HRT objects
+#' @param type The type of the plot. The default is "cropped" which cuts off CPI
+#'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
+#' 
 #' @export
+setMethod("plot", "hrt", function(x, type = "cropped") {
 
   rrs <- get_rrs(x)
 

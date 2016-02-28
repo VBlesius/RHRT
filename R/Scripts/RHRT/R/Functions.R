@@ -1,11 +1,13 @@
 #' Finds HRTs
 #'
-#' Scans for HRTs in a vector of RR-intervals and returns a list of HRT-Objects.
-#' The HRT-criteria used were published by Schmidt et al.
-#' (see \code{\url{http://www.h-r-t.com/hrt/en/calc.html}})
+#' Scans for HRTs in a vector of RR-intervals and returns a list of HRT objects.
+#' The HRT criteria used were published by Schmidt et al.
+#' (see \url{http://www.h-r-t.com/hrt/en/calc.html}) or can be found in the 
+#' vignette.
 #'
-#' @param Numeric vector
-#' @return List of hrt-objects
+#' @param intervals Numeric vector
+#' @return List of HRT objects
+#' 
 #' @export
 get_hrts <- function(intervals) {
   num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval
@@ -18,8 +20,8 @@ get_hrts <- function(intervals) {
 }
 
 #–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# Checks specified number of RR-intervals for HRT-criteria
-# and returns a hrt-object
+# Checks specified number of RR-intervals for HRT criteria
+# and returns a HRT object
 check_for_hrt <- function(x) {
   num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval # TODO: remove redundancy!!!
   # Defines coupling, compensatory, preceding and following intervals
@@ -69,8 +71,9 @@ check_for_hrt <- function(x) {
 #' Journal of the American College of Cardiology, Volume 52, Issue 17,
 #' Pages 1353-1365")
 #'
-#' @param List of hrt-objects
-#' @return The averaged hrt
+#' @param hrts List of HRT objects
+#' @return The averaged HRT object
+#' 
 #' @export
 calc_averaged_hrt <- function(hrts) {
   coupl_rr <- mean(sapply(hrts, slot, "coupl_rr"))

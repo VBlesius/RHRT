@@ -1,4 +1,19 @@
-pvc <- setClass("pvc",
+#' S4 class to represent a HRT object
+#'
+#' This class specifies a object to save the lengths of intervals surrounding a
+#' premature ventricular beat. It saves the HRT parameters turbulence onset
+#' and turbulence slope after calculation as well as the coefficients of an
+#' ab-line used for the plot.
+#'
+#' @slot coupl_rr Numeric, Coupling interval
+#' @slot compen_rr Numeric, Compensatory interval
+#' @slot pre_rrs Numeric vector, Preceding 6 intervals
+#' @slot post_rrs Numeric vector, Following 16 intervals
+#' @slot to Numeric, Turbulence onset
+#' @slot ts Numeric, Turbulence slope
+#' @slot abline_coefficients Numeric vector, Intercept and slope of ab-line
+#'
+hrt <- setClass("hrt",
                 slots = list(
                 coupl_rr = "numeric",
                 compen_rr = "numeric",
@@ -13,7 +28,9 @@ pvc <- setClass("pvc",
 setGeneric("get_hrt_params", def = function(thisObject) {
   standardGeneric("get_hrt_params")
 })
-setMethod("get_hrt_params", "pvc", function(thisObject) {
+#' @describeIn hrt Calculates HRT parameters turbulence onset (to) and
+#' turbulence slope (ts) and the ab-line parameters of ts
+setMethod("get_hrt_params", "hrt", function(thisObject) {
   pre_rrs <- thisObject@pre_rrs
   post_rrs <- thisObject@post_rrs
 
@@ -42,14 +59,16 @@ setMethod("get_hrt_params", "pvc", function(thisObject) {
 setGeneric("get_rrs", def = function(thisObject) {
   standardGeneric("get_rrs")
 })
-setMethod("get_rrs", "pvc", function(thisObject) {
+setMethod("get_rrs", "hrt", function(thisObject) {
   return(c(thisObject@pre_rrs,
            thisObject@coupl_rr,
            thisObject@compen_rr,
            thisObject@post_rrs))
 })
 
-setMethod("plot", "pvc", function(x, type = "cropped") {
+#' @describeIn hrt Plots RR-intervals saved in the hrt object and marks
+#' turbulence onset and turbulence slope.
+setMethod("plot", "hrt", function(x, y = NULL, type = "cropped") {
 
   rrs <- get_rrs(x)
 

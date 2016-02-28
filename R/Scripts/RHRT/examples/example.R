@@ -13,11 +13,11 @@ data <- unlist(data * 1000)
 library(RHRT)
 
 # Pipeline
-pvcs <- get_pvcs(data)
-pvcs <- sapply(pvcs, get_hrt_params)
-averaged_pvc <- calc_averaged_pvc(pvcs)
-averaged_pvc <- get_hrt_params(averaged_pvc)
+hrts <- get_hrts(data)
+hrts <- sapply(hrts, get_hrt_params)
+averaged_hrt <- calc_averaged_hrt(hrts)
+averaged_hrt <- get_hrt_params(averaged_hrt)
 
 # Output
-cat(length(pvcs), "\t", mean(sapply(pvcs, slot, "to")), "\t", mean(sapply(pvcs, slot, "ts")), "\n")
-cat("Average", "\t", averaged_pvc@to, "\t", averaged_pvc@ts, "\n")
+cat(length(hrts), "\t", mean(sapply(hrts, slot, "to")), "\t", mean(sapply(hrts, slot, "ts")), "\n")
+cat("Average", "\t", averaged_hrt@to, "\t", averaged_hrt@ts, "\n")

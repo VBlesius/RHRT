@@ -13,6 +13,8 @@
 #' @slot ts Numeric, Turbulence slope
 #' @slot abline_coefficients Numeric vector, Intercept and slope of ab-line
 #'
+#'@importFrom methods setMethod 
+#'@export
 hrt <- setClass("hrt",
                 slots = list(
                 coupl_rr = "numeric",
@@ -26,6 +28,7 @@ hrt <- setClass("hrt",
 
 
 setGeneric("get_hrt_params", def = function(thisObject) {
+#' @export
   standardGeneric("get_hrt_params")
 })
 #' @describeIn hrt Calculates HRT parameters turbulence onset (to) and
@@ -69,6 +72,7 @@ setMethod("get_rrs", "hrt", function(thisObject) {
 #' @describeIn hrt Plots RR-intervals saved in the hrt object and marks
 #' turbulence onset and turbulence slope.
 setMethod("plot", "hrt", function(x, y = NULL, type = "cropped") {
+#' @export
 
   rrs <- get_rrs(x)
 

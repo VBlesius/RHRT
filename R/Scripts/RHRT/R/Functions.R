@@ -6,6 +6,7 @@
 #'
 #' @param Numeric vector
 #' @return List of hrt-objects
+#' @export
 get_hrts <- function(intervals) {
   num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval
   num_post_rrs <- 16 # number of regular RR-intervals after the coupling interval
@@ -70,6 +71,7 @@ check_for_hrt <- function(x) {
 #'
 #' @param List of hrt-objects
 #' @return The averaged hrt
+#' @export
 calc_averaged_hrt <- function(hrts) {
   coupl_rr <- mean(sapply(hrts, slot, "coupl_rr"))
   compen_rr <- mean(sapply(hrts, slot, "compen_rr"))

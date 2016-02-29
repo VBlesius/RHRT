@@ -2,8 +2,7 @@
 #'
 #' Scans for HRTs in a vector of RR-intervals and returns a list of HRT objects.
 #' The HRT criteria used were published by Schmidt et al.
-#' (see \url{http://www.h-r-t.com/hrt/en/calc.html}) or can be found in the 
-#' vignette.
+#' (more information can be found in the vignette.)
 #'
 #' @param intervals Numeric vector
 #' @return List of HRT objects

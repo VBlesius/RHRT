@@ -12,9 +12,11 @@
 #' @slot to Numeric, Turbulence onset
 #' @slot ts Numeric, Turbulence slope
 #' @slot abline_coefficients Numeric vector, Intercept and slope of ab-line
-#'
-#'@importFrom methods setMethod 
-#'@export
+#' 
+#' @rdname HRT
+#' 
+#' @importFrom methods setMethod 
+#' @export
 hrt <- setClass("hrt",
                 slots = list(
                 coupl_rr = "numeric",
@@ -33,11 +35,14 @@ hrt <- setClass("hrt",
 #' 
 #' @param hrtObj The HRT object of which the parameters should be calculated
 #' 
+#' @rdname HRT
 #' @export
 setGeneric("get_hrt_params", def = function(hrtObj) {
-  standardGeneric("get_hrt_params")
+standardGeneric("get_hrt_params")
 })
 
+#' @rdname HRT
+#' @aliases get_hrt_params
 setMethod("get_hrt_params", "hrt", function(hrtObj) {
   pre_rrs <- hrtObj@pre_rrs
   post_rrs <- hrtObj@post_rrs

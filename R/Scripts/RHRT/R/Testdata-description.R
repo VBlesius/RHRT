@@ -5,7 +5,7 @@
 #' vignette.
 #'
 #' @format A numeric vector of length 1000.
-"testdata_regular"
+"testdataRegular"
 
 #' Intervals with noise
 #'
@@ -14,4 +14,4 @@
 #' vignette
 #'
 #' @format A numeric vector of length 1000.
-"testdata_variant"
+"testdataVariant"

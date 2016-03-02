@@ -8,12 +8,12 @@
 #' @return List of HRT objects
 #' 
 #' @export
-get_hrts <- function(intervals) {
-  num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval
-  num_post_rrs <- 16 # number of regular RR-intervals after the coupling interval
-  windowsize <- num_pre_rrs + num_post_rrs + 2 # sums up coupling and compensatory interval
+getHRTs <- function(intervals) {
+  numPreRRs <- 6 # number of regular RR-intervals before the coupling interval
+  numPostRRs <- 16 # number of regular RR-intervals after the coupling interval
+  windowsize <- numPreRRs + numPostRRs + 2 # sums up coupling and compensatory interval
 
-  hrts <- wapply(intervals, windowsize, by = 1, FUN = check_for_hrt)
+  hrts <- wapply(intervals, windowsize, by = 1, FUN = checkForHRT)
   hrts <- hrts[!sapply(hrts, is.null)] # removes NULL entries
   return(hrts)
 }
@@ -21,38 +21,38 @@ get_hrts <- function(intervals) {
 #-------------------------------------------------------------------------------
 # Checks specified number of RR-intervals for HRT criteria
 # and returns a HRT object
-check_for_hrt <- function(x) {
-  num_pre_rrs <- 6 # number of regular RR-intervals before the coupling interval # TODO: remove redundancy!!!
+checkForHRT <- function(x) {
+  numPreRRs <- 6 # number of regular RR-intervals before the coupling interval # TODO: remove redundancy!!!
   # Defines coupling, compensatory, preceding and following intervals
   # and sums up regular intervals
-  coupl_rr <- x[num_pre_rrs + 1]
-  compen_rr <- x[num_pre_rrs + 2]
-  pre_rrs <- x[1:num_pre_rrs]
-  post_rrs <- x[(num_pre_rrs + 3):length(x)]
-  reg_rr <- c(pre_rrs, post_rrs)
+  couplRR <- x[numPreRRs + 1]
+  compenRR <- x[numPreRRs + 2]
+  preRRs <- x[1:numPreRRs]
+  postRRs <- x[(numPreRRs + 3):length(x)]
+  regRR <- c(preRRs, postRRs)
 
   # Reference interval
-  ref <- mean(pre_rrs)
+  ref <- mean(preRRs)
 
   ## Filtering methods
   # checks for HRT
-  is_coupl_interv <- coupl_rr <= ref * 0.8
-  is_compen_interv <- compen_rr >= ref * 1.2
+  isCouplRR <- couplRR <= ref * 0.8
+  isCompenRR <- compenRR >= ref * 1.2
   # checks for arrhythmias and artefacts
-  is_in_range <- all(reg_rr > 300 && reg_rr < 2000)
-  is_not_deviating <- all(
-    reg_rr >= ref * 0.8, reg_rr <= ref * 1.2,
-    wapply(pre_rrs, 2, by = 1, FUN = function(x) diff(x) <= 200),
-    wapply(post_rrs, 2, by = 1, FUN = function(x) diff(x) <= 200)
+  isInRange <- all(regRR > 300 && regRR < 2000)
+  isNotDeviating <- all(
+    regRR >= ref * 0.8, regRR <= ref * 1.2,
+    wapply(preRRs, 2, by = 1, FUN = function(x) diff(x) <= 200),
+    wapply(postRRs, 2, by = 1, FUN = function(x) diff(x) <= 200)
   )
 
   # Checks for criteria and saves HRT as object
-  if (is_coupl_interv & is_compen_interv & is_in_range & is_not_deviating) {
-    temp_hrt <- hrt(coupl_rr = coupl_rr,
-                    compen_rr = compen_rr,
-                    pre_rrs = pre_rrs[- (num_pre_rrs - 2):0],
-                    post_rrs = post_rrs[1:15])
-    return(temp_hrt)
+  if (isCouplRR & isCompenRR & isInRange & isNotDeviating) {
+    tempHRT <- HRT(couplRR = couplRR,
+                    compenRR = compenRR,
+                    preRRs = preRRs[- (numPreRRs - 2):0],
+                    postRRs = postRRs[1:15])
+    return(tempHRT)
   }
 }
 
@@ -75,12 +75,12 @@ check_for_hrt <- function(x) {
 #' 
 #' @export
 calc_averaged_hrt <- function(hrts) {
-  coupl_rr <- mean(sapply(hrts, slot, "coupl_rr"))
-  compen_rr <- mean(sapply(hrts, slot, "compen_rr"))
-  pre_rrs <- rowMeans(sapply(hrts, slot, "pre_rrs"))
-  post_rrs <- rowMeans(sapply(hrts, slot, "post_rrs"))
+  couplRR <- mean(sapply(hrts, slot, "couplRR"))
+  compenRR <- mean(sapply(hrts, slot, "compenRR"))
+  preRRs <- rowMeans(sapply(hrts, slot, "preRRs"))
+  postRRs <- rowMeans(sapply(hrts, slot, "postRRs"))
 
-  temp_hrt <- hrt(coupl_rr = coupl_rr, compen_rr = compen_rr,
-                  pre_rrs = pre_rrs, post_rrs = post_rrs)
-  return(temp_hrt)
+  tempHRT <- HRT(couplRR = couplRR, compenRR = compenRR,
+                  preRRs = preRRs, postRRs = postRRs)
+  return(tempHRT)
 }

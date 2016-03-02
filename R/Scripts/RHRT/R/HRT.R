@@ -5,77 +5,79 @@
 #' and turbulence slope after calculation as well as the coefficients of an
 #' ab-line used for the plot.
 #'
-#' @slot coupl_rr Numeric, Coupling interval
-#' @slot compen_rr Numeric, Compensatory interval
-#' @slot pre_rrs Numeric vector, Preceding 6 intervals
-#' @slot post_rrs Numeric vector, Following 16 intervals
-#' @slot to Numeric, Turbulence onset
-#' @slot ts Numeric, Turbulence slope
-#' @slot abline_coefficients Numeric vector, Intercept and slope of ab-line
+#' @slot couplRR Numeric, Coupling interval
+#' @slot compenRR Numeric, Compensatory interval
+#' @slot preRRs Numeric vector, Preceding 6 intervals
+#' @slot postRRs Numeric vector, Following 16 intervals
+#' @slot TO Numeric, Turbulence onset
+#' @slot TS Numeric, Turbulence slope
+#' @slot ablineCoefficients Numeric vector, Intercept and slope of ab-line
 #' 
 #' @rdname HRT
 #' 
 #' @importFrom methods setMethod 
 #' @export
-hrt <- setClass("hrt",
+setClass("HRT",
                 slots = list(
-                coupl_rr = "numeric",
-                compen_rr = "numeric",
-                pre_rrs="vector",
-                post_rrs = "vector",
-                to = "numeric",
-                ts = "numeric",
-                abline_coefficients = "vector")
+                couplRR = "numeric",
+                compenRR = "numeric",
+                preRRs="vector",
+                postRRs = "vector",
+                TO = "numeric",
+                TS = "numeric",
+                ablineCoefficients = "vector")
 )
+
+
 
 #' Calculate HRT parameters
 #' 
 #' Calculates the HRT parameters turbulence onset (TO) and turbulence slope (TS)
 #' and the ab-line parameters of TS and saves them in the corresponding slots.
 #' 
-#' @param hrtObj The HRT object of which the parameters should be calculated
+#' @param HRTObj The HRT object of which the parameters should be calculated
 #' 
-#' @rdname get_hrt_params
+#' @rdname getHRTParams
 #' @export
-setGeneric("get_hrt_params", def = function(hrtObj) {
-standardGeneric("get_hrt_params")
+setGeneric("getHRTParams", def = function(HRTObj) {
+standardGeneric("getHRTParams")
 })
 
-#' @rdname get_hrt_params
-setMethod("get_hrt_params", "hrt", function(hrtObj) {
-  pre_rrs <- hrtObj@pre_rrs
-  post_rrs <- hrtObj@post_rrs
+#' @rdname getHRTParams
+setMethod("getHRTParams", "HRT", function(HRTObj) {
+  preRRs <- HRTObj@preRRs
+  postRRs <- HRTObj@postRRs
 
   # Calculate TO
-  hrtObj@to <- ( (sum(post_rrs[1:2]) - sum(pre_rrs) ) / sum(pre_rrs) ) * 100
+  HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(preRRs) ) / sum(preRRs) ) * 100
 
   # Calculate TS
-  slopes <- wapply(post_rrs, 5, by = 1, FUN = function(y)
+  slopes <- wapply(postRRs, 5, by = 1, FUN = function(y)
     return(lm(y ~ seq(1,5))$coefficients[2])
   )
-  hrtObj@ts <- max(slopes, na.rm = TRUE)
+  HRTObj@TS <- max(slopes, na.rm = TRUE)
 
   # Calculate coefficients for regression line in plot
   index <- which.max(slopes)
-  model <- lm(post_rrs[index:(index + 4)]~seq(1, 5))
+  model <- lm(postRRs[index:(index + 4)]~seq(1, 5))
 
   slope <- model$coefficients[2]
   intercept <- model$coefficients[1] - (slope * (3 + index))
-    # 3 = #pre_rrs + #irregular_rrs - 1
+    # 3 = #preRRs + #irregularRRs - 1
 
-  hrtObj@abline_coefficients <- c(intercept, slope)
+  HRTObj@ablineCoefficients <- c(intercept, slope)
 
-  return(hrtObj)
+  return(HRTObj)
 })
 
-setGeneric("get_rrs", def = function(hrtObj) {
-  standardGeneric("get_rrs")
+setGeneric("getRRs", def = function(HRTObj) {
+  standardGeneric("getRRs")
 })
-setMethod("get_rrs", "hrt", function(hrtObj) {
-  return(c(hrtObj@pre_rrs,
-           hrtObj@coupl_rr,
-           hrtObj@compen_rr,
-           hrtObj@post_rrs))
+setMethod("getRRs", "HRT", function(HRTObj) {
+  return(c(HRTObj@preRRs,
+           HRTObj@couplRR,
+           HRTObj@compenRR,
+           HRTObj@postRRs))
 })
 
 #' Plot a HRT object
@@ -88,9 +90,9 @@ setMethod("get_rrs", "hrt", function(hrtObj) {
 #'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
 #' 
 #' @export
-setMethod("plot", "hrt", function(x, type = "cropped") {
+setMethod("plot", "HRT", function(x, type = "cropped") {
 
-  rrs <- get_rrs(x)
+  rrs <- getRRs(x)
 
   plot(seq(1:length(rrs)), rrs,
        "o", pch = 20,
@@ -111,6 +113,6 @@ setMethod("plot", "hrt", function(x, type = "cropped") {
   arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
 
   # Turbulence slope
-  abline(coef = x@abline_coefficients, lty = 3, col = "blue")
+  abline(coef = x@ablineCoefficients, lty = 3, col = "blue")
 
 })

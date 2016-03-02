@@ -35,14 +35,13 @@ hrt <- setClass("hrt",
 #' 
 #' @param hrtObj The HRT object of which the parameters should be calculated
 #' 
-#' @rdname HRT
+#' @rdname get_hrt_params
 #' @export
 setGeneric("get_hrt_params", def = function(hrtObj) {
 standardGeneric("get_hrt_params")
 })
 
-#' @rdname HRT
-#' @aliases get_hrt_params
+#' @rdname get_hrt_params
 setMethod("get_hrt_params", "hrt", function(hrtObj) {
   pre_rrs <- hrtObj@pre_rrs
   post_rrs <- hrtObj@post_rrs

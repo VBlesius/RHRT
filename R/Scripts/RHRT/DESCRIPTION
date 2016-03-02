@@ -1,17 +1,14 @@
 Package: RHRT
 Type: Package
-Title: Scans for PVCs and calculates HRT Parameters
+Title: Scans for PVCs and Calculates HRT Parameters
 Version: 0.1
 Date: 2016-02-11
 Author: Valeria Blesius
 Maintainer: Valeria Blesius <valeria.blesius@mni.thm.de>
-Description: The package provides methods to scan interval data for PVCs
-    (premature ventricular complexes). It filters the results on the basis of
-    Schmidt's filter rules and calculates the HRT parameters TO (turbulence onset)
-    and TS (turbulence slope) (see http://www.h-r-t.com). A plot method helps
-    visualise HRT.
+Description: Methods to scan interval data for PVCs (premature ventricular 
+    complexes) and parameterise and plot the resulting HRT.
 Depends: R (>= 2.10.0)
-License: GPL-3
+License: MIT + file LICENSE
 LazyData: TRUE
 Imports:
     methods

@@ -18,7 +18,7 @@ get_hrts <- function(intervals) {
   return(hrts)
 }
 
-#–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+#-------------------------------------------------------------------------------
 # Checks specified number of RR-intervals for HRT criteria
 # and returns a HRT object
 check_for_hrt <- function(x) {
@@ -56,7 +56,7 @@ check_for_hrt <- function(x) {
   }
 }
 
-#–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+#-------------------------------------------------------------------------------
 #' Creates an averaged HRT
 #'
 #' For each index the mean of the intervals across all HRTs in a list

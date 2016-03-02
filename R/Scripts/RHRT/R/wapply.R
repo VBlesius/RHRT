@@ -1,5 +1,4 @@
-wapply <- function(x, width, by = NULL, FUN = NULL, ...)
-{
+wapply <- function(x, width, by = NULL, FUN = NULL, ...) {
   FUN <- match.fun(FUN)
   if (is.null(by)) by <- width
   

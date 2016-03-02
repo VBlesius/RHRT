@@ -74,7 +74,7 @@ checkForHRT <- function(x) {
 #' @return The averaged HRT object
 #' 
 #' @export
-calc_averaged_hrt <- function(hrts) {
+calcAveragedHRT <- function(hrts) {
   couplRR <- mean(sapply(hrts, slot, "couplRR"))
   compenRR <- mean(sapply(hrts, slot, "compenRR"))
   preRRs <- rowMeans(sapply(hrts, slot, "preRRs"))

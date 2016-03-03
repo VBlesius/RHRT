@@ -1,3 +1,22 @@
+#' Converts a vector to HRTList
+#' 
+#' Description
+#' 
+#' @param input Numeric vector
+#' @return HRTList HRTList object
+#'
+vectorToHRT <- function(input) {
+  
+}
+  
+
+#-------------------------------------------------------------------------------
+# Checks data input for compatibility
+checkInput <- function(input) {
+  
+}
+
+#-------------------------------------------------------------------------------
 #' Finds HRTs
 #'
 #' Scans for HRTs in a vector of RR-intervals and returns a list of HRT objects.
@@ -7,7 +26,6 @@
 #' @param intervals Numeric vector
 #' @return List of HRT objects
 #' 
-#' @export
 getHRTs <- function(intervals) {
   numPreRRs <- 6 # number of regular RR-intervals before the coupling interval
   numPostRRs <- 16 # number of regular RR-intervals after the coupling interval
@@ -73,7 +91,6 @@ checkForHRT <- function(x) {
 #' @param hrts List of HRT objects
 #' @return The averaged HRT object
 #' 
-#' @export
 calcAveragedHRT <- function(hrts) {
   couplRR <- mean(sapply(hrts, slot, "couplRR"))
   compenRR <- mean(sapply(hrts, slot, "compenRR"))

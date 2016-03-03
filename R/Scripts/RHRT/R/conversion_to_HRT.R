@@ -67,13 +67,17 @@ getHRTs <- function(intervals) {
 #-------------------------------------------------------------------------------
 # Checks specified number of RR-intervals for HRT criteria
 # and returns a HRT object
-checkForHRT <- function(x) {
+
+#' @param input Numeric vector
+#' @return HRT A single HRT object
+#' 
+checkForHRT <- function(intervals) {
   # Defines coupling, compensatory, preceding and following intervals
   # and sums up regular intervals
-  couplRR <- x[numPreRRs + 1]
-  compenRR <- x[numPreRRs + 2]
-  preRRs <- x[1:numPreRRs]
-  postRRs <- x[(numPreRRs + 3):length(x)]
+  couplRR <- intervals[numPreRRs + 1]
+  compenRR <- intervals[numPreRRs + 2]
+  preRRs <- intervals[1:numPreRRs]
+  postRRs <- intervals[(numPreRRs + 3):length(intervals)]
   regRR <- c(preRRs, postRRs)
 
   # Reference interval

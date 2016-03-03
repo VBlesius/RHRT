@@ -33,14 +33,18 @@ setGeneric("getPositions", function(HRTListObj) {
 })
 #' @rdname getPositions
 setMethod("getPositions", "HRTList", function(HRTListObj) {
- return(HRTListObj)
+ return(HRTListObj@pos)
 })
 
-#' Get 
+#' Get averaged HRT parameters
 #'
-#' Returns 
+#' Returns the HRT parameters of the HRTList. Turbulence onset is calculated for
+#' each HRT object and then averaged, turbulence slope is calculated via 
+#' averaging the intervals of all HRT objects to one HRT object and then 
+#' estimating the maximal slope.
 #' 
 #' @param HRTListObj HRTList object
+#' @return Named numeric
 #' 
 #' @rdname getParamsMean
 setGeneric("getParamsMean", function(HRTListObj) {
@@ -48,7 +52,10 @@ setGeneric("getParamsMean", function(HRTListObj) {
 })
 #' @rdname getParamsMean
 setMethod("getParamsMean", "HRTList", function(HRTListObj) {
-  return(HRTListObj)
+  ts <- HRTListObj@avHRT@TS
+  to <- mean(lapply(HRTListObj@HRTs), slot, "TO")
+  paramsMean <- setNames(c(ts, to), c("TS", "TO"))
+  return(paramsMean)
 })
 
 #' Get 

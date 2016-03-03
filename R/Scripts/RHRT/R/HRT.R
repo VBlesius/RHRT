@@ -71,6 +71,8 @@ standardGeneric("getHRTParams")
 
 #' @rdname getHRTParams
 setMethod("getHRTParams", "HRT", function(HRTObj) {
+  checkValidity(HRTObj, "intervals")
+  
   preRRs <- HRTObj@preRRs
   postRRs <- HRTObj@postRRs
   
@@ -116,8 +118,9 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
 #' 
 #' @export
-setMethod("plot", "HRT", function(x, type = "cropped") {
-
+setMethod("plot", "HRT", function(x, size = "cropped") {
+  checkValidity(x)
+  
   rrs <- getRRs(x)
   
   plot(seq(1:length(rrs)), rrs,
@@ -141,4 +144,17 @@ setMethod("plot", "HRT", function(x, type = "cropped") {
   # Turbulence slope
   abline(coef = x@ablineCoefficients, lty = 3, col = "blue")
 
+})
+
+setGeneric("checkValidity", function(HRTObj, type = "full") {
+  standardGeneric("checkValidity")
+})
+setMethod("checkValidity", "HRT", function(HRTObj, type = "full") {
+  if(anyNA(getRRs(HRTObj))) {
+    stop("One or more interval is not set (NA)! Please make sure you have initialized the HRT object correctly!")
+  }
+  if(type == "full" && 
+     anyNA(c(HRTObj@TO, HRTObj@TS, HRTObj@ablineCoefficients))) {
+      stop("One or more HRT parameter of the given object is not set (NA)! Did you calculate the parameters? Use getHRTParams first and try again!")
+    }
 })

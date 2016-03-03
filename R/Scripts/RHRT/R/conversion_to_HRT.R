@@ -19,7 +19,7 @@ vectorToHRT <- function(input) {
 }
   
 #-------------------------------------------------------------------------------
-# Checks data input for compatibility
+#' Checks data input for compatibility
 #' 
 #' @param input Numeric vector
 #'
@@ -65,10 +65,10 @@ getHRTs <- function(intervals) {
 }
 
 #-------------------------------------------------------------------------------
-# Checks specified number of RR-intervals for HRT criteria
-# and returns a HRT object
-
-#' @param input Numeric vector
+#' Checks specified number of RR-intervals for HRT criteria
+#' and returns a HRT object
+#'
+#' @param intervals Numeric vector
 #' @return HRT A single HRT object
 #' 
 checkForHRT <- function(intervals) {

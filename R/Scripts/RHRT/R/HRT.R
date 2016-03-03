@@ -73,30 +73,30 @@ standardGeneric("getHRTParams")
 setMethod("getHRTParams", "HRT", function(HRTObj) {
   preRRs <- HRTObj@preRRs
   postRRs <- HRTObj@postRRs
-
+  
   # Calculate TO
   HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(preRRs) ) / sum(preRRs) ) * 100
-
+  
   # Calculate TS
   slopes <- wapply(postRRs, 5, by = 1, FUN = function(y)
     return(lm(y ~ seq(1,5))$coefficients[2])
   )
   HRTObj@TS <- max(slopes, na.rm = TRUE)
-
+  
   # Calculate coefficients for regression line in plot
   index <- which.max(slopes)
   model <- lm(postRRs[index:(index + 4)]~seq(1, 5))
-
+  
   slope <- model$coefficients[2]
   intercept <- model$coefficients[1] - (slope * (3 + index))
-    # 3 = #preRRs + #irregularRRs - 1
-
+  # 3 = #preRRs + #irregularRRs - 1
+  
   HRTObj@ablineCoefficients <- c(intercept, slope)
-
+  
   return(HRTObj)
 })
 
-setGeneric("getRRs", def = function(HRTObj) {
+setGeneric("getRRs", function(HRTObj) {
   standardGeneric("getRRs")
 })
 setMethod("getRRs", "HRT", function(HRTObj) {
@@ -119,25 +119,25 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 setMethod("plot", "HRT", function(x, type = "cropped") {
 
   rrs <- getRRs(x)
-
+  
   plot(seq(1:length(rrs)), rrs,
        "o", pch = 20,
        xlab = "# of RR interval",
        ylab = "length of RR interval (ms)",
        xaxt = "n",
-       ylim = if(type != "full")
+       ylim = if(size != "full")
          c(mean(rrs) - sd(rrs) / 2, mean(rrs) + sd(rrs) / 2)
   )
-
+  
   axis(1, at = seq(1:length(rrs)), labels = seq(-2, length(rrs) - 3, 1))
   legend("bottomright", c("Turbulence onset", "Turbulence slope"),
          lty = c(3), pch = c(19, NA), col = c("red", "blue"))
-
+  
   # Turbulence onset
   points(c(1, 6), c(rrs[1], rrs[6]), col = "red", pch = 19)
   arrows(1, rrs[1], 6, rrs[1], lty = 3, col = "red", code = 0)
   arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
-
+  
   # Turbulence slope
   abline(coef = x@ablineCoefficients, lty = 3, col = "blue")
 

@@ -29,18 +29,17 @@ vectorToHRT <- function(input) {
 #' @param input Numeric vector
 #'
 checkInput <- function(input) {
+  if(is.null(input)) {
+    stop("Given data is NULL! Please make sure your input is of type vector and not empty.")
+  }
   if(!is.vector(input)) {
-    stop("Given data has not the right type! Please make sure your input is of 
-         type vector.")
+    stop("Given data has not the right type! Please make sure your input is of type vector.")
   }
   if(!is.numeric(input)) {
     stop("Given vector is not numeric!")
   }
   if(any(sapply(input, is.na))) {
     stop("Given vector includes NA! Please make sure to remove them before using vectorToHRT!")
-  }
-  if(any(sapply(input, is.null))) {
-    stop("Given vector includes NULL! Please make sure to remove them before using vectorToHRT!")
   }
   if(any(sapply(input, `<=`, 0))) {
     stop("Given vector includes zero or negative values! Is your data incorrect?")

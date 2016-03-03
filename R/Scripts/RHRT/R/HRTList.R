@@ -115,9 +115,11 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
   preRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "preRRs"))
   postRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "postRRs"))
   
-  tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR,
+  avHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR,
                  preRRs = preRRs, postRRs = postRRs)
-  return(tempHRT)
+  HRTListObj@avHRT <- calcHRTParams(avHRT)
+  
+  return(HRTListObj)
 })
 
 #-------------------------------------------------------------------------------

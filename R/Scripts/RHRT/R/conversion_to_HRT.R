@@ -6,7 +6,12 @@
 #' @return HRTList HRTList object
 #'
 vectorToHRT <- function(input) {
-  
+  if(is.list(input)) input <- unlist(input)
+  checkInput(input)
+  tempHRTList <- getHRTs(input)
+  tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams)
+  tempHRTList <- calcAvHRT(tempHRTList)
+  return(tempHRTList)
 }
   
 

@@ -103,9 +103,15 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   return(HRTObj)
 })
 
+#' Returns all intervals in right order
+#' 
+#' @param HRTObj HRT object
+#' 
+#' @rdname getRRs
 setGeneric("getRRs", function(HRTObj) {
   standardGeneric("getRRs")
 })
+#' @rdname getRRs
 setMethod("getRRs", "HRT", function(HRTObj) {
   return(c(HRTObj@preRRs,
            HRTObj@couplRR,
@@ -151,9 +157,17 @@ setMethod("plot", "HRT", function(x, size = "cropped") {
   
 })
 
+#' Checks whether slots are set
+#' 
+#' @param HRTObj HRT object
+#' @param type Which slots should be checked? 
+#'     (Only intervals or parameters also?)
+#' 
+#' @rdname checkValidity
 setGeneric("checkValidity", function(HRTObj, type = "full") {
   standardGeneric("checkValidity")
 })
+#' @rdname checkValidity
 setMethod("checkValidity", "HRT", function(HRTObj, type = "full") {
   if(anyNA(getRRs(HRTObj))) {
     stop("One or more interval is not set (NA)! Please make sure you have initialized the HRT object correctly!")

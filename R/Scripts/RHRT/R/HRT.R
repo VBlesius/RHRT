@@ -118,9 +118,11 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' Plots RR-intervals saved in the HRT object and marks
 #' turbulence onset and turbulence slope.
 #' 
-#' @param x Either a single HRT object or a list of HRT objects
-#' @param type The type of the plot. The default is "cropped" which cuts off CPI
+#' @param x A single HRT object
+#' @param size The detail of the plot. The default is "cropped" which cuts off CPI
 #'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
+#' 
+#' @note Make sure you have calculated HRT parameters first!
 #' 
 #' @export
 setMethod("plot", "HRT", function(x, size = "cropped") {
@@ -148,7 +150,7 @@ setMethod("plot", "HRT", function(x, size = "cropped") {
   
   # Turbulence slope
   abline(coef = x@ablineCoefficients, lty = 3, col = "blue")
-
+  
 })
 
 setGeneric("checkValidity", function(HRTObj, type = "full") {

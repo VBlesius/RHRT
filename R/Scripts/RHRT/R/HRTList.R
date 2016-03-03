@@ -19,6 +19,7 @@ setClass("HRTList",
            avHRT = "HRT"),
 )
 
+#-------------------------------------------------------------------------------
 #' Get positions of PVCs
 #'
 #' Returns the positions of all premture ventricular complexes (PVC) and 
@@ -36,6 +37,7 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
  return(HRTListObj@pos)
 })
 
+#-------------------------------------------------------------------------------
 #' Get averaged HRT parameters
 #'
 #' Returns the HRT parameters of the HRTList. Turbulence onset is calculated for
@@ -58,6 +60,7 @@ setMethod("getParamsMean", "HRTList", function(HRTListObj) {
   return(paramsMean)
 })
 
+#-------------------------------------------------------------------------------
 #' Get all HRT parameters
 #'
 #' Returns the HRT parameters of each HRt object in the HRTList.
@@ -77,6 +80,7 @@ setMethod("getParamsAll", "HRTList", function(HRTListObj) {
   return(params)
 })
 
+#-------------------------------------------------------------------------------
 #' Calculates an averaged HRT object
 #'
 #' For each index the mean of the intervals across all HRTs in the HRTList
@@ -110,6 +114,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
   return(tempHRT)
 })
 
+#-------------------------------------------------------------------------------
 #' Plot a HRT object
 #' 
 #' Plots RR-intervals saved in the HRT object and marks
@@ -127,5 +132,4 @@ setMethod("plot", "HRTList", function(x, size = "cropped") {
     rrs <- getRRs(y)
     lines(seq(1:length(rrs)), rrs, col="grey")
   })
-  
 })

@@ -37,7 +37,7 @@ setClass("HRT",
          }
 )
 
-
+#-------------------------------------------------------------------------------
 #' @param .Object The name of the class
 #' @param couplRR Numeric, Coupling interval
 #' @param compenRR Numeric, Compensatory interval
@@ -62,6 +62,7 @@ setMethod("initialize", "HRT",
             }
 )
 
+#-------------------------------------------------------------------------------
 #' Calculate HRT parameters
 #' 
 #' Calculates the HRT parameters turbulence onset (TO) and turbulence slope (TS)
@@ -73,7 +74,6 @@ setMethod("initialize", "HRT",
 setGeneric("calcHRTParams", function(HRTObj) {
   standardGeneric("calcHRTParams")
 })
-
 #' @rdname calcHRTParams
 setMethod("calcHRTParams", "HRT", function(HRTObj) {
   checkValidity(HRTObj, "intervals")
@@ -103,6 +103,7 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   return(HRTObj)
 })
 
+#-------------------------------------------------------------------------------
 #' Returns all intervals in right order
 #' 
 #' @param HRTObj HRT object
@@ -119,6 +120,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
            HRTObj@postRRs))
 })
 
+#-------------------------------------------------------------------------------
 #' Plot a HRT object
 #' 
 #' Plots RR-intervals saved in the HRT object and marks
@@ -157,6 +159,7 @@ setMethod("plot", "HRT", function(x, size = "cropped") {
   
 })
 
+#-------------------------------------------------------------------------------
 #' Checks whether slots are set
 #' 
 #' @param HRTObj HRT object

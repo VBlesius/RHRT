@@ -1,10 +1,14 @@
 #' Converts a vector to HRTList
 #' 
-#' Description
+#' Scans for heart rate turbulence in a vector of RR-intervals and returns an
+#' HRTList object including all found HRT objects.
+#' The HRT criteria used were published by Schmidt et al.
+#' (more information can be found in the vignette.)
 #' 
 #' @param input Numeric vector
 #' @return HRTList HRTList object
 #'
+#' @export
 vectorToHRT <- function(input) {
   if(is.list(input)) input <- unlist(input)
   checkInput(input)
@@ -44,9 +48,7 @@ checkInput <- function(input) {
 #-------------------------------------------------------------------------------
 #' Finds HRTs
 #'
-#' Scans for HRTs in a vector of RR-intervals and returns a list of HRT objects.
-#' The HRT criteria used were published by Schmidt et al.
-#' (more information can be found in the vignette.)
+#' Scans for HRTs in the given vector and returns a HRTList object.
 #'
 #' @param intervals Numeric vector
 #' @return HRTList

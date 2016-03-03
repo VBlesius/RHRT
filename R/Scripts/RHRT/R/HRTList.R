@@ -10,7 +10,7 @@
 #' @rdname HRTList
 #' 
 #' @export
-setClass("HRT",
+setClass("HRTList",
          slots = list(
            HRTs = "list",
            avHRT = "HRT"),

@@ -58,9 +58,9 @@ setMethod("getParamsMean", "HRTList", function(HRTListObj) {
   return(paramsMean)
 })
 
-#' Get 
+#' Get all HRT parameters
 #'
-#' Returns 
+#' Returns the HRT parameters of each HRt object in the HRTList.
 #' 
 #' @param HRTListObj HRTList object
 #' 
@@ -70,7 +70,10 @@ setGeneric("getParamsAll", function(HRTListObj) {
 })
 #' @rdname getParamsAll
 setMethod("getParamsAll", "HRTList", function(HRTListObj) {
-  return(HRTListObj)
+  TS <- lapply(HRTListObj@HRTs, slot, "TS")
+  TO <- lapply(HRTListObj@HRTs, slot, "TO")
+  params <- cbind(TS, TO)
+  return(params)
 })
 
 #' Calculate 

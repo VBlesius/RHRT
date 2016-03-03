@@ -38,6 +38,12 @@ setClass("HRT",
 )
 
 
+#' @param .Object The name of the class
+#' @param couplRR Numeric, Coupling interval
+#' @param compenRR Numeric, Compensatory interval
+#' @param preRRs Numeric vector, Preceding 6 intervals
+#' @param postRRs Numeric vector, Following 16 intervals
+#' 
 #' @rdname HRT
 #' @export
 setMethod("initialize", "HRT", 

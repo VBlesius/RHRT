@@ -77,11 +77,21 @@ setMethod("getParamsAll", "HRTList", function(HRTListObj) {
   return(params)
 })
 
-#' Calculate 
+#' Calculates an averaged HRT object
 #'
-#' Returns 
+#' For each index the mean of the intervals across all HRTs in the HRTList
+#' is calculated and the averaged HRT returned.
+#' 
+#' @details
+#' Use the averaged HRT for calculating TS since averaging eliminates other
+#' RR variability. TO is commonly first calculated of the single HRTs and then
+#' averaged. (See "Heart Rate Turbulence: Standards of Measurement,
+#' Physiological Interpretation, and Clinical Use, Axel Bauer et al.,
+#' Journal of the American College of Cardiology, Volume 52, Issue 17,
+#' Pages 1353-1365")
 #' 
 #' @param HRTListObj HRTList object
+#' @return HRTObj
 #' 
 #' @rdname calcAvHRT
 setGeneric("calcAvHRT", function(HRTListObj) {
@@ -89,9 +99,16 @@ setGeneric("calcAvHRT", function(HRTListObj) {
 })
 #' @rdname calcAvHRT
 setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
-  return(HRTListObj)
+  
+  couplRR <- mean(sapply(HRTListObj@HRTs, slot, "couplRR"))
+  compenRR <- mean(sapply(HRTListObj@HRTs, slot, "compenRR"))
+  preRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "preRRs"))
+  postRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "postRRs"))
+  
+  tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR,
+                 preRRs = preRRs, postRRs = postRRs)
+  return(tempHRT)
 })
-
 
 #' Plot a HRT object
 #' 

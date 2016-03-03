@@ -73,31 +73,3 @@ checkForHRT <- function(x) {
     return(tempHRT)
   }
 }
-
-#-------------------------------------------------------------------------------
-#' Creates an averaged HRT
-#'
-#' For each index the mean of the intervals across all HRTs in a list
-#' is calculated and the averaged HRT returned.
-#'
-#' @details
-#' Use the averaged HRT for calculating TS since averaging eliminates other
-#' RR variability. TO is commonly first calculated of the single HRTs and then
-#' averaged. (See "Heart Rate Turbulence: Standards of Measurement,
-#' Physiological Interpretation, and Clinical Use, Axel Bauer et al.,
-#' Journal of the American College of Cardiology, Volume 52, Issue 17,
-#' Pages 1353-1365")
-#'
-#' @param hrts List of HRT objects
-#' @return The averaged HRT object
-#' 
-calcAveragedHRT <- function(hrts) {
-  couplRR <- mean(sapply(hrts, slot, "couplRR"))
-  compenRR <- mean(sapply(hrts, slot, "compenRR"))
-  preRRs <- rowMeans(sapply(hrts, slot, "preRRs"))
-  postRRs <- rowMeans(sapply(hrts, slot, "postRRs"))
-
-  tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR,
-                  preRRs = preRRs, postRRs = postRRs)
-  return(tempHRT)
-}

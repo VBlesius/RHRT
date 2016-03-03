@@ -29,7 +29,7 @@ checkInput <- function(input) {
 #' (more information can be found in the vignette.)
 #'
 #' @param intervals Numeric vector
-#' @return List of HRT objects
+#' @return HRTList
 #' 
 getHRTs <- function(intervals) {
   numPreRRs <- 6 # number of regular RR-intervals before the coupling interval
@@ -37,8 +37,12 @@ getHRTs <- function(intervals) {
   windowsize <- numPreRRs + numPostRRs + 2 # sums up coupling and compensatory interval
 
   hrts <- wapply(intervals, windowsize, by = 1, FUN = checkForHRT)
-  hrts <- hrts[!sapply(hrts, is.null)] # removes NULL entries
-  return(hrts)
+  indices <- which(sapply(hrts, is.null) != TRUE)
+  
+  tempHRTList <- new("HRTList")
+  tempHRTList@pos <- indices + numPreRRs
+  tempHRTList@HRTs <- hrts[indices] # removes NULL entries
+  return(tempHRTList)
 }
 
 #-------------------------------------------------------------------------------

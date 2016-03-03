@@ -122,8 +122,6 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param size The detail of the plot. The default is "cropped" which cuts off CPI
 #'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
 #' 
-#' @note Make sure you have calculated HRT parameters first!
-#' 
 #' @export
 setMethod("plot", "HRT", function(x, size = "cropped") {
   checkValidity(x)

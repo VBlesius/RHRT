@@ -81,6 +81,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
   return(HRTListObj)
 })
 
+
 #' Plot a HRT object
 #' 
 #' Plots RR-intervals saved in the HRT object and marks
@@ -90,12 +91,10 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
 #' @param size The detail of the plot. The default is "cropped" which cuts off CPI
 #'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
 #' 
-#' @note Make sure you have calculated HRT parameters first!
-#' 
 #' @export
-setMethod("plot", "HRTlist", function(x, size = "cropped") {
+setMethod("plot", "HRTList", function(x, size = "cropped") {
   plot(getHRTParams(x@avHRT), size=size)
-
+  
   lapply(x@HRTs, function(y) {
     rrs <- getRRs(y)
     lines(seq(1:length(rrs)), rrs, col="grey")

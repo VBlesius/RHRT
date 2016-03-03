@@ -19,32 +19,66 @@ setClass("HRTList",
            avHRT = "HRT"),
 )
 
+#' Get positions of PVCs
+#'
+#' Returns the positions of all premture ventricular complexes (PVC) and 
+#' accordingly the coupling intervals that were found in the given vector 
+#' when the HRTList was created.
+#' 
+#' @param HRTListObj HRTList object
+#' 
+#' @rdname getPositions
 setGeneric("getPositions", function(HRTListObj) {
   standardGeneric("getPositions")
 })
+#' @rdname getPositions
 setMethod("getPositions", "HRTList", function(HRTListObj) {
- 
+ return(HRTListObj)
 })
 
+#' Get 
+#'
+#' Returns 
+#' 
+#' @param HRTListObj HRTList object
+#' 
+#' @rdname getParamsMean
 setGeneric("getParamsMean", function(HRTListObj) {
   standardGeneric("getParamsMean")
 })
+#' @rdname getParamsMean
 setMethod("getParamsMean", "HRTList", function(HRTListObj) {
-  
+  return(HRTListObj)
 })
 
+#' Get 
+#'
+#' Returns 
+#' 
+#' @param HRTListObj HRTList object
+#' 
+#' @rdname getParamsAll
 setGeneric("getParamsAll", function(HRTListObj) {
   standardGeneric("getParamsAll")
 })
+#' @rdname getParamsAll
 setMethod("getParamsAll", "HRTList", function(HRTListObj) {
-  
+  return(HRTListObj)
 })
 
+#' Calculate 
+#'
+#' Returns 
+#' 
+#' @param HRTListObj HRTList object
+#' 
+#' @rdname calcAvHRT
 setGeneric("calcAvHRT", function(HRTListObj) {
   standardGeneric("calcAvHRT")
 })
+#' @rdname calcAvHRT
 setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
-  
+  return(HRTListObj)
 })
 
 #' Plot a HRT object

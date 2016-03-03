@@ -48,7 +48,7 @@ checkForHRT <- function(x) {
 
   # Checks for criteria and saves HRT as object
   if (isCouplRR & isCompenRR & isInRange & isNotDeviating) {
-    tempHRT <- HRT(couplRR = couplRR,
+    tempHRT <- new("HRT", couplRR = couplRR,
                     compenRR = compenRR,
                     preRRs = preRRs[- (numPreRRs - 2):0],
                     postRRs = postRRs[1:15])
@@ -80,7 +80,7 @@ calcAveragedHRT <- function(hrts) {
   preRRs <- rowMeans(sapply(hrts, slot, "preRRs"))
   postRRs <- rowMeans(sapply(hrts, slot, "postRRs"))
 
-  tempHRT <- HRT(couplRR = couplRR, compenRR = compenRR,
+  tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR,
                   preRRs = preRRs, postRRs = postRRs)
   return(tempHRT)
 }

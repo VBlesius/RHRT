@@ -18,17 +18,43 @@
 #' @importFrom methods setMethod 
 #' @export
 setClass("HRT",
-                slots = list(
-                couplRR = "numeric",
-                compenRR = "numeric",
-                preRRs="vector",
-                postRRs = "vector",
-                TO = "numeric",
-                TS = "numeric",
-                ablineCoefficients = "vector")
+         slots = list(
+           couplRR = "numeric",
+           compenRR = "numeric",
+           preRRs = "vector",
+           postRRs = "vector",
+           TO = "numeric",
+           TS = "numeric",
+           ablineCoefficients = "vector"),
+
+         validity = function(object) {
+           if(any(length(object@couplRR) != 1,
+                  length(object@compenRR) != 1,
+                  length(object@preRRs) != numPreRRs,
+                  length(object@postRRs) != numPostRRs)) {
+             stop("The number of given intervals for the HRT object is incorrect!")
+           }
+         }
 )
 
 
+#' @rdname HRT
+#' @export
+setMethod("initialize", "HRT", 
+          function(.Object, couplRR=NA_real_, compenRR=NA_real_,
+                   preRRs=NA_real_, postRRs=NA_real_) {
+            .Object@couplRR <- couplRR
+            .Object@compenRR <- compenRR
+            .Object@preRRs <- preRRs
+            .Object@postRRs <- postRRs
+            .Object@TO <- NA_real_
+            .Object@TS <- NA_real_
+            .Object@ablineCoefficients <- NA_real_
+            
+            #validObject(.Object)
+            return(.Object)
+            }
+)
 
 #' Calculate HRT parameters
 #' 

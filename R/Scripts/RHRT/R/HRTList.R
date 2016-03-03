@@ -63,6 +63,7 @@ setMethod("getParamsMean", "HRTList", function(HRTListObj) {
 #' Returns the HRT parameters of each HRt object in the HRTList.
 #' 
 #' @param HRTListObj HRTList object
+#' @return Matrix
 #' 
 #' @rdname getParamsAll
 setGeneric("getParamsAll", function(HRTListObj) {

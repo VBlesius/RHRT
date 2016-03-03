@@ -70,9 +70,8 @@ setMethod("initialize", "HRT",
 #' @param HRTObj The HRT object of which the parameters should be calculated
 #' 
 #' @rdname getHRTParams
-#' @export
-setGeneric("getHRTParams", def = function(HRTObj) {
-standardGeneric("getHRTParams")
+setGeneric("getHRTParams", function(HRTObj) {
+  standardGeneric("getHRTParams")
 })
 
 #' @rdname getHRTParams

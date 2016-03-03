@@ -47,6 +47,9 @@ checkInput <- function(input) {
   if(length(input) < numSeq) {
     stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ", numSeq, "."))
   }
+  if(mean(input) < 1 || mean(input) > 1000) {
+    stop("Did you consider the unit of your data has to be seconds? Please adapt your data and try again.")
+  }
 }
 
 #-------------------------------------------------------------------------------

@@ -32,11 +32,8 @@ checkInput <- function(input) {
 #' @return HRTList
 #' 
 getHRTs <- function(intervals) {
-  numPreRRs <- 6 # number of regular RR-intervals before the coupling interval
-  numPostRRs <- 16 # number of regular RR-intervals after the coupling interval
-  windowsize <- numPreRRs + numPostRRs + 2 # sums up coupling and compensatory interval
 
-  hrts <- wapply(intervals, windowsize, by = 1, FUN = checkForHRT)
+  hrts <- wapply(intervals, numSeq, by = 1, FUN = checkForHRT)
   indices <- which(sapply(hrts, is.null) != TRUE)
   
   tempHRTList <- new("HRTList")
@@ -49,7 +46,6 @@ getHRTs <- function(intervals) {
 # Checks specified number of RR-intervals for HRT criteria
 # and returns a HRT object
 checkForHRT <- function(x) {
-  numPreRRs <- 6 # number of regular RR-intervals before the coupling interval # TODO: remove redundancy!!!
   # Defines coupling, compensatory, preceding and following intervals
   # and sums up regular intervals
   couplRR <- x[numPreRRs + 1]

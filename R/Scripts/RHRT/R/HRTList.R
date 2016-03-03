@@ -4,7 +4,9 @@
 #' also saves an averaged HRT for calculation of the averaged HRT parameters and
 #' plotting of all HRTs in a single plot.
 #'
-#' @slot HRTs list, all HRT objects
+#' @slot pos Numeric vector, Positions of premature ventricular complexes in 
+#'     given input
+#' @slot HRTs List, all HRT objects
 #' @slot avHRT HRT, averaged HRT
 #' 
 #' @rdname HRTList
@@ -12,6 +14,7 @@
 #' @export
 setClass("HRTList",
          slots = list(
+           pos = "vector",
            HRTs = "list",
            avHRT = "HRT"),
 )

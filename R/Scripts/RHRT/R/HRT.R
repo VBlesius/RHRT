@@ -69,13 +69,13 @@ setMethod("initialize", "HRT",
 #' 
 #' @param HRTObj The HRT object of which the parameters should be calculated
 #' 
-#' @rdname getHRTParams
-setGeneric("getHRTParams", function(HRTObj) {
-  standardGeneric("getHRTParams")
+#' @rdname calcHRTParams
+setGeneric("calcHRTParams", function(HRTObj) {
+  standardGeneric("calcHRTParams")
 })
 
-#' @rdname getHRTParams
-setMethod("getHRTParams", "HRT", function(HRTObj) {
+#' @rdname calcHRTParams
+setMethod("calcHRTParams", "HRT", function(HRTObj) {
   checkValidity(HRTObj, "intervals")
   
   preRRs <- HRTObj@preRRs
@@ -160,6 +160,6 @@ setMethod("checkValidity", "HRT", function(HRTObj, type = "full") {
   }
   if(type == "full" && 
      anyNA(c(HRTObj@TO, HRTObj@TS, HRTObj@ablineCoefficients))) {
-      stop("One or more HRT parameter of the given object is not set (NA)! Did you calculate the parameters? Use getHRTParams first and try again!")
+      stop("One or more HRT parameter of the given object is not set (NA)! Did you calculate the parameters? Use calcHRTParams first and try again!")
     }
 })

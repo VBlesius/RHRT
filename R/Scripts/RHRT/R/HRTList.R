@@ -134,10 +134,11 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
 #' 
 #' @export
 setMethod("plot", "HRTList", function(x, size = "cropped") {
-  plot(getHRTParams(x@avHRT), size=size)
+  plot(x@avHRT, size=size)
   
   lapply(x@HRTs, function(y) {
     rrs <- getRRs(y)
     lines(seq(1:length(rrs)), rrs, col="grey")
   })
+  cat("") # preventing NULL return
 })

@@ -9,8 +9,14 @@
 #' @slot HRTs List, all HRT objects
 #' @slot avHRT HRT, averaged HRT
 #' 
-#' @rdname HRTList
+#' @note After using \code{vectorToHRT} all slots in the resulting HRTList 
+#' object are set. Please do not set them manually since many functions of the 
+#' HRTList class rely on valid values assigned to the needed slots.
+#' Valid values are positive numerics for the intervals (consider: the unit 
+#' should be seconds) and numerics (either positive or negative) for the HRT
+#' parameters and ab-line coefficients. 
 #' 
+#' @rdname HRTList
 #' @export
 setClass("HRTList",
          slots = list(

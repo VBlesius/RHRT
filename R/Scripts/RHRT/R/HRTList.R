@@ -18,3 +18,53 @@ setClass("HRTList",
            HRTs = "list",
            avHRT = "HRT"),
 )
+
+setGeneric("getPositions", function(HRTListObj) {
+  standardGeneric("getPositions")
+})
+setMethod("getPositions", "HRTList", function(HRTListObj) {
+ 
+})
+
+setGeneric("getParamsMean", function(HRTListObj) {
+  standardGeneric("getParamsMean")
+})
+setMethod("getParamsMean", "HRTList", function(HRTListObj) {
+  
+})
+
+setGeneric("getParamsAll", function(HRTListObj) {
+  standardGeneric("getParamsAll")
+})
+setMethod("getParamsAll", "HRTList", function(HRTListObj) {
+  
+})
+
+setGeneric("calcAvHRT", function(HRTListObj) {
+  standardGeneric("calcAvHRT")
+})
+setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
+  
+})
+
+#' Plot a HRT object
+#' 
+#' Plots RR-intervals saved in the HRT object and marks
+#' turbulence onset and turbulence slope.
+#' 
+#' @param x A HRTList
+#' @param size The detail of the plot. The default is "cropped" which cuts off CPI
+#'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
+#' 
+#' @note Make sure you have calculated HRT parameters first!
+#' 
+#' @export
+setMethod("plot", "HRTlist", function(x, size = "cropped") {
+  plot(getHRTParams(x@avHRT), size=size)
+
+  lapply(x@HRTs, function(y) {
+    rrs <- getRRs(y)
+    lines(seq(1:length(rrs)), rrs, col="grey")
+  })
+  
+})

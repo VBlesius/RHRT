@@ -134,19 +134,35 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param x A single HRT object
 #' @param cropped The detail of the plot. The default cuts off CPI
 #'  and CMI and focuses on the HRT parameters. To show all points use FALSE.
+#' @param type type of the plot, for other options see graphics::plot.xy
+#' @param pch plotting character, for other options see graphics::var
+#' @param xlab label for the x axis
+#' @param ylab label for the x axis
+#' @param ... Other arguments in tag = value form. See graphics::par for more information.
+#' 
+#' @note Please note that the argument xaxt and ylim can't be set, 
+#'  since the axis as well as the ranges of the y axis are set by the function.
 #' 
 #' @export
-  checkValidity(x)
-  
 setMethod("plot", "HRT", function(x, cropped = TRUE,
+                                  type = "o",
+                                  pch = 20,
+                                  xlab = "# of RR interval",
+                                  ylab = "length of RR interval (ms)",
+                                  ...) {
+
   rrs <- getRRs(x)
-  
+
   plot(seq(1:length(rrs)), rrs,
-       "o", pch = 20,
-       xlab = "# of RR interval",
-       ylab = "length of RR interval (ms)",
        xaxt = "n",
        ylim = if(cropped)
+         c( min(c(x@preRRs, x@postRRs)),
+            max(c(x@preRRs, x@postRRs))),
+       type = type,
+       pch = pch,
+       xlab = xlab,
+       ylab = ylab,
+       ...
   )
   
   axis(1, at = seq(1:length(rrs)), labels = seq(-2, length(rrs) - 3, 1))

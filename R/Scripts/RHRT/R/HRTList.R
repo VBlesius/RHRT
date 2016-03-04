@@ -134,6 +134,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
 #' @param x A HRTList
 #' @param cropped The detail of the plot. The default cuts off CPI
 #'  and CMI and focuses on the HRT parameters. To show all points use FALSE.
+#' @param ... Other arguments in tag = value form
 #' 
 #' @export
 setMethod("plot", "HRTList", function(x, cropped = TRUE, ...) {

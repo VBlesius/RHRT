@@ -43,32 +43,44 @@ There are two types of filter rules applied on the interval data:
 **HRT Parameters** &nbsp;&nbsp; The parameters **turbulence onset (TO)** and **turbulence slope (TS)** can be calculated with `get_hrt_params` and are saved in the HRT object.
 
 
+## HRTList Object
+
+The HRTList object sums up all HRTs found in your given dataset. It consists of
+* The positions of the extrasysoles (that is the premature ventricular complex / coupling interval)
+
+* All found HRTs
+
+* The averaged HRT object which is calculated via estimating the mean of the intervals of all HRT objects
+
+An HRTList object ist created when `vectorToHRT` is called. all HRT parameters are calculated automatically in this process and can be called with the `getHRTParams`-methods.
+
 ## Workflow
 
 At first use `get_pvcs` to run through your interval data and find interval sequences that fit to the filter rules. Once you have the HRT objects you can calculate the HRT parameters TO and TS either for each HRT object or for the averaged HRT object.
 
 Example workflow:
 
-```
-#pvcs <- get_pvcs(data)
-#pvcs <- sapply(pvcs, get_hrt_params)
-#averaged_pvc <- calc_averaged_pvc(pvcs)
-#averaged_pvc <- get_hrt_params(averaged_pvc)
+```{r}
+data("testdataVariant", package = "RHRT")
+
+tdVariant <- testdataVariant
+hrtlVar <- RHRT::vectorToHRT(tdVariant)
+hrtlVarParams <- RHRT::getHRTParamsMean(hrtlVar)
 ```
 
 ## Plot
 
-You can plot either a single HRT object or a list of HRT objects. For the latter the averaged HRT object is calculated and plotted in dark tone while the other HRT objects are plotted behind in light tone. TO and TS are labeled for the HRT object or the averaged HRT object, respectively.
+You can plot either a single HRT object or a HRTList. For the latter the averaged HRT object is plotted in dark tone while the other HRT objects are plotted behind in light tone. TO and TS are labeled for the HRT object or the averaged HRT object, respectively.
 
-```{r, fig.show='hold'}
-#plot(pvc)
+```{r,  fig.width=7, fig.height=4}
+RHRT::plot(hrtlVar@HRTs[[1]], main = "One HRT object")
 ```
 
-```{r, fig.show='hold'}
-#plot(pvcs)
+```{r,  fig.width=7, fig.height=4}
+RHRT::plot(hrtlVar, main = "All HRT objects in an HRTList object")
 ```
 In either case you can specify whether you want the plot to be cropped vertically so TO and TS can be better inspected. For it (???) CPI and CMI are not visible. 
 
-```{r, fig.show='hold'}
-#plot(pvcs, type = cropped)
+```{r,  fig.width=7, fig.height=4}
+RHRT::plot(hrtlVar, size = "full", main = "Not cropped")
 ```

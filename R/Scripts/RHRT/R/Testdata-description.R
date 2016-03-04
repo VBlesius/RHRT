@@ -15,3 +15,11 @@
 #'
 #' @format A numeric vector of length 1000.
 "testdataVariant"
+
+#' Intervals with noise and without HRT
+#'
+#' Interval data based on a dataset provided by Physionet (NSRDB). This dataset
+#' does not include any HRTs. For more information see the vignette.
+#'
+#' @format A numeric vector of length 1000.
+"testdataVariantNoHRT"

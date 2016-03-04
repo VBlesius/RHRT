@@ -146,7 +146,6 @@ setMethod("plot", "HRT", function(x, cropped = TRUE,
        xlab = "# of RR interval",
        ylab = "length of RR interval (ms)",
        xaxt = "n",
-         c(mean(rrs) - sd(rrs) / 2, mean(rrs) + sd(rrs) / 2)
        ylim = if(cropped)
   )
   

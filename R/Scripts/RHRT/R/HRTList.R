@@ -132,12 +132,12 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
 #' turbulence onset and turbulence slope.
 #' 
 #' @param x A HRTList
-#' @param size The detail of the plot. The default is "cropped" which cuts off CPI
-#'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
+#' @param cropped The detail of the plot. The default cuts off CPI
+#'  and CMI and focuses on the HRT parameters. To show all points use FALSE.
 #' 
 #' @export
-setMethod("plot", "HRTList", function(x, size = "cropped") {
-  plot(x@avHRT, size=size)
+setMethod("plot", "HRTList", function(x, cropped = TRUE, ...) {
+  plot(x@avHRT, cropped = cropped, ...)
   
   lapply(x@HRTs, function(y) {
     rrs <- getRRs(y)

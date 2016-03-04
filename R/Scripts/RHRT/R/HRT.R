@@ -132,13 +132,13 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' turbulence onset and turbulence slope.
 #' 
 #' @param x A single HRT object
-#' @param size The detail of the plot. The default is "cropped" which cuts off CPI
-#'  and CMI and focuses on the HRT parameters. Else the plot shows all intervals.
+#' @param cropped The detail of the plot. The default cuts off CPI
+#'  and CMI and focuses on the HRT parameters. To show all points use FALSE.
 #' 
 #' @export
-setMethod("plot", "HRT", function(x, size = "cropped") {
   checkValidity(x)
   
+setMethod("plot", "HRT", function(x, cropped = TRUE,
   rrs <- getRRs(x)
   
   plot(seq(1:length(rrs)), rrs,
@@ -146,8 +146,8 @@ setMethod("plot", "HRT", function(x, size = "cropped") {
        xlab = "# of RR interval",
        ylab = "length of RR interval (ms)",
        xaxt = "n",
-       ylim = if(size != "full")
          c(mean(rrs) - sd(rrs) / 2, mean(rrs) + sd(rrs) / 2)
+       ylim = if(cropped)
   )
   
   axis(1, at = seq(1:length(rrs)), labels = seq(-2, length(rrs) - 3, 1))

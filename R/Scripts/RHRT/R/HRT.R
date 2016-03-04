@@ -121,7 +121,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 })
 
 #-------------------------------------------------------------------------------
-#' Plot a HRT object
+#' Plot an HRT object
 #' 
 #' Plots RR-intervals saved in the HRT object and marks
 #' turbulence onset and turbulence slope.

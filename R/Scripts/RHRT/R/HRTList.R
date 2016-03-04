@@ -87,7 +87,7 @@ setMethod("getParamsAll", "HRTList", function(HRTListObj) {
 })
 
 #-------------------------------------------------------------------------------
-#' Calculates an averaged HRT object
+#' Calculate an averaged HRT object
 #'
 #' For each index the mean of the intervals across all HRTs in the HRTList
 #' is calculated and the averaged HRT returned.
@@ -123,7 +123,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
 })
 
 #-------------------------------------------------------------------------------
-#' Plot a HRT object
+#' Plot an HRT object
 #' 
 #' Plots RR-intervals saved in the HRT object and marks
 #' turbulence onset and turbulence slope.

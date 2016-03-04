@@ -61,7 +61,7 @@ setGeneric("getParamsMean", function(HRTListObj) {
 #' @rdname getParamsMean
 setMethod("getParamsMean", "HRTList", function(HRTListObj) {
   ts <- HRTListObj@avHRT@TS
-  to <- mean(lapply(HRTListObj@HRTs), slot, "TO")
+  to <- mean(sapply(HRTListObj@HRTs, slot, "TO"))
   paramsMean <- setNames(c(ts, to), c("TS", "TO"))
   return(paramsMean)
 })

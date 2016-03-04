@@ -82,7 +82,12 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   postRRs <- HRTObj@postRRs
   
   # Calculate TO
-  HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(preRRs) ) / sum(preRRs) ) * 100
+  if(sum(preRRs) == 0) {
+    warning("The sum of the intervals preceding the coupling interval is zero! Turbulence onset can't be calculated!")
+    HRTObj@TO <- NA_real_
+  } else {
+    HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(preRRs) ) / sum(preRRs) ) * 100
+  }
   
   # Calculate TS
   slopes <- wapply(postRRs, 5, by = 1, FUN = function(y)

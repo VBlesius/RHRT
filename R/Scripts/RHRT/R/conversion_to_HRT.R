@@ -1,4 +1,4 @@
-#' Converts a vector to HRTList
+#' Convert a vector to HRTList
 #' 
 #' Scans for heart rate turbulence in a vector of RR-intervals and returns an
 #' HRTList object including all found HRT objects.
@@ -7,7 +7,7 @@
 #' 
 #' @param input Numeric vector
 #' @return HRTList HRTList object
-#'
+#' 
 #' @export
 vectorToHRT <- function(input) {
   if(is.list(input)) input <- unlist(input)

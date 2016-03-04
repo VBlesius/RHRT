@@ -39,6 +39,7 @@ setGeneric("getPositions", function(HRTListObj) {
   standardGeneric("getPositions")
 })
 #' @rdname getPositions
+#' @export
 setMethod("getPositions", "HRTList", function(HRTListObj) {
  return(HRTListObj@pos)
 })
@@ -59,6 +60,7 @@ setGeneric("getHRTParamsMean", function(HRTListObj) {
   standardGeneric("getHRTParamsMean")
 })
 #' @rdname getHRTParamsMean
+#' @export
 setMethod("getHRTParamsMean", "HRTList", function(HRTListObj) {
   ts <- HRTListObj@avHRT@TS
   to <- mean(sapply(HRTListObj@HRTs, slot, "TO"))
@@ -79,6 +81,7 @@ setGeneric("getHRTParamsAll", function(HRTListObj) {
   standardGeneric("getHRTParamsAll")
 })
 #' @rdname getHRTParamsAll
+#' @export
 setMethod("getHRTParamsAll", "HRTList", function(HRTListObj) {
   TS <- lapply(HRTListObj@HRTs, slot, "TS")
   TO <- lapply(HRTListObj@HRTs, slot, "TO")
@@ -108,6 +111,7 @@ setGeneric("calcAvHRT", function(HRTListObj) {
   standardGeneric("calcAvHRT")
 })
 #' @rdname calcAvHRT
+#' @export
 setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
   
   couplRR <- mean(sapply(HRTListObj@HRTs, slot, "couplRR"))

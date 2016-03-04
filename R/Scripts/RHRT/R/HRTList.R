@@ -54,12 +54,12 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' @param HRTListObj HRTList object
 #' @return Named numeric
 #' 
-#' @rdname getParamsMean
-setGeneric("getParamsMean", function(HRTListObj) {
-  standardGeneric("getParamsMean")
+#' @rdname getHRTParamsMean
+setGeneric("getHRTParamsMean", function(HRTListObj) {
+  standardGeneric("getHRTParamsMean")
 })
-#' @rdname getParamsMean
-setMethod("getParamsMean", "HRTList", function(HRTListObj) {
+#' @rdname getHRTParamsMean
+setMethod("getHRTParamsMean", "HRTList", function(HRTListObj) {
   ts <- HRTListObj@avHRT@TS
   to <- mean(sapply(HRTListObj@HRTs, slot, "TO"))
   paramsMean <- setNames(c(ts, to), c("TS", "TO"))
@@ -73,13 +73,13 @@ setMethod("getParamsMean", "HRTList", function(HRTListObj) {
 #' 
 #' @param HRTListObj HRTList object
 #' @return Matrix
-#' 
-#' @rdname getParamsAll
-setGeneric("getParamsAll", function(HRTListObj) {
-  standardGeneric("getParamsAll")
+#'
+#' @rdname getHRTParamsAll
+setGeneric("getHRTParamsAll", function(HRTListObj) {
+  standardGeneric("getHRTParamsAll")
 })
-#' @rdname getParamsAll
-setMethod("getParamsAll", "HRTList", function(HRTListObj) {
+#' @rdname getHRTParamsAll
+setMethod("getHRTParamsAll", "HRTList", function(HRTListObj) {
   TS <- lapply(HRTListObj@HRTs, slot, "TS")
   TO <- lapply(HRTListObj@HRTs, slot, "TO")
   params <- cbind(TS, TO)

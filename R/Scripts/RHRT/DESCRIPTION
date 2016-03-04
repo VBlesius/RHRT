@@ -5,15 +5,25 @@ Version: 0.1
 Date: 2016-02-11
 Author: Valeria Blesius
 Maintainer: Valeria Blesius <valeria.blesius@mni.thm.de>
-Description: Methods to scan interval data for PVCs (premature ventricular 
+Description: Methods to scan interval data for PVCs (premature ventricular
     complexes) and parameterise and plot the resulting HRT.
-Depends: R (>= 2.10.0)
+Depends:
+    R (>= 2.10.0)
 License: MIT + file LICENCE
 LazyData: TRUE
 Imports:
     methods
 RoxygenNote: 5.0.1
-Suggests: knitr,
+Suggests:
+    knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
+Collate:
+    'HRT.R'
+    'HRTList.R'
+    'Testdata-description.R'
+    'constants.R'
+    'wapply.R'
+    'conversion_to_HRT.R'
+    'example.R'

@@ -19,11 +19,4 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
-Collate:
-    'HRT.R'
-    'HRTList.R'
-    'Testdata-description.R'
-    'constants.R'
-    'wapply.R'
-    'conversion_to_HRT.R'
-    'example.R'
+

@@ -134,6 +134,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param x A single HRT object
 #' @param cropped The detail of the plot. The default cuts off CPI
 #'  and CMI and focuses on the HRT parameters. To show all points use FALSE.
+#' @param add Should the given HRT be added to a plot?
 #' @param type type of the plot, for other options see graphics::plot.xy
 #' @param pch plotting character, for other options see graphics::var
 #' @param xlab label for the x axis
@@ -144,7 +145,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #'  since the axis as well as the ranges of the y axis are set by the function.
 #' 
 #' @export
-setMethod("plot", "HRT", function(x, cropped = TRUE,
+setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE,
                                   type = "o",
                                   pch = 20,
                                   xlab = "# of RR interval",
@@ -153,17 +154,20 @@ setMethod("plot", "HRT", function(x, cropped = TRUE,
 
   rrs <- getRRs(x)
 
-  plot(seq(1:length(rrs)), rrs,
-       xaxt = "n",
-       ylim = if(cropped)
-         c( min(c(x@preRRs, x@postRRs)),
-            max(c(x@preRRs, x@postRRs))),
-       type = type,
-       pch = pch,
-       xlab = xlab,
-       ylab = ylab,
-       ...
-  )
+  if(!add) { 
+    plot(seq(1:length(rrs)), rrs,
+         xaxt = "n",
+         ylim = if(cropped)
+           c( min(c(x@preRRs, x@postRRs)),
+              max(c(x@preRRs, x@postRRs))),
+         type = type,
+         pch = pch,
+         xlab = xlab,
+         ylab = ylab,
+         ...)
+  } else {
+    lines(seq(1:length(rrs)), rrs)
+  }
   
   axis(1, at = seq(1:length(rrs)), labels = seq(-2, length(rrs) - 3, 1))
   legend("bottomright", c("Turbulence onset", "Turbulence slope"),

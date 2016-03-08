@@ -144,5 +144,4 @@ setMethod("plot", "HRTList", function(x, cropped = TRUE, ...) {
     rrs <- getRRs(y)
     lines(seq(1:length(rrs)), rrs, col="grey")
   })
-  cat("") # preventing NULL return
-})
+})    plot(x@avHRT, add = TRUE)

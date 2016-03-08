@@ -46,7 +46,7 @@ setClass("HRT",
 #' 
 #' @rdname HRT
 #' @export
-setMethod("initialize", "HRT", 
+setMethod("initialize", "HRT",
           function(.Object, couplRR=NA_real_, compenRR=NA_real_,
                    preRRs=NA_real_, postRRs=NA_real_) {
             .Object@couplRR <- couplRR
@@ -56,8 +56,7 @@ setMethod("initialize", "HRT",
             .Object@TO <- NA_real_
             .Object@TS <- NA_real_
             .Object@ablineCoefficients <- NA_real_
-            
-            #validObject(.Object)
+
             return(.Object)
             }
 )
@@ -77,10 +76,10 @@ setGeneric("calcHRTParams", function(HRTObj) {
 #' @rdname calcHRTParams
 setMethod("calcHRTParams", "HRT", function(HRTObj) {
   checkValidity(HRTObj, "intervals")
-  
+
   preRRs <- HRTObj@preRRs
   postRRs <- HRTObj@postRRs
-  
+
   # Calculate TO
   if(sum(preRRs) == 0) {
     warning("The sum of the intervals preceding the coupling interval is zero! Turbulence onset can't be calculated!")
@@ -88,23 +87,22 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   } else {
     HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(preRRs) ) / sum(preRRs) ) * 100
   }
-  
+
   # Calculate TS
   slopes <- wapply(postRRs, 5, by = 1, FUN = function(y)
     return(lm(y ~ seq(1,5))$coefficients[2])
   )
   HRTObj@TS <- max(slopes, na.rm = TRUE)
-  
+
   # Calculate coefficients for regression line in plot
   index <- which.max(slopes)
   model <- lm(postRRs[index:(index + 4)]~seq(1, 5))
-  
+
   slope <- model$coefficients[2]
   intercept <- model$coefficients[1] - (slope * (3 + index))
-  # 3 = #preRRs + #irregularRRs - 1
-  
+
   HRTObj@ablineCoefficients <- c(intercept, slope)
-  
+
   return(HRTObj)
 })
 
@@ -151,10 +149,9 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE,
                                   xlab = "# of RR interval",
                                   ylab = "length of RR interval (ms)",
                                   ...) {
-
   rrs <- getRRs(x)
 
-  if(!add) { 
+  if(!add) {
     plot(seq(1:length(rrs)), rrs,
          xaxt = "n",
          ylim = if(cropped)
@@ -168,19 +165,19 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE,
   } else {
     lines(seq(1:length(rrs)), rrs)
   }
-  
+
   axis(1, at = seq(1:length(rrs)), labels = seq(-2, length(rrs) - 3, 1))
   legend("bottomright", c("Turbulence onset", "Turbulence slope"),
          lty = c(3), pch = c(19, NA), col = c("red", "blue"))
-  
+
   # Turbulence onset
   points(c(1, 6), c(rrs[1], rrs[6]), col = "red", pch = 19)
   arrows(1, rrs[1], 6, rrs[1], lty = 3, col = "red", code = 0)
   arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
-  
+
   # Turbulence slope
   abline(coef = x@ablineCoefficients, lty = 3, col = "blue")
-  
+
 })
 
 #-------------------------------------------------------------------------------
@@ -199,7 +196,7 @@ setMethod("checkValidity", "HRT", function(HRTObj, type = "full") {
   if(anyNA(getRRs(HRTObj))) {
     stop("One or more interval is not set (NA)! Please make sure you have initialized the HRT object correctly!")
   }
-  if(type == "full" && 
+  if(type == "full" &&
      anyNA(c(HRTObj@TO, HRTObj@TS, HRTObj@ablineCoefficients))) {
       stop("One or more HRT parameter of the given object is not set (NA)! Did you calculate the parameters? Use calcHRTParams first and try again!")
     }

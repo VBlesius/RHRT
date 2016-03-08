@@ -17,7 +17,8 @@
 #' parameters and ab-line coefficients. 
 #' 
 #' @export
-setClass("HRTList", slots = list(pos = "vector", HRTs = "list", avHRT = "HRT"), )
+setClass("HRTList", slots = list(pos = "vector", HRTs = "list", 
+    avHRT = "HRT"))
 
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs
@@ -113,7 +114,8 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
     preRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "preRRs"))
     postRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "postRRs"))
     
-    avHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, preRRs = preRRs, postRRs = postRRs)
+    avHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, 
+        preRRs = preRRs, postRRs = postRRs)
     HRTListObj@avHRT <- calcHRTParams(avHRT)
     
     return(HRTListObj)

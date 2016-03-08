@@ -81,28 +81,56 @@ getHRTs <- function(intervals) {
 #' @return HRT A single HRT object
 #' 
 checkForHRT <- function(intervals) {
-    # Defines coupling, compensatory, preceding and following intervals and sums up regular intervals
+    # Defines    # coupling,
+    # compensatory,
+    # preceding
+    # and
+    # following
+    # intervals
+    # and
+    # sums
+    # up
+    # regular
+    # intervals
     couplRR <- intervals[numPreRRs + 1]
     compenRR <- intervals[numPreRRs + 2]
     preRRs <- intervals[1:numPreRRs]
     postRRs <- intervals[(numPreRRs + 3):length(intervals)]
     regRR <- c(preRRs, postRRs)
     
-    # Reference interval
+    # Reference
+    # interval
     ref <- mean(preRRs)
     
-    ## Filtering methods checks for HRT
+    ## Filtering
+    ## methods
+    ## checks
+    ## for
+    ## HRT
     isCouplRR <- couplRR <= ref * 0.8
     isCompenRR <- compenRR >= ref * 1.2
-    # checks for arrhythmias and artefacts
+    # checks
+    # for
+    # arrhythmias
+    # and
+    # artefacts
     isInRange <- all(regRR > 300 && regRR < 2000)
-    isNotDeviating <- all(regRR >= ref * 0.8, regRR <= ref * 1.2, wapply(preRRs, 2, by = 1, FUN = function(x) diff(x) <= 
-        200), wapply(postRRs, 2, by = 1, FUN = function(x) diff(x) <= 200))
+    isNotDeviating <- all(regRR >= ref * 0.8, regRR <= ref * 
+        1.2, wapply(preRRs, 2, by = 1, FUN = function(x) diff(x) <= 
+        200), wapply(postRRs, 2, by = 1, FUN = function(x) diff(x) <= 
+        200))
     
-    # Checks for criteria and saves HRT as object
+    # Checks
+    # for
+    # criteria
+    # and
+    # saves
+    # HRT
+    # as
+    # object
     if (isCouplRR & isCompenRR & isInRange & isNotDeviating) {
-        tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, preRRs = preRRs[-(numPreRRs - 2):0], 
-            postRRs = postRRs[1:15])
+        tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, 
+            preRRs = preRRs[-(numPreRRs - 2):0], postRRs = postRRs[1:15])
         return(tempHRT)
     }
 } 

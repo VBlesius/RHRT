@@ -22,4 +22,4 @@
 #' does not include any HRTs. For more information see the vignette.
 #'
 #' @format A numeric vector of length 1000.
-"testdataVariantNoHRT"
+"testdataVariantNoHRT" 

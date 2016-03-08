@@ -37,11 +37,11 @@ There are two types of filter rules applied on the interval data:
 
 ## HRT Object
 
-**Intervals** &nbsp;&nbsp; The HRT Object consists of the two intervals surrounding the premature ventricular complex (CPI & CMI), the six preceding and sixteen following intervals. Although for filtering only the five and fifteen surrounding intervals are inspected, the neighbouring interval is needed for comparison, respectively.
-<br><br>
 An HRT object saves the following attributes of the found interval sequence:
 
-**HRT Parameters** &nbsp;&nbsp; The parameters **turbulence onset (TO)** and **turbulence slope (TS)** can be calculated with `get_hrt_params` and are saved in the HRT object.
+- **Intervals** &nbsp;&nbsp; The HRT Object consists of the two intervals surrounding the premature ventricular complex (CPI & CMI), the two preceding and fifteen following intervals.
+
+- **HRT Parameters** &nbsp;&nbsp; The parameters **turbulence onset (TO)** and **turbulence slope (TS)** are automatically calculated within `vectorToHRT` and are saved in the HRT object.
 
 
 ## HRTList Object
@@ -74,6 +74,7 @@ Other useful methods of HRTList:
 
 - `getPositions` returns the indices of the coupling intervals of the found HRT objects in your vector
 - `getHRTParamsAll` returns TO and TS for all HRT objects (except for the averaged HRT) in HRTList as matrix
+
 ## Plot
 
 You can plot either a single HRT object or an HRTList. For the latter the averaged HRT object is plotted in dark tone while the other HRT objects are plotted behind in light tone. TO and TS are labeled for the HRT object or the averaged HRT object, respectively.

@@ -17,14 +17,9 @@
 #' parameters and ab-line coefficients. 
 #' 
 #' @export
-setClass("HRTList",
-         slots = list(
-           pos = "vector",
-           HRTs = "list",
-           avHRT = "HRT"),
-)
+setClass("HRTList", slots = list(pos = "vector", HRTs = "list", avHRT = "HRT"), )
 
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 #' Get positions of PVCs
 #'
 #' Returns the positions of all premture ventricular complexes (PVC) and 
@@ -35,15 +30,15 @@ setClass("HRTList",
 #' 
 #' @rdname getPositions
 setGeneric("getPositions", function(HRTListObj) {
-  standardGeneric("getPositions")
+    standardGeneric("getPositions")
 })
 #' @rdname getPositions
 #' @export
 setMethod("getPositions", "HRTList", function(HRTListObj) {
- return(HRTListObj@pos)
+    return(HRTListObj@pos)
 })
 
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 #' Get averaged HRT parameters
 #'
 #' Returns the HRT parameters of the HRTList. Turbulence onset is calculated for
@@ -56,18 +51,18 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' 
 #' @rdname getHRTParamsMean
 setGeneric("getHRTParamsMean", function(HRTListObj) {
-  standardGeneric("getHRTParamsMean")
+    standardGeneric("getHRTParamsMean")
 })
 #' @rdname getHRTParamsMean
 #' @export
 setMethod("getHRTParamsMean", "HRTList", function(HRTListObj) {
-  ts <- HRTListObj@avHRT@TS
-  to <- mean(sapply(HRTListObj@HRTs, slot, "TO"))
-  paramsMean <- setNames(c(ts, to), c("TS", "TO"))
-  return(paramsMean)
+    ts <- HRTListObj@avHRT@TS
+    to <- mean(sapply(HRTListObj@HRTs, slot, "TO"))
+    paramsMean <- setNames(c(ts, to), c("TS", "TO"))
+    return(paramsMean)
 })
 
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 #' Get all HRT parameters
 #'
 #' Returns the HRT parameters of each HRt object in the HRTList.
@@ -77,18 +72,18 @@ setMethod("getHRTParamsMean", "HRTList", function(HRTListObj) {
 #'
 #' @rdname getHRTParamsAll
 setGeneric("getHRTParamsAll", function(HRTListObj) {
-  standardGeneric("getHRTParamsAll")
+    standardGeneric("getHRTParamsAll")
 })
 #' @rdname getHRTParamsAll
 #' @export
 setMethod("getHRTParamsAll", "HRTList", function(HRTListObj) {
-  TS <- lapply(HRTListObj@HRTs, slot, "TS")
-  TO <- lapply(HRTListObj@HRTs, slot, "TO")
-  params <- cbind(TS, TO)
-  return(params)
+    TS <- lapply(HRTListObj@HRTs, slot, "TS")
+    TO <- lapply(HRTListObj@HRTs, slot, "TO")
+    params <- cbind(TS, TO)
+    return(params)
 })
 
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 #' Calculate an averaged HRT object
 #'
 #' For each index the mean of the intervals across all HRTs in the HRTList
@@ -97,35 +92,34 @@ setMethod("getHRTParamsAll", "HRTList", function(HRTListObj) {
 #' @details
 #' Use the averaged HRT for calculating TS since averaging eliminates other
 #' RR variability. TO is commonly first calculated of the single HRTs and then
-#' averaged. (See "Heart Rate Turbulence: Standards of Measurement,
+#' averaged. (See 'Heart Rate Turbulence: Standards of Measurement,
 #' Physiological Interpretation, and Clinical Use, Axel Bauer et al.,
 #' Journal of the American College of Cardiology, Volume 52, Issue 17,
-#' Pages 1353-1365")
+#' Pages 1353-1365')
 #' 
 #' @param HRTListObj HRTList object
 #' @return HRTObj
 #' 
 #' @rdname calcAvHRT
 setGeneric("calcAvHRT", function(HRTListObj) {
-  standardGeneric("calcAvHRT")
+    standardGeneric("calcAvHRT")
 })
 #' @rdname calcAvHRT
 #' @export
 setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
-  
-  couplRR <- mean(sapply(HRTListObj@HRTs, slot, "couplRR"))
-  compenRR <- mean(sapply(HRTListObj@HRTs, slot, "compenRR"))
-  preRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "preRRs"))
-  postRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "postRRs"))
-  
-  avHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR,
-                 preRRs = preRRs, postRRs = postRRs)
-  HRTListObj@avHRT <- calcHRTParams(avHRT)
-  
-  return(HRTListObj)
+    
+    couplRR <- mean(sapply(HRTListObj@HRTs, slot, "couplRR"))
+    compenRR <- mean(sapply(HRTListObj@HRTs, slot, "compenRR"))
+    preRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "preRRs"))
+    postRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "postRRs"))
+    
+    avHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, preRRs = preRRs, postRRs = postRRs)
+    HRTListObj@avHRT <- calcHRTParams(avHRT)
+    
+    return(HRTListObj)
 })
 
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 #' Plot an HRT object
 #' 
 #' Plots RR-intervals saved in the HRT object and marks
@@ -138,10 +132,12 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
 #' 
 #' @export
 setMethod("plot", "HRTList", function(x, cropped = TRUE, ...) {
-  plot(x@avHRT, cropped = cropped, ...)
-  
-  lapply(x@HRTs, function(y) {
-    rrs <- getRRs(y)
-    lines(seq(1:length(rrs)), rrs, col="grey")
-  })
-})    plot(x@avHRT, add = TRUE)
+    plot(x@avHRT, cropped = cropped, ...)
+    
+    lapply(x@HRTs, function(y) {
+        rrs <- getRRs(y)
+        lines(seq(1:length(rrs)), rrs, col = "grey")
+    })
+    
+    plot(x@avHRT, add = TRUE)
+}) 

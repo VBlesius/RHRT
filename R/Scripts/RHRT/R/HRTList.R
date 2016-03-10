@@ -16,6 +16,8 @@
 #' should be seconds) and numerics (either positive or negative) for the HRT
 #' parameters and ab-line coefficients. 
 #' 
+#' @name HRTList
+#' 
 #' @export
 setClass("HRTList", slots = list(pos = "vector", HRTs = "list", 
     avHRT = "HRT"))

@@ -13,7 +13,7 @@
 #' @slot TS Numeric, Turbulence slope
 #' @slot ablineCoefficients Numeric vector, Intercept and slope of ab-line
 #' 
-#' @rdname HRT
+#' @name HRT
 #' 
 #' @importFrom methods setMethod 
 #' @export

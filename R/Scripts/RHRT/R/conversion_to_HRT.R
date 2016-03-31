@@ -45,12 +45,15 @@ checkInput <- function(input) {
     if (any(sapply(input, `<=`, 0))) {
         stop("Given vector includes zero or negative values! Is your data incorrect?")
     }
+  
+    input = input[2:length(input)]
+  
     if (length(input) < numSeq) {
-        stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ", 
+        warning(paste("Your vector is too short! Please consider the number of intervals has to be at least ", 
             numSeq, "."))
     }
     if (mean(input) < 1 || mean(input) > 1000) {
-        stop("Did you consider the unit of your data has to be seconds? Please adapt your data and try again.")
+        warning("Did you consider the unit of your data has to be seconds? Please adapt your data and try again.")
     }
 }
 

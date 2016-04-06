@@ -66,25 +66,82 @@ setMethod("getHRTParamsMean", "HRTList", function(HRTListObj) {
 })
 
 # -------------------------------------------------------------------------------
-#' Get all HRT parameters
-#'
-#' Returns the HRT parameters of each HRt object in the HRTList.
+#' Extracts TS or TO out of a HRTList
+#' 
+#' Extracts all values of the given slot in each HRT of the HRTList
 #' 
 #' @param HRTListObj HRTList object
-#' @return Matrix
+#' @param sl slot, choose TO or TS
+#' @return List
 #'
-#' @rdname getHRTParamsAll
-setGeneric("getHRTParamsAll", function(HRTListObj) {
-    standardGeneric("getHRTParamsAll")
+#' @rdname extractHRTParams
+setGeneric("extractHRTParams", function(HRTListObj, sl) {
+  standardGeneric("extractHRTParams")
 })
-#' @rdname getHRTParamsAll
+#' @rdname extractHRTParams
+setMethod("extractHRTParams", "HRTList", function(HRTListObj, sl) {
+  Params <- lapply(HRTListObj@HRTs, slot, sl)
+  return(Params)
+})
+
+# -------------------------------------------------------------------------------
+#' Get all turbulence onset values
+#'
+#' Returns the TO values of each HRT object ordered by record in the HRTList.
+#' 
+#' @param HRTListObj HRTList object
+#' @return List
+#'
+#' @rdname getTOs
+setGeneric("getTOs", function(HRTListObj) {
+  standardGeneric("getTOs")
+})
+#' @rdname getTOs
 #' @export
-setMethod("getHRTParamsAll", "HRTList", function(HRTListObj) {
-    TS <- lapply(HRTListObj@HRTs, slot, "TS")
-    TO <- lapply(HRTListObj@HRTs, slot, "TO")
-    params <- cbind(TS, TO)
-    return(params)
+setMethod("getTOs", "HRTList", function(HRTListObj) {
+  TO <- extractHRTParams(HRTListObj, "TO")
+  return(TO)
 })
+
+# -------------------------------------------------------------------------------
+#' Get all turbulence slope values
+#'
+#' Returns the TS values of each HRT object ordered by record in the HRTList.
+#' 
+#' @param HRTListObj HRTList object
+#' @return List
+#'
+#' @rdname getTSs
+setGeneric("getTSs", function(HRTListObj) {
+  standardGeneric("getTSs")
+})
+#' @rdname getTSs
+#' @export
+setMethod("getTSs", "HRTList", function(HRTListObj) {
+  TS <- extractHRTParams(HRTListObj, "TS")
+  return(TS)
+})
+
+# # -------------------------------------------------------------------------------
+# #' Get all HRT parameters
+# #'
+# #' Returns the HRT parameters of each HRT object in the HRTList.
+# #' 
+# #' @param HRTListObj HRTList object
+# #' @return Matrix
+# #'
+# #' @rdname getHRTParamsAll
+# setGeneric("getHRTParamsAll", function(HRTListObj) {
+#   standardGeneric("getHRTParamsAll")
+# })
+# #' @rdname getHRTParamsAll
+# #' @export
+# setMethod("getHRTParamsAll", "HRTList", function(HRTListObj) {
+#   TS <- lapply(HRTListObj@HRTs, slot, "TS")
+#   TO <- lapply(HRTListObj@HRTs, slot, "TO")
+#   params <- cbind(TS, TO)
+#   return(params)
+# })
 
 # -------------------------------------------------------------------------------
 #' Calculate an averaged HRT object

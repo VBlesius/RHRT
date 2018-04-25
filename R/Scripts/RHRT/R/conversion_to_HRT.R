@@ -88,7 +88,7 @@ checkAnnotations <- function(annotations, input, PVCAnn) {
   if(length(annotations) != length(input)) {
     stop("The lengths of given annotation and RR vectors differ!")
   }
-  if(!PVCAnn %in% annotations2) {
+  if(!PVCAnn %in% annotations) {
     warning("The given annotation for PVCs could not be found in your annotation vector!")
   }
 }

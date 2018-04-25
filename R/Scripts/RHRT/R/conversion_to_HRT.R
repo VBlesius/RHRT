@@ -9,12 +9,13 @@
 #' @return HRTList HRTList object
 #' 
 #' @export
-vectorToHRT <- function(input) {
+vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V") {
     if (is.list(input)) 
         input <- unlist(input)
     checkInput(input)
+    checkAnnotations(annotations) #TODO
     
-    tempHRTList <- getHRTs(input)
+    tempHRTList <- getHRTs(input, annotations, PVCAnn)
     if (length(tempHRTList@HRTs) == 0) {
         warning("No HRTs found in your data!")
     } else {
@@ -58,6 +59,15 @@ checkInput <- function(input) {
 }
 
 # -------------------------------------------------------------------------------
+#' Checks annotations for compatibility
+#' 
+#' @param annotations Numeric vector
+#'
+checkAnnotations <- function(annotations) {
+# TODO!
+  }
+
+# -------------------------------------------------------------------------------
 #' Finds HRTs
 #'
 #' Scans for HRTs in the given vector and returns a HRTList object.
@@ -65,15 +75,22 @@ checkInput <- function(input) {
 #' @param intervals Numeric vector
 #' @return HRTList
 #' 
-getHRTs <- function(intervals) {
-    
-    hrts <- wapply(intervals, numSeq, by = 1, FUN = checkForHRT)
-    indices <- which(sapply(hrts, is.null) != TRUE)
-    
-    tempHRTList <- new("HRTList")
-    tempHRTList@pos <- indices + numPreRRs
-    tempHRTList@HRTs <- hrts[indices]  # removes NULL entries
-    return(tempHRTList)
+getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V") {
+  
+  hrts <-
+    if (is.null(annotations)) {
+      wapply(intervals, numSeq, by = 1, FUN = checkForHRT)
+    } else {
+      PVCIndices <- which(annotations == PVCAnn)
+      PVCIndices <- PVCIndices[PVCIndices > numPreRRs & PVCIndices < length(annotations)-numPostRRs]
+      sapply(PVCIndices, function(PVCIndex) checkForHRT(intervals[(PVCIndex-numPreRRs):(PVCIndex+numPostRRs)]))
+    }
+  indices <- which(sapply(hrts, is.null) != TRUE)
+  
+  tempHRTList <- new("HRTList")
+  tempHRTList@pos <- indices + numPreRRs
+  tempHRTList@HRTs <- hrts[indices]  # removes NULL entries
+  return(tempHRTList)
 }
 
 # -------------------------------------------------------------------------------
@@ -84,7 +101,8 @@ getHRTs <- function(intervals) {
 #' @return HRT A single HRT object
 #' 
 checkForHRT <- function(intervals) {
-    # Defines    # coupling,
+    # Defines    
+    # coupling,
     # compensatory,
     # preceding
     # and

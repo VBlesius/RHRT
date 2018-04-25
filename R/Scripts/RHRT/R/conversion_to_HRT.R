@@ -70,6 +70,7 @@ checkInput <- function(input) {
 #' 
 #' @param annotations Alphabetical vector
 #' @param input Numeric vector
+#' @param PVCAnn Character
 #'
 checkAnnotations <- function(annotations, input, PVCAnn) {
   if (is.null(annotations)) {
@@ -98,6 +99,8 @@ checkAnnotations <- function(annotations, input, PVCAnn) {
 #' Scans for HRTs in the given vector and returns a HRTList object.
 #'
 #' @param intervals Numeric vector
+#' @param annotations Alphabetical vector
+#' @param PVCAnn Character
 #' @return HRTList
 #' 
 getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V") {

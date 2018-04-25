@@ -6,6 +6,8 @@
 #' (more information can be found in the vignette.)
 #' 
 #' @param input Numeric vector
+#' @param annotations Alphabetical vector
+#' @param PVCAnn Character
 #' @return HRTList HRTList object
 #' 
 #' @export
@@ -13,7 +15,10 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V") {
     if (is.list(input)) 
         input <- unlist(input)
     checkInput(input)
-    checkAnnotations(annotations) #TODO
+    
+    if (is.list(annotations)) 
+      annotations <- unlist(annotations)
+    checkAnnotations(annotations, input, PVCAnn)
     
     tempHRTList <- getHRTs(input, annotations, PVCAnn)
     if (length(tempHRTList@HRTs) == 0) {
@@ -61,11 +66,29 @@ checkInput <- function(input) {
 # -------------------------------------------------------------------------------
 #' Checks annotations for compatibility
 #' 
-#' @param annotations Numeric vector
+#' @param annotations Alphabetical vector
+#' @param input Numeric vector
 #'
-checkAnnotations <- function(annotations) {
-# TODO!
+checkAnnotations <- function(annotations, input, PVCAnn) {
+  if (is.null(annotations)) {
+    stop("Given data is NULL! Please make sure your annotations are of type vector and not empty.")
   }
+  if (!is.vector(annotations)) {
+    stop("Given annotations do not have the right type! Please make sure your annotations are of type vector.")
+  }
+  if (!is.character(annotations)) {
+    stop("Given annotation vector is not alphabetical!")
+  }
+  if (NA %in% annotations) {
+    stop("Given vector includes NA! Please make sure to remove them before using vectorToHRT!")
+  }
+  if(length(annotations) != length(input)) {
+    stop("The lengths of given annotation and RR vectors differ!")
+  }
+  if(!PVCAnn %in% annotations2) {
+    warning("The given annotation for PVCs could not be found in your annotation vector!")
+  }
+}
 
 # -------------------------------------------------------------------------------
 #' Finds HRTs

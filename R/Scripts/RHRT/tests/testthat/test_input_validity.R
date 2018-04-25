@@ -33,13 +33,6 @@ test_that("length of data", {
 })
 
 test_that("unit of data", {
-  expect_error(vectorToHRT(1), "too short")
-  expect_error(vectorToHRT(seq(1:(numSeq - 1))), "too short")
-  expect_error(vectorToHRT(c(1, 2, 3)), "too short")
-  expect_error(vectorToHRT(list(1, 2, 3)), "too short")
-})
-
-test_that("unit of data", {
-  expect_error(vectorToHRT(rep(0.5, 100)), "seconds")
-  expect_error(vectorToHRT(rep(1001, 100)), "seconds")
+  expect_warning(vectorToHRT(rep(0.5, 100)), "seconds")
+  expect_warning(vectorToHRT(rep(2001, 100)), "seconds")
 })

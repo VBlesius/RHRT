@@ -57,7 +57,7 @@ checkInput <- function(input) {
     input = input[2:length(input)]
   
     if (length(input) < numSeq) {
-        warning(paste("Your vector is too short! Please consider the number of intervals has to be at least ", 
+        stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ", 
             numSeq, "."))
     }
     if (mean(input) < 1 || mean(input) > 2000) {

@@ -16,10 +16,12 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V") {
         input <- unlist(input)
     checkInput(input)
     
-    if (is.list(annotations)) 
-      annotations <- unlist(annotations)
-    checkAnnotations(annotations, input, PVCAnn)
-    
+    if(!is.null(annotations)) {
+      if (is.list(annotations)) 
+        annotations <- unlist(annotations)
+      checkAnnotations(annotations, input, PVCAnn)
+    }
+
     tempHRTList <- getHRTs(input, annotations, PVCAnn)
     if (length(tempHRTList@HRTs) == 0) {
         warning("No HRTs found in your data!")

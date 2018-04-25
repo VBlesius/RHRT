@@ -43,9 +43,9 @@ checkInput <- function(input) {
         stop("Given data has not the right type! Please make sure your input is of type vector.")
     }
     if (!is.numeric(input)) {
-        stop("Given vector is not numeric!")
+        stop("Given RR vector is not numeric!")
     }
-    if (any(sapply(input, is.na))) {
+    if (NA %in% input) {
         stop("Given vector includes NA! Please make sure to remove them before using vectorToHRT!")
     }
     if (any(sapply(input, `<=`, 0))) {

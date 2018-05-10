@@ -129,8 +129,7 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V") {
 }
 
 # -------------------------------------------------------------------------------
-#' Checks specified number of RR-intervals for HRT criteria
-#' and returns a HRT object
+#' Checks RR-intervals for HRT criteria and returns an HRT object
 #'
 #' @param intervals Numeric vector
 #' @return HRT A single HRT object
@@ -170,11 +169,14 @@ checkForHRT <- function(intervals) {
     # arrhythmias
     # and
     # artefacts
+
     isInRange <- all(regRR > 300 && regRR < 2000)
-    isNotDeviating <- all(regRR >= ref * 0.8, regRR <= ref * 
-        1.2, wapply(preRRs, 2, by = 1, FUN = function(x) diff(x) <= 
-        200), wapply(postRRs, 2, by = 1, FUN = function(x) diff(x) <= 
-        200))
+    isNotDeviating <- all(
+      regRR >= ref * 0.8,
+      regRR <= ref * 1.2,
+      checkDiff (preRRs, 200),
+      checkDiff (postRRs, 200)
+    )
     
     # Checks
     # for
@@ -190,3 +192,17 @@ checkForHRT <- function(intervals) {
         return(tempHRT)
     }
 } 
+
+# -------------------------------------------------------------------------------
+#' Checks whether subsequent RR-intervals differ more than a given integer
+#'
+#' @param intervals Numeric vector
+#' @param maxDiff Numeric
+#' @return Boolean True when all RR-interval differences are less than maxDiff
+#' 
+checkDiff <- function(intervals, maxDiff) {
+  ints1 <- intervals[1:length(intervals)-1]
+  ints2 <- intervals[2:length(intervals)]
+  diffs <- ints1-ints2
+  return(all(diffs <= maxDiff))
+}

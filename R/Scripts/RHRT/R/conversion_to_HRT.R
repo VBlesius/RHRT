@@ -115,11 +115,12 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V") {
     }
   
   indices <- which(sapply(hrts, is.null) != TRUE)
-  if (is.null(annotations)) {
-    pos <- indices + numPreRRs
-  }  else {
-    pos <- PVCIndices[indices]
-  }
+  pos <- 
+    if (is.null(annotations)) {
+      indices + numPreRRs
+    }  else {
+      PVCIndices[indices]
+    }
   
   tempHRTList <- new("HRTList")
   tempHRTList@pos <- pos

@@ -174,8 +174,8 @@ checkForHRT <- function(intervals) {
     isNotDeviating <- all(
       regRR >= ref * 0.8,
       regRR <= ref * 1.2,
-      checkDiff (preRRs, 200),
-      checkDiff (postRRs, 200)
+      diff(preRRs) <= 200,
+      diff(postRRs) <= 200
     )
     
     # Checks
@@ -191,18 +191,4 @@ checkForHRT <- function(intervals) {
             preRRs = preRRs[-(numPreRRs - 2):0], postRRs = postRRs[1:15])
         return(tempHRT)
     }
-} 
-
-# -------------------------------------------------------------------------------
-#' Checks whether subsequent RR-intervals differ more than a given integer
-#'
-#' @param intervals Numeric vector
-#' @param maxDiff Numeric
-#' @return Boolean True when all RR-interval differences are less than maxDiff
-#' 
-checkDiff <- function(intervals, maxDiff) {
-  ints1 <- intervals[1:length(intervals)-1]
-  ints2 <- intervals[2:length(intervals)]
-  diffs <- ints1-ints2
-  return(all(diffs <= maxDiff))
 }

@@ -11,7 +11,7 @@
 #' @slot postRRs Numeric vector, Following 16 intervals
 #' @slot TO Numeric, Turbulence onset
 #' @slot TS Numeric, Turbulence slope
-#' @slot ablineCoefficients Numeric vector, Intercept and slope of ab-line
+#' @slot intercept Numeric, Intercept of regression line
 #' 
 #' @name HRT
 #' 
@@ -25,7 +25,7 @@ setClass("HRT",
            postRRs = "vector",
            TO = "numeric",
            TS = "numeric",
-           ablineCoefficients = "vector"),
+           intercept = "numeric"),
 
          validity = function(object) {
            if(any(length(object@couplRR) != 1,
@@ -55,7 +55,7 @@ setMethod("initialize", "HRT",
             .Object@postRRs <- postRRs
             .Object@TO <- NA_real_
             .Object@TS <- NA_real_
-            .Object@ablineCoefficients <- NA_real_
+            .Object@intercept <- NA_real_
 
             return(.Object)
             }
@@ -97,14 +97,14 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   })
   HRTObj@TS <- max(slopes, na.rm = TRUE)
 
-  # Calculate coefficients for regression line in plot
+  # Calculate intercept for regression line in plot
+  ## Formula for the intercept: mean(y) - slope*mean(x)
+  slope <- HRTObj@TS
   index <- which.max(slopes)
-  model <- lm(postRRs[index:(index + 4)]~seq(1, 5))
-
-  slope <- model$coefficients[2]
-  intercept <- model$coefficients[1] - (slope * (3 + index))
-
-  HRTObj@ablineCoefficients <- c(intercept, slope)
+  intercept <- mean(postRRs[index:(index + 4)]) - slope*mean(x) - slope * (numPreRRs+1+index)
+  # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
+  
+  HRTObj@intercept <- intercept
 
   return(HRTObj)
 })
@@ -179,7 +179,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE,
   arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
 
   # Turbulence slope
-  abline(coef = x@ablineCoefficients, lty = 3, col = "blue")
+  abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
 
 })
 

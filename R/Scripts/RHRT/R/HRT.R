@@ -89,9 +89,12 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   }
 
   # Calculate TS
-  slopes <- wapply(postRRs, 5, by = 1, FUN = function(y)
-    return(lm(y ~ seq(1,5))$coefficients[2])
-  )
+  ## Formula for the slope: (n * Σxy - (Σx)(Σy)) / (n x Σx^2 - (Σx)^2)
+  x <- seq(1,5)
+  n <- 5
+  slopes <- wapply(postRRs, 5, by = 1, FUN = function(y) {
+    return((n*sum(x*y)-sum(x)*sum(y)) / (n*sum(x^2)-sum(x)^2))
+  })
   HRTObj@TS <- max(slopes, na.rm = TRUE)
 
   # Calculate coefficients for regression line in plot

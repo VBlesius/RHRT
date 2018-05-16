@@ -169,26 +169,25 @@ checkForHRT <- function(intervals) {
     # arrhythmias
     # and
     # artefacts
-
     isInRange <- all(regRR > 300 && regRR < 2000)
-    isNotDeviating <- all(
-      regRR >= ref * 0.8,
-      regRR <= ref * 1.2,
-      diff(preRRs) <= 200,
-      diff(postRRs) <= 200
-    )
     
-    # Checks
-    # for
-    # criteria
-    # and
-    # saves
-    # HRT
-    # as
-    # object
-    if (isCouplRR & isCompenRR & isInRange & isNotDeviating) {
-        tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, 
-            preRRs = preRRs[-(numPreRRs - 2):0], postRRs = postRRs[1:15])
-        return(tempHRT)
+    if(isCouplRR & isCompenRR & isInRange) {
+    
+      isNotDeviating <- all(
+        regRR >= ref * 0.8,
+        regRR <= ref * 1.2,
+        diff(preRRs) <= 200,
+        diff(postRRs) <= 200
+      )
+    
+      # Saves
+      # HRT
+      # as
+      # object
+      if (isNotDeviating) {
+          tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, 
+              preRRs = preRRs[-(numPreRRs - 2):0], postRRs = postRRs[1:15])
+          return(tempHRT)
+      }
     }
 }

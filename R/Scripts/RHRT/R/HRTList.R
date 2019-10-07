@@ -122,6 +122,25 @@ setMethod("getTSs", "HRTList", function(HRTListObj) {
   return(TS)
 })
 
+# -------------------------------------------------------------------------------
+#' Get all turbulence timing values
+#'
+#' Returns the TT values of each HRT object ordered by record in the HRTList.
+#' 
+#' @param HRTListObj HRTList object
+#' @return List
+#'
+#' @rdname getTTs
+setGeneric("getTTs", function(HRTListObj) {
+  standardGeneric("getTTs")
+})
+#' @rdname getTTs
+#' @export
+setMethod("getTTs", "HRTList", function(HRTListObj) {
+  TT <- extractHRTParams(HRTListObj, "TT")
+  return(TT)
+})
+
 # # -------------------------------------------------------------------------------
 # #' Get all HRT parameters
 # #'

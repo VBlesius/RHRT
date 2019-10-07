@@ -11,6 +11,7 @@
 #' @slot postRRs Numeric vector, Following 16 intervals
 #' @slot TO Numeric, Turbulence onset
 #' @slot TS Numeric, Turbulence slope
+#' @slot TT Numeric, Turbulence slope
 #' @slot intercept Numeric, Intercept of regression line
 #' 
 #' @name HRT
@@ -25,6 +26,7 @@ setClass("HRT",
            postRRs = "vector",
            TO = "numeric",
            TS = "numeric",
+           TT = "numeric",
            intercept = "numeric"),
 
          validity = function(object) {
@@ -55,6 +57,7 @@ setMethod("initialize", "HRT",
             .Object@postRRs <- postRRs
             .Object@TO <- NA_real_
             .Object@TS <- NA_real_
+            .Object@TT <- NA_real_
             .Object@intercept <- NA_real_
 
             return(.Object)
@@ -104,6 +107,7 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   intercept <- mean(postRRs[index:(index + 4)]) - slope*mean(x) - slope * (numPreRRs+1+index)
   # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
   
+  HRTObj@TT <- index
   HRTObj@intercept <- intercept
 
   return(HRTObj)

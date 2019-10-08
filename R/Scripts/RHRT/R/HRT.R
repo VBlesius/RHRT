@@ -11,8 +11,11 @@
 #' @slot postRRs Numeric vector, Following 16 intervals
 #' @slot TO Numeric, Turbulence onset
 #' @slot TS Numeric, Turbulence slope
-#' @slot TT Numeric, Turbulence slope
-#' @slot intercept Numeric, Intercept of regression line
+#' @slot TT Numeric, Turbulence timing
+#' @slot intercept Numeric, Intercept of regression line of TS
+#' @slot nTS Numeric, normalised Turbulence slope
+#' @slot nintercept Numeric, Intercept of regression line of nTS
+
 #' 
 #' @name HRT
 #' 
@@ -27,7 +30,9 @@ setClass("HRT",
            TO = "numeric",
            TS = "numeric",
            TT = "numeric",
-           intercept = "numeric"),
+           intercept = "numeric",
+           nTS = "numeric",
+           nintercept = "numeric"),
 
          validity = function(object) {
            if(any(length(object@couplRR) != 1,
@@ -59,6 +64,8 @@ setMethod("initialize", "HRT",
             .Object@TS <- NA_real_
             .Object@TT <- NA_real_
             .Object@intercept <- NA_real_
+            .Object@nTS <- NA_real_
+            .Object@nintercept <- NA_real_
 
             return(.Object)
             }
@@ -92,26 +99,47 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   }
 
   # Calculate TS
+  TSParams <- calcTSParams(postRRs)
+  HRTObj@TS <- TSParams[[1]]
+  HRTObj@TT <- TSParams[[2]]
+  HRTObj@intercept <- TSParams[[3]]
+
+  # Calculate nTS
+  npostRRs <- postRRs/(mean(postRRs)/800)
+  TSParams <- calcTSParams(npostRRs)
+  HRTObj@nTS <- TSParams[[1]]
+  HRTObj@nintercept <- TSParams[[3]]
+  
+  return(HRTObj)
+})
+
+#-------------------------------------------------------------------------------
+#' Calculate TS parameters
+#' 
+#' Calculates the all TS parameters (TS itself, its index TT (tubrulence timing)
+#' and the intercept for the plot) and saves them in the corresponding slots.
+#' 
+#' @param postRRs Numeric vector, Following 16 intervals
+calcTSParams <- function(postRRs) {
+  
+  # Calculate TS
   ## Formula for the slope: (n * Σxy - (Σx)(Σy)) / (n x Σx^2 - (Σx)^2)
   x <- seq(1,5)
   n <- 5
   slopes <- wapply(postRRs, 5, by = 1, FUN = function(y) {
     return((n*sum(x*y)-sum(x)*sum(y)) / (n*sum(x^2)-sum(x)^2))
   })
-  HRTObj@TS <- max(slopes, na.rm = TRUE)
-
+  TS_temp <- max(slopes, na.rm = TRUE)
+  
   # Calculate intercept for regression line in plot
   ## Formula for the intercept: mean(y) - slope*mean(x)
-  slope <- HRTObj@TS
+  slope <- TS_temp
   index <- which.max(slopes)
   intercept <- mean(postRRs[index:(index + 4)]) - slope*mean(x) - slope * (numPreRRs+1+index)
   # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
   
-  HRTObj@TT <- index
-  HRTObj@intercept <- intercept
-
-  return(HRTObj)
-})
+  return(list(TS_temp, index, intercept))
+}
 
 #-------------------------------------------------------------------------------
 #' Returns all intervals in right order

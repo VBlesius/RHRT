@@ -26,9 +26,9 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = 800) {
     if (length(tempHRTList@HRTs) == 0) {
         warning("No HRTs found in your data!")
     } else {
-        tempHRTList <- calcAvHRT(tempHRTList)
         tempHRTList@IL <- mean(input)
         tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
+        tempHRTList@avHRT <- calcAvHRT(tempHRTList)
     }
     return(tempHRTList)
 }

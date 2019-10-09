@@ -4,6 +4,7 @@
 #' also saves an averaged HRT for calculation of the averaged HRT parameters and
 #' plotting of all HRTs in a single plot.
 #'
+#' @slot IL Numeric, Arithmetic mean of the overall interval length of the vector
 #' @slot pos Numeric vector, Positions of premature ventricular complexes in 
 #'     given input
 #' @slot HRTs List, all HRT objects
@@ -71,7 +72,7 @@ setMethod("getHRTParamsMean", "HRTList", function(HRTListObj) {
 })
 
 # -------------------------------------------------------------------------------
-#' Extracts TS or TO out of a HRTList
+#' Extracts all values of a special slot out of a HRTList
 #' 
 #' Extracts all values of the given slot in each HRT of the HRTList
 #' 
@@ -199,9 +200,9 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
     
     avHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, 
         preRRs = preRRs, postRRs = postRRs)
-    HRTListObj@avHRT <- calcHRTParams(avHRT)
+    avHRT <- calcHRTParams(avHRT)
     
-    return(HRTListObj)
+    return(avHRT)
 })
 
 # -------------------------------------------------------------------------------

@@ -11,7 +11,7 @@
 #' @return HRTList HRTList object
 #' 
 #' @export
-vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V") {
+vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = 800) {
     if (is.list(input)) 
         input <- unlist(input)
     checkInput(input)
@@ -26,8 +26,9 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V") {
     if (length(tempHRTList@HRTs) == 0) {
         warning("No HRTs found in your data!")
     } else {
-        tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams)
         tempHRTList <- calcAvHRT(tempHRTList)
+        tempHRTList@IL <- mean(input)
+        tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
     }
     return(tempHRTList)
 }

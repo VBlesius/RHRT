@@ -78,13 +78,16 @@ setMethod("initialize", "HRT",
 #' and the ab-line parameters of TS and saves them in the corresponding slots.
 #' 
 #' @param HRTObj The HRT object of which the parameters should be calculated
+#' @param IL The overall arithmetic mean interval of the interval length of the 
+#' measurement to normalise TS
+#' @param normIL The interval length to which TS should be normalised
 #' 
 #' @rdname calcHRTParams
-setGeneric("calcHRTParams", function(HRTObj) {
+setGeneric("calcHRTParams", function(HRTObj, IL = 800, normIL = 800) {
   standardGeneric("calcHRTParams")
 })
 #' @rdname calcHRTParams
-setMethod("calcHRTParams", "HRT", function(HRTObj) {
+setMethod("calcHRTParams", "HRT", function(HRTObj, IL = 800, normIL = 800) {
   checkValidity(HRTObj, "intervals")
 
   preRRs <- HRTObj@preRRs
@@ -105,7 +108,7 @@ setMethod("calcHRTParams", "HRT", function(HRTObj) {
   HRTObj@intercept <- TSParams[[3]]
 
   # Calculate nTS
-  npostRRs <- postRRs/(mean(postRRs)/800)
+  npostRRs <- postRRs*normIL/IL
   TSParams <- calcTSParams(npostRRs)
   HRTObj@nTS <- TSParams[[1]]
   HRTObj@nintercept <- TSParams[[3]]

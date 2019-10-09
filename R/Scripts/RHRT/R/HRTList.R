@@ -19,8 +19,13 @@
 #' @name HRTList
 #' 
 #' @export
-setClass("HRTList", slots = list(pos = "vector", HRTs = "list", 
-    avHRT = "HRT"))
+setClass("HRTList", 
+         contains = "HRT",
+         slots = list(
+           IL = "numeric",
+           pos = "vector",
+           HRTs = "list", 
+           avHRT = "HRT"))
 
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs

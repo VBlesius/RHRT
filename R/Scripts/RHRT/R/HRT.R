@@ -138,7 +138,8 @@ calcTSParams <- function(postRRs) {
   ## Formula for the intercept: mean(y) - slope*mean(x)
   slope <- TS_temp
   index <- which.max(slopes)
-  intercept <- mean(postRRs[index:(index + 4)]) - slope*mean(x) - slope * (numPreRRs+1+index)
+  TS_intervals <- postRRs[index:(index + 4)]
+  intercept <- mean(c(min(TS_intervals), max(TS_intervals))) - slope*(mean(x)+3+index)
   # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
   
   return(list(TS_temp, index, intercept))
@@ -204,14 +205,14 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE,
     lines(seq(1:length(rrs)), rrs)
   }
 
-  axis(1, at = seq(1:length(rrs)), labels = seq(-2, length(rrs) - 3, 1))
+  axis(1, at = seq(1:length(rrs)), labels = c(-2, -1, "couplRR", "compRR", seq(1:(length(rrs)-4))), las=2)
   legend("bottomright", c("Turbulence onset", "Turbulence slope"),
          lty = c(3), pch = c(19, NA), col = c("red", "blue"))
 
   # Turbulence onset
-  points(c(1, 6), c(rrs[1], rrs[6]), col = "red", pch = 19)
-  arrows(1, rrs[1], 6, rrs[1], lty = 3, col = "red", code = 0)
-  arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
+  points(c(1,2,5,6), c(rrs[1:2], rrs[5:6]), bg= "red", pch = 21)
+  #arrows(1, rrs[1], 6, rrs[1], lty = 3, col = "red", code = 0)
+  #arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
 
   # Turbulence slope
   abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")

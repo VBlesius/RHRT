@@ -88,11 +88,11 @@ setMethod("initialize", "HRT",
 #' @param normIL Numeric, The interval length to which TS should be normalised
 #' 
 #' @rdname calcHRTParams
-setGeneric("calcHRTParams", function(HRTObj, IL = 800, normIL = 800) {
+setGeneric("calcHRTParams", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
   standardGeneric("calcHRTParams")
 })
 #' @rdname calcHRTParams
-setMethod("calcHRTParams", "HRT", function(HRTObj, IL = 800, normIL = 800) {
+setMethod("calcHRTParams", "HRT", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
   checkValidity(HRTObj, "intervals")
 
   HRTObj <- calcTO(HRTObj)
@@ -142,12 +142,12 @@ setMethod("calcTO", "HRT", function(HRTObj) {
 #' @inheritParams calcHRTParams
 #' 
 #' @rdname calcTS
-setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = 800, normIL = 800) {
+setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL) {
   standardGeneric("calcTS")
 })
 #' @rdname calcTS
 #' @export
-setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = 800, normIL = 800) {
+setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL) {
   checkValidity(HRTObj, "intervals")
   
   postRRs <- HRTObj@postRRs

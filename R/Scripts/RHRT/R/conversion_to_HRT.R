@@ -12,7 +12,7 @@
 #' @return HRTList HRTList object
 #' 
 #' @export
-vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = 800) {
+vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_normIL) {
     if (is.list(input)) 
         input <- unlist(input)
     checkInput(input)

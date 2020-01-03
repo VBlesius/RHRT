@@ -202,12 +202,12 @@ setMethod("getTTs", "HRTList", function(HRTListObj) {
 #' @return avHRTObj
 #' 
 #' @rdname calcAvHRT
-setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = 800) {
+setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL) {
     standardGeneric("calcAvHRT")
 })
 #' @rdname calcAvHRT
 #' @export
-setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = 800) {
+setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL) {
 
     if (!identical(av, mean) && !identical(av, median)) {
       warning(paste("Function", av, "for parameter averaging is unknown, falling back to default."))
@@ -251,7 +251,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
       TTs <- unlist(getTTs(HRTListObj))
       avHRT@TT <- av(TTs)
       
-      if (IL != HRTListObj@IL || normIL != 800)
+      if (IL != HRTListObj@IL || normIL != c_normIL)
           HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
       nTSs <- unlist(extractHRTParams(HRTListObj, "nTS"))
       avHRT@nTS <- av(nTSs)

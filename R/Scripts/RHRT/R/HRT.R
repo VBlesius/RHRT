@@ -90,28 +90,37 @@ setGeneric("calcHRTParams", function(HRTObj, IL = 800, normIL = 800) {
 setMethod("calcHRTParams", "HRT", function(HRTObj, IL = 800, normIL = 800) {
   checkValidity(HRTObj, "intervals")
 
+  HRTObj <- calcTO(HRTObj)
+  HRTObj <- calcTS(HRTObj)
+  HRTObj <- calcTS(HRTObj, normalising = TRUE, IL, normIL)
+
+  return(HRTObj)
+})
+
+#-------------------------------------------------------------------------------
+#' Calculate TO parameters
+#' 
+#' Calculates the TO parameters and saves it in the corresponding slot
+#' @param HRTObj The HRT object, for which TO should be calculated
+#' 
+#' @rdname calcTO
+setGeneric("calcTO", function(HRTObj) {
+  standardGeneric("calcTO")
+})
+#' @rdname calcTO
+#' @export
+setMethod("calcTO", "HRT", function(HRTObj) {
+  checkValidity(HRTObj, "intervals")
+  
   preRRs <- HRTObj@preRRs
   postRRs <- HRTObj@postRRs
-
-  # Calculate TO
+  
   if(sum(preRRs) == 0) {
     warning("The sum of the intervals preceding the coupling interval is zero! Turbulence onset can't be calculated!")
     HRTObj@TO <- NA_real_
   } else {
     HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(preRRs) ) / sum(preRRs) ) * 100
   }
-
-  # Calculate TS
-  TSParams <- calcTSParams(postRRs)
-  HRTObj@TS <- TSParams[[1]]
-  HRTObj@TT <- TSParams[[2]]
-  HRTObj@intercept <- TSParams[[3]]
-
-  # Calculate nTS
-  npostRRs <- postRRs*normIL/IL
-  TSParams <- calcTSParams(npostRRs)
-  HRTObj@nTS <- TSParams[[1]]
-  HRTObj@nintercept <- TSParams[[3]]
   
   return(HRTObj)
 })
@@ -119,11 +128,26 @@ setMethod("calcHRTParams", "HRT", function(HRTObj, IL = 800, normIL = 800) {
 #-------------------------------------------------------------------------------
 #' Calculate TS parameters
 #' 
-#' Calculates the all TS parameters (TS itself, its index TT (tubrulence timing)
+#' Calculates all TS parameters (TS itself, its index TT (turbulence timing)
 #' and the intercept for the plot) and saves them in the corresponding slots.
+#' Can also calculate normalised TS and intercept.
 #' 
-#' @param postRRs Numeric vector, Following 16 intervals
-calcTSParams <- function(postRRs) {
+#' @param HRTObj The HRT object, for which TS should be calculated
+#' @param normalising text
+#' @param IL test
+#' @param normIL text
+#' 
+#' @rdname calcTS
+setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = 800, normIL = 800) {
+  standardGeneric("calcTS")
+})
+#' @rdname calcTS
+#' @export
+setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = 800, normIL = 800) {
+  checkValidity(HRTObj, "intervals")
+  
+  postRRs <- HRTObj@postRRs
+  if (normalising) postRRs <- postRRs*normIL/IL
   
   # Calculate TS
   ## Formula for the slope: (n * Σxy - (Σx)(Σy)) / (n x Σx^2 - (Σx)^2)
@@ -142,8 +166,17 @@ calcTSParams <- function(postRRs) {
   intercept <- mean(c(min(TS_intervals), max(TS_intervals))) - slope*(mean(x)+3+index)
   # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
   
-  return(list(TS_temp, index, intercept))
-}
+  if (normalising) {
+    HRTObj@nTS <- slope
+    HRTObj@nintercept <- intercept
+  } else {
+    HRTObj@TS <- slope
+    HRTObj@TT <- index
+    HRTObj@intercept <- intercept
+  }
+
+  return(HRTObj)
+})
 
 #-------------------------------------------------------------------------------
 #' Returns all intervals in right order

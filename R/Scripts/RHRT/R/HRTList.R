@@ -8,7 +8,7 @@
 #' @slot pos Numeric vector, Positions of premature ventricular complexes in 
 #'     given input
 #' @slot HRTs List, all HRT objects
-#' @slot avHRT HRT, averaged HRT
+#' @slot avHRT avHRT, averaged HRT
 #' 
 #' @note After using \code{vectorToHRT} all slots in the resulting HRTList 
 #' object are set. Please do not set them manually since many functions of the 
@@ -23,12 +23,12 @@
 #' @include avHRT.R
 #' @export
 setClass("HRTList", 
-         contains = "HRT",
+         contains = c("HRT", "avHRT"),
          slots = list(
            IL = "numeric",
            pos = "vector",
            HRTs = "list", 
-           avHRT = "HRT"))
+           avHRT = "avHRT"))
 
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs
@@ -61,16 +61,32 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' @return Named numeric
 #' 
 #' @rdname getHRTParamsMean
-setGeneric("getHRTParamsMean", function(HRTListObj) {
+setGeneric("getHRTParamsMean", function(HRTListObj, avTO = mean, avTS = mean, 
+                                        orTO = 1, orTS = 2) {
     standardGeneric("getHRTParamsMean")
 })
 #' @rdname getHRTParamsMean
 #' @export
-setMethod("getHRTParamsMean", "HRTList", function(HRTListObj) {
+setMethod("getHRTParamsMean", "HRTList", function(HRTListObj, avTO = mean, avTS = mean, orTO = 1, orTS = 2) {
+  
+  if (identical(avTO, HRTListObj@avHRT@av) && identical(orTO, HRTListObj@avHRT@orTO)){
+    to <- HRTListObj@avHRT@TO
+  } else {
+    tempAvHRT <- calcAvHRT(HRTListObj, av = avTO, orTO = orTO)
+    to <- tempAvHRT@TO
+  }
+  
+  if (identical(avTS, HRTListObj@avHRT@av) && identical(orTS, HRTListObj@avHRT@orTS)){
     ts <- HRTListObj@avHRT@TS
-    to <- mean(sapply(HRTListObj@HRTs, slot, "TO"))
-    paramsMean <- setNames(c(ts, to), c("TS", "TO"))
-    return(paramsMean)
+    tt <- HRTListObj@avHRT@TT
+  } else {
+    tempAvHRT <- calcAvHRT(HRTListObj, av = avTS, orTS = orTS)
+    ts <- tempAvHRT@TS
+    tt <- tempAvHRT@TT
+  }
+ 
+  paramsMean <- setNames(c(to, ts, tt), c("TO", "TS", "TT"))
+  return(paramsMean)
 })
 
 # -------------------------------------------------------------------------------
@@ -121,13 +137,20 @@ setMethod("getTOs", "HRTList", function(HRTListObj) {
 #' @return List
 #'
 #' @rdname getTSs
-setGeneric("getTSs", function(HRTListObj) {
+setGeneric("getTSs", function(HRTListObj, allParams = FALSE) {
   standardGeneric("getTSs")
 })
 #' @rdname getTSs
 #' @export
-setMethod("getTSs", "HRTList", function(HRTListObj) {
-  TS <- extractHRTParams(HRTListObj, "TS")
+setMethod("getTSs", "HRTList", function(HRTListObj, allParams = FALSE) {
+  if (allParams) {
+    TS <- list(
+      extractHRTParams(HRTListObj, "TS"),
+      extractHRTParams(HRTListObj, "intercept")
+      )
+  } else {
+    TS <- extractHRTParams(HRTListObj, "TS")
+  }
   return(TS)
 })
 
@@ -186,24 +209,75 @@ setMethod("getTTs", "HRTList", function(HRTListObj) {
 #' Pages 1353-1365')
 #' 
 #' @param HRTListObj HRTList object
+#' @param av Function, An integer specifying the type of averaging, either 1 for "mean" or 2 for "median" 
+#' @param orTO Numeric
+#' @param orTS Numeric
+#' @param IL Numeric
+#' @param normIL Numeric
 #' @return HRTObj
 #' 
 #' @rdname calcAvHRT
-setGeneric("calcAvHRT", function(HRTListObj) {
+setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = 800) {
     standardGeneric("calcAvHRT")
 })
 #' @rdname calcAvHRT
 #' @export
-setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
+setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = 800) {
+
+    if (!identical(av, mean) && !identical(av, median)) {
+      warning(paste("Function", av, "for parameter averaging is unknown, falling back to default."))
+      av <- mean
+    } else if (identical(av, mean)) {
+      rowAv <- rowMeans
+    } else if (identical(av, median)) {
+      rowAv <- matrixStats::rowMedians
+    }
+  
+  if (orTO != 1 && orTO != 2) {
+    warning(paste("Value", input, "for parameter calculation order is unknown, falling back to default."))
+    orTO <- 1
+  }
+  if (orTS != 1 && orTS != 2) {
+    warning(paste("Value", input, "for parameter calculation order is unknown, falling back to default."))
+    orTS <- 2
+  }
+  
+    couplRR <- av(sapply(HRTListObj@HRTs, slot, "couplRR"))
+    compRR <- av(sapply(HRTListObj@HRTs, slot, "compRR"))
+    preRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "preRRs"))
+    postRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "postRRs"))
     
-    couplRR <- mean(sapply(HRTListObj@HRTs, slot, "couplRR"))
-    compenRR <- mean(sapply(HRTListObj@HRTs, slot, "compenRR"))
-    preRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "preRRs"))
-    postRRs <- rowMeans(sapply(HRTListObj@HRTs, slot, "postRRs"))
+    avHRT <- new("avHRT", couplRR = couplRR, compRR = compRR,
+        preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS)
     
-    avHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, 
-        preRRs = preRRs, postRRs = postRRs)
-    avHRT <- calcHRTParams(avHRT)
+    if (orTO == 1) {
+      TOs <- unlist(getTOs(HRTListObj))
+      avHRT@TO <- av(TOs)
+      }
+    if (orTO == 2) {
+      avHRT <- calcTO(avHRT)
+    }
+    
+    if (orTS == 1) {
+      TSParams <- getTSs(HRTListObj, TRUE)
+      avHRT@TS <- av(unlist(TSParams[[1]]))
+      avHRT@intercept <- av(unlist(TSParams[[2]]))
+      
+      TTs <- unlist(getTTs(HRTListObj))
+      avHRT@TT <- av(TTs)
+      
+      if (IL != HRTListObj@IL || normIL != 800)
+          HRTListObj@HRTs <- lapply(tempHRTList@HRTs, calcTS, IL, normIL)
+      nTSs <- unlist(extractHRTParams(HRTListObj, "nTS"))
+      avHRT@nTS <- av(nTSs)
+      
+      nintercepts <- unlist(extractHRTParams(HRTListObj, "nintercept"))
+      avHRT@nintercept <- av(nintercepts)
+    }
+    if (orTS == 2) {
+      avHRT <- calcTS(avHRT)
+      avHRT <- calcTS(avHRT, normalising = TRUE, IL, normIL)
+    }
     
     return(avHRT)
 })
@@ -220,13 +294,13 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj) {
 #' @param ... Other arguments in tag = value form
 #' 
 #' @export
-setMethod("plot", "HRTList", function(x, cropped = TRUE, ...) {
-    plot(x@avHRT, cropped = cropped, ...)
+setMethod("plot", "HRTList", function(x, cropped = TRUE, showTT = FALSE, ...) {
+    plot(x@avHRT, cropped = cropped, showTT = showTT, ...)
     
     lapply(x@HRTs, function(y) {
         rrs <- getRRs(y)
         lines(seq(1:length(rrs)), rrs, col = "grey")
     })
     
-    plot(x@avHRT, add = TRUE)
+    plot(x@avHRT, add = TRUE, cropped = cropped, showTT = showTT, ...)
 }) 

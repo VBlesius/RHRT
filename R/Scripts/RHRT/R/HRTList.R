@@ -85,6 +85,7 @@ setGeneric("extractHRTParams", function(HRTListObj, sl) {
   standardGeneric("extractHRTParams")
 })
 #' @rdname extractHRTParams
+#' @export
 setMethod("extractHRTParams", "HRTList", function(HRTListObj, sl) {
   Params <- lapply(HRTListObj@HRTs, slot, sl)
   return(Params)

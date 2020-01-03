@@ -6,7 +6,7 @@
 #' ab-line used for the plot.
 #'
 #' @slot couplRR Numeric, Coupling interval
-#' @slot compenRR Numeric, Compensatory interval
+#' @slot compRR Numeric, Compensatory interval
 #' @slot preRRs Numeric vector, Preceding 6 intervals
 #' @slot postRRs Numeric vector, Following 16 intervals
 #' @slot TO Numeric, Turbulence onset
@@ -24,7 +24,7 @@
 setClass("HRT",
          slots = list(
            couplRR = "numeric",
-           compenRR = "numeric",
+           compRR = "numeric",
            preRRs = "vector",
            postRRs = "vector",
            TO = "numeric",
@@ -36,7 +36,7 @@ setClass("HRT",
 
          validity = function(object) {
            if(any(length(object@couplRR) != 1,
-                  length(object@compenRR) != 1,
+                  length(object@compRR) != 1,
                   length(object@preRRs) != numPreRRs,
                   length(object@postRRs) != numPostRRs)) {
              stop("The number of given intervals for the HRT object is incorrect!")
@@ -47,17 +47,17 @@ setClass("HRT",
 #-------------------------------------------------------------------------------
 #' @param .Object The name of the class
 #' @param couplRR Numeric, Coupling interval
-#' @param compenRR Numeric, Compensatory interval
+#' @param compRR Numeric, Compensatory interval
 #' @param preRRs Numeric vector, Preceding 6 intervals
 #' @param postRRs Numeric vector, Following 16 intervals
 #' 
 #' @rdname HRT
 #' @export
 setMethod("initialize", "HRT",
-          function(.Object, couplRR=NA_real_, compenRR=NA_real_,
+          function(.Object, couplRR=NA_real_, compRR=NA_real_,
                    preRRs=NA_real_, postRRs=NA_real_) {
             .Object@couplRR <- couplRR
-            .Object@compenRR <- compenRR
+            .Object@compRR <- compRR
             .Object@preRRs <- preRRs
             .Object@postRRs <- postRRs
             .Object@TO <- NA_real_
@@ -158,7 +158,7 @@ setGeneric("getRRs", function(HRTObj) {
 setMethod("getRRs", "HRT", function(HRTObj) {
   return(c(HRTObj@preRRs,
            HRTObj@couplRR,
-           HRTObj@compenRR,
+           HRTObj@compRR,
            HRTObj@postRRs))
 })
 

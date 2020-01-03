@@ -149,7 +149,7 @@ checkForHRT <- function(intervals) {
     # regular
     # intervals
     couplRR <- intervals[numPreRRs + 1]
-    compenRR <- intervals[numPreRRs + 2]
+    compRR <- intervals[numPreRRs + 2]
     preRRs <- intervals[1:numPreRRs]
     postRRs <- intervals[(numPreRRs + 3):length(intervals)]
     regRR <- c(preRRs, postRRs)
@@ -164,7 +164,7 @@ checkForHRT <- function(intervals) {
     ## for
     ## HRT
     isCouplRR <- couplRR <= ref * 0.8
-    isCompenRR <- compenRR >= ref * 1.2
+    isCompRR <- compRR >= ref * 1.2
     # checks
     # for
     # arrhythmias
@@ -172,7 +172,7 @@ checkForHRT <- function(intervals) {
     # artefacts
     isInRange <- all(regRR > 300 && regRR < 2000)
     
-    if(isCouplRR & isCompenRR & isInRange) {
+    if(isCouplRR & isCompRR & isInRange) {
     
       isNotDeviating <- all(
         regRR >= ref * 0.8,
@@ -186,7 +186,7 @@ checkForHRT <- function(intervals) {
       # as
       # object
       if (isNotDeviating) {
-          tempHRT <- new("HRT", couplRR = couplRR, compenRR = compenRR, 
+          tempHRT <- new("HRT", couplRR = couplRR, compRR = compRR, 
               preRRs = preRRs[-(numPreRRs - 2):0], postRRs = postRRs[1:15])
           return(tempHRT)
       }

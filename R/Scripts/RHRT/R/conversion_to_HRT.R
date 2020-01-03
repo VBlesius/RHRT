@@ -8,6 +8,7 @@
 #' @param input Numeric vector
 #' @param annotations Alphabetical vector
 #' @param PVCAnn Character
+#' @inheritParams calcHRTParams
 #' @return HRTList HRTList object
 #' 
 #' @export
@@ -97,12 +98,12 @@ checkAnnotations <- function(annotations, input, PVCAnn) {
 # -------------------------------------------------------------------------------
 #' Finds HRTs
 #'
-#' Scans for HRTs in the given vector and returns a HRTList object.
+#' Scans for HRTs in the given vector and returns an HRTList object.
 #'
 #' @param intervals Numeric vector
 #' @param annotations Alphabetical vector
 #' @param PVCAnn Character
-#' @return HRTList
+#' @return HRTListObj
 #' 
 getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V") {
   

@@ -66,8 +66,8 @@ Example workflow:
 data("testdataVariant", package = "RHRT")
 
 tdVariant <- testdataVariant
-#hrtlVar <- RHRT::vectorToHRT(tdVariant) # calculate the HRTList
-#hrtlVarParams <- RHRT::getHRTParamsMean(hrtlVar) # get the averaged HRT parameters
+hrtlVar <- RHRT::vectorToHRT(tdVariant) # calculate the HRTList
+hrtlVarParams <- RHRT::getHRTParamsMean(hrtlVar) # get the averaged HRT parameters
 ```
 
 Other useful methods of HRTList:
@@ -80,14 +80,14 @@ Other useful methods of HRTList:
 You can plot either a single HRT object or an HRTList. For the latter the averaged HRT object is plotted in dark tone while the other HRT objects are plotted behind in light tone. TO and TS are labeled for the HRT object or the averaged HRT object, respectively.
 
 ```{r,  fig.width=7, fig.height=4}
-#RHRT::plot(hrtlVar@HRTs[[1]], main = "One HRT object")
+RHRT::plot(hrtlVar@HRTs[[1]], main = "One HRT object")
 ```
 
 ```{r,  fig.width=7, fig.height=4}
-#RHRT::plot(hrtlVar, main = "All HRT objects in an HRTList object")
+RHRT::plot(hrtlVar, main = "All HRT objects in an HRTList object")
 ```
 In either case you can specify whether you want the plot to be cropped vertically so TO and TS can be better inspected. For it (???) CPI and CMI are not visible. 
 
 ```{r,  fig.width=7, fig.height=4}
-#RHRT::plot(hrtlVar, cropped = FALSE, main = "Not cropped")
+RHRT::plot(hrtlVar, cropped = FALSE, main = "Not cropped")
 ```

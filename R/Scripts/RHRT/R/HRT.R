@@ -224,11 +224,15 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE,
   rrs <- getRRs(x)
 
   if(!add) {
+    ymin <- min(c(x@preRRs, x@postRRs))
+    ymax <- max(c(x@preRRs, x@postRRs))
+    ydiff <- ymax - ymin
+    
     plot(seq(1:length(rrs)), rrs,
          xaxt = "n",
          ylim = if(cropped)
-           c( min(c(x@preRRs, x@postRRs)),
-              max(c(x@preRRs, x@postRRs))),
+           c(ymin-ydiff*0.3,
+             ymax+ydiff*0.3),
          type = type,
          pch = pch,
          xlab = xlab,
@@ -248,6 +252,8 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE,
   #arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
 
   # Turbulence slope
+  TTcorr <- x@TT+4
+  points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = "blue", pch = 21)
   abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
 
 })

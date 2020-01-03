@@ -219,11 +219,11 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     }
   
   if (orTO != 1 && orTO != 2) {
-    warning(paste("Value", input, "for parameter calculation order is unknown, falling back to default."))
+    warning(paste("Value", orTO, "for parameter calculation order is unknown, falling back to default."))
     orTO <- 1
   }
   if (orTS != 1 && orTS != 2) {
-    warning(paste("Value", input, "for parameter calculation order is unknown, falling back to default."))
+    warning(paste("Value", orTS, "for parameter calculation order is unknown, falling back to default."))
     orTS <- 2
   }
   
@@ -252,7 +252,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
       avHRT@TT <- av(TTs)
       
       if (IL != HRTListObj@IL || normIL != 800)
-          HRTListObj@HRTs <- lapply(tempHRTList@HRTs, calcTS, IL, normIL)
+          HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
       nTSs <- unlist(extractHRTParams(HRTListObj, "nTS"))
       avHRT@nTS <- av(nTSs)
       

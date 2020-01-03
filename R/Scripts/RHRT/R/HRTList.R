@@ -19,6 +19,8 @@
 #' 
 #' @name HRTList
 #' 
+#' @include HRT.R
+#' @include avHRT.R
 #' @export
 setClass("HRTList", 
          contains = "HRT",

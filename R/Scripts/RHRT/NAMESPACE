@@ -3,6 +3,7 @@
 export(vectorToHRT)
 exportClasses(HRT)
 exportClasses(HRTList)
+exportClasses(avHRT)
 exportMethods(calcAvHRT)
 exportMethods(calcTO)
 exportMethods(calcTS)

@@ -17,7 +17,8 @@ RoxygenNote: 5.0.1
 Suggests:
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    matrixStats
 VignetteBuilder: knitr
 Collate:
     'HRT.R'

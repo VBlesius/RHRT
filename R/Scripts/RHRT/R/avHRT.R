@@ -15,7 +15,6 @@
 #' 
 #' @importFrom methods setMethod 
 #' @include HRT.R
-#' @export
 setClass("avHRT",
          contains = "HRT",
          slots = list(

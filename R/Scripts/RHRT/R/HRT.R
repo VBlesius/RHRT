@@ -21,7 +21,6 @@
 #' @name HRT
 #' 
 #' @importFrom methods setMethod 
-#' @export
 setClass("HRT",
          slots = list(
            couplRR = "numeric",

@@ -18,7 +18,6 @@
 #' 
 #' @include HRT.R
 #' @include avHRT.R
-#' @export
 setClass("HRTList", 
          contains = c("HRT", "avHRT"),
          slots = list(
@@ -247,7 +246,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
       avHRT@TS <- av(unlist(getHRTParams(HRTListObj, "TS")))
       avHRT@intercept <- av(unlist(getHRTParams(HRTListObj, "intercept")))
       
-      TTs <- unlist(ggetHRTParams(HRTListObj, "TT"))
+      TTs <- unlist(getHRTParams(HRTListObj, "TT"))
       avHRT@TT <- av(TTs)
       
       if (IL != HRTListObj@IL || normIL != c_normIL)

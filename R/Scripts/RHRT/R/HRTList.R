@@ -104,81 +104,81 @@ setMethod("getHRTParamsMean", "HRTList", function(HRTListObj, avTO = mean, avTS 
 #' @param sl Character, choose a slot saved by an HRT object
 #' @return List
 #'
-#' @rdname extractHRTParams
-setGeneric("extractHRTParams", function(HRTListObj, sl) {
-  standardGeneric("extractHRTParams")
+#' @rdname getHRTParams
+setGeneric("getHRTParams", function(HRTListObj, sl) {
+  standardGeneric("getHRTParams")
 })
-#' @rdname extractHRTParams
+#' @rdname getHRTParams
 #' @export
-setMethod("extractHRTParams", "HRTList", function(HRTListObj, sl) {
+setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
   Params <- lapply(HRTListObj@HRTs, slot, sl)
   return(Params)
 })
 
-# -------------------------------------------------------------------------------
-#' Get all turbulence onset values
-#'
-#' Returns the TO values of each HRT object ordered by record in the HRTList.
+#' # -------------------------------------------------------------------------------
+#' #' Get all turbulence onset values
+#' #'
+#' #' Returns the TO values of each HRT object ordered by record in the HRTList.
+#' #' 
+#' #' @param HRTListObj HRTList object
+#' #' @return List
+#' #'
+#' #' @rdname getTOs
+#' setGeneric("getTOs", function(HRTListObj) {
+#'   standardGeneric("getTOs")
+#' })
+#' #' @rdname getTOs
+#' #' @export
+#' setMethod("getTOs", "HRTList", function(HRTListObj) {
+#'   TO <- getHRTParams(HRTListObj, "TO")
+#'   return(TO)
+#' })
 #' 
-#' @param HRTListObj HRTList object
-#' @return List
-#'
-#' @rdname getTOs
-setGeneric("getTOs", function(HRTListObj) {
-  standardGeneric("getTOs")
-})
-#' @rdname getTOs
-#' @export
-setMethod("getTOs", "HRTList", function(HRTListObj) {
-  TO <- extractHRTParams(HRTListObj, "TO")
-  return(TO)
-})
-
-# -------------------------------------------------------------------------------
-#' Get all turbulence slope values
-#'
-#' Returns the TS values of each HRT object ordered by record in the HRTList.
+#' # -------------------------------------------------------------------------------
+#' #' Get all turbulence slope values
+#' #'
+#' #' Returns the TS values of each HRT object ordered by record in the HRTList.
+#' #' 
+#' #' @param HRTListObj HRTList object
+#' #' @param allParams Boolean, Should TS and intercept be given?
+#' #' @return List
+#' #'
+#' #' @rdname getTSs
+#' setGeneric("getTSs", function(HRTListObj, allParams = FALSE) {
+#'   standardGeneric("getTSs")
+#' })
+#' #' @rdname getTSs
+#' #' @export
+#' setMethod("getTSs", "HRTList", function(HRTListObj, allParams = FALSE) {
+#'   if (allParams) {
+#'     TS <- list(
+#'       getHRTParams(HRTListObj, "TS"),
+#'       getHRTParams(HRTListObj, "intercept")
+#'       )
+#'   } else {
+#'     TS <- getHRTParams(HRTListObj, "TS")
+#'   }
+#'   return(TS)
+#' })
 #' 
-#' @param HRTListObj HRTList object
-#' @param allParams Boolean, Should TS and intercept be given?
-#' @return List
-#'
-#' @rdname getTSs
-setGeneric("getTSs", function(HRTListObj, allParams = FALSE) {
-  standardGeneric("getTSs")
-})
-#' @rdname getTSs
-#' @export
-setMethod("getTSs", "HRTList", function(HRTListObj, allParams = FALSE) {
-  if (allParams) {
-    TS <- list(
-      extractHRTParams(HRTListObj, "TS"),
-      extractHRTParams(HRTListObj, "intercept")
-      )
-  } else {
-    TS <- extractHRTParams(HRTListObj, "TS")
-  }
-  return(TS)
-})
-
-# -------------------------------------------------------------------------------
-#' Get all turbulence timing values
-#'
-#' Returns the TT values of each HRT object ordered by record in the HRTList.
-#' 
-#' @param HRTListObj HRTList object
-#' @return List
-#'
-#' @rdname getTTs
-setGeneric("getTTs", function(HRTListObj) {
-  standardGeneric("getTTs")
-})
-#' @rdname getTTs
-#' @export
-setMethod("getTTs", "HRTList", function(HRTListObj) {
-  TT <- extractHRTParams(HRTListObj, "TT")
-  return(TT)
-})
+#' # -------------------------------------------------------------------------------
+#' #' Get all turbulence timing values
+#' #'
+#' #' Returns the TT values of each HRT object ordered by record in the HRTList.
+#' #' 
+#' #' @param HRTListObj HRTList object
+#' #' @return List
+#' #'
+#' #' @rdname getTTs
+#' setGeneric("getTTs", function(HRTListObj) {
+#'   standardGeneric("getTTs")
+#' })
+#' #' @rdname getTTs
+#' #' @export
+#' setMethod("getTTs", "HRTList", function(HRTListObj) {
+#'   TT <- getHRTParams(HRTListObj, "TT")
+#'   return(TT)
+#' })
 
 # -------------------------------------------------------------------------------
 #' Calculate an avHRT object
@@ -236,7 +236,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
         preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS)
     
     if (orTO == 1) {
-      TOs <- unlist(getTOs(HRTListObj))
+      TOs <- unlist(getHRTParams(HRTListObj, "TO"))
       avHRT@TO <- av(TOs)
       }
     if (orTO == 2) {
@@ -244,19 +244,18 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     }
     
     if (orTS == 1) {
-      TSParams <- getTSs(HRTListObj, TRUE)
-      avHRT@TS <- av(unlist(TSParams[[1]]))
-      avHRT@intercept <- av(unlist(TSParams[[2]]))
+      avHRT@TS <- av(unlist(getHRTParams(HRTListObj, "TS")))
+      avHRT@intercept <- av(unlist(getHRTParams(HRTListObj, "intercept")))
       
-      TTs <- unlist(getTTs(HRTListObj))
+      TTs <- unlist(ggetHRTParams(HRTListObj, "TT"))
       avHRT@TT <- av(TTs)
       
       if (IL != HRTListObj@IL || normIL != c_normIL)
           HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
-      nTSs <- unlist(extractHRTParams(HRTListObj, "nTS"))
+      nTSs <- unlist(getHRTParams(HRTListObj, "nTS"))
       avHRT@nTS <- av(nTSs)
       
-      nintercepts <- unlist(extractHRTParams(HRTListObj, "nintercept"))
+      nintercepts <- unlist(getHRTParams(HRTListObj, "nintercept"))
       avHRT@nintercept <- av(nintercepts)
     }
     if (orTS == 2) {

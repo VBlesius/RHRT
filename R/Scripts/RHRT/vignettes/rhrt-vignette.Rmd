@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The RHRT package helps you find the **coupling (CPI)** and **compensatory interval (CMI)** as typical for a **premature ventricular beat**. This can be very useful for analysing interval data that is not annotated. The two intervals are found on the basis of the filter rules provided by Schmidt et al.^[Website about HRT by Schmidt et al.: http://www.h-r-t.com/hrt/en/calc.html].
+The RHRT package helps you assess **Heart Rate Turbulence** (HRT) in RR intervals. calulates **turbulence onset** (TO), **slope** (TS) and **timing** (TT). It can plot the tachograms and give a reliability table. The **ventricular premature beats** (VPCs) with **coupling** (CPI) and **compensatory interval** (CMI) can either be given with annotations or found on the basis of the filter rules provided by Schmidt et al.^[Website about HRT by Schmidt et al.: http://www.h-r-t.com/hrt/en/calc.html]. The type of average and order of calculation for all parameters can be set.
 
 ## Filter Rules
 
@@ -39,22 +39,24 @@ There are two types of filter rules applied on the interval data:
 
 An HRT object saves the following attributes of the found interval sequence:
 
-- **Intervals** &nbsp;&nbsp; The HRT Object consists of the two intervals surrounding the premature ventricular complex (CPI & CMI), the two preceding and fifteen following intervals.
+- **Intervals** &nbsp;&nbsp; The HRT Object consists of the two intervals surrounding the VPC (CPI & CMI), the two preceding and fifteen following intervals.
 
-- **HRT Parameters** &nbsp;&nbsp; The parameters **turbulence onset (TO)** and **turbulence slope (TS)** are automatically calculated within `vectorToHRT` and are saved in the HRT object.
+- **HRT Parameters** &nbsp;&nbsp; The parameters TO, TS and TT are automatically calculated within `vectorToHRT` and are saved in the HRT object.
+
+- **Line coefficients** &nbsp;&nbsp; The slope and intercept of the TS regression line.
 
 
 ## HRTList Object
 
 The HRTList object sums up all HRTs found in your given dataset. It consists of:
 
-- **Positions** &nbsp;&nbsp; The indices of the extrasysoles (that is the premature ventricular complex / coupling interval) as found in the given vector.
+- **Positions** &nbsp;&nbsp; The indices of the VPCs as found in the given vector.
 
 - **HRTs** &nbsp;&nbsp; All found HRTs saved in HRT objects.
 
 - **averaged HRT** &nbsp;&nbsp; The averaged HRT object which is calculated via estimating the mean of the intervals of all HRT objects.
 
-An HRTList object ist created when `vectorToHRT` is called. all HRT parameters are calculated automatically in this process and can be called with the `getHRTParams`-methods.
+An HRTList object is created when `vectorToHRT` is called. All HRT parameters are calculated automatically in this process and can be called with the `getHRTParams`-methods.
 
 ## Workflow
 
@@ -86,8 +88,13 @@ RHRT::plot(hrtlVar@HRTs[[1]], main = "One HRT object")
 ```{r,  fig.width=7, fig.height=4}
 RHRT::plot(hrtlVar, main = "All HRT objects in an HRTList object")
 ```
-In either case you can specify whether you want the plot to be cropped vertically so TO and TS can be better inspected. For it (???) CPI and CMI are not visible. 
+In either case you can specify whether you want the plot to be cropped vertically so TO and TS can be better inspected. Consequenntly CPI and CMI are not visible. 
 
 ```{r,  fig.width=7, fig.height=4}
 RHRT::plot(hrtlVar, cropped = FALSE, main = "Not cropped")
+```
+
+TT is hidden by default, but can be displayed.
+```{r,  fig.width=7, fig.height=4}
+RHRT::plot(hrtlVar, cropped = FALSE, showTT=TRUE)
 ```

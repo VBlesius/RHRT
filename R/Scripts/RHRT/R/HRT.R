@@ -154,7 +154,7 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
   if (normalising) postRRs <- postRRs*normIL/IL
   
   # Calculate TS
-  ## Formula for the slope: (n * Σxy - (Σx)(Σy)) / (n x Σx^2 - (Σx)^2)
+  ## Formula for the slope: (n * sum(xy) - (sum(x))(sum(y))) / (n x sum(x)^2 - (sum(x))^2)
   x <- seq(1,5)
   n <- 5
   slopes <- wapply(postRRs, 5, by = 1, FUN = function(y) {

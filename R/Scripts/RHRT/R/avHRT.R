@@ -10,6 +10,10 @@
 #' @slot orTS Numeric, Order in which TS was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
+#' @slot pTO Numeric, p-value of t-test checking the validity of TO
+#' @slot pTS Numeric, p-value of t-test checking the validity of TS
+#' @slot pTT Numeric, p-value of t-test checking the validity of TT
+#' @slot pnTS Numeric, p-value of t-test checking the validity of normalised TS
 #' 
 #' @name avHRT
 #' 
@@ -20,7 +24,11 @@ setClass("avHRT",
          slots = list(
            av = "function",
            orTO = "numeric",
-           orTS = "numeric"),
+           orTS = "numeric",
+           pTO = "numeric",
+           pTS = "numeric",
+           pTT = "numeric",
+           pnTS = "numeric"),
 
          validity = function(object) {
            if(any(!identical(av, mean) && !identical(av, median),
@@ -40,17 +48,26 @@ setClass("avHRT",
 #' @param orTS Numeric, Order in which TS was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
+#' @param pTO Numeric, p-value of t-test checking the validity of TO
+#' @param pTS Numeric, p-value of t-test checking the validity of TS
+#' @param pTT Numeric, p-value of t-test checking the validity of TT
+#' @param pnTS Numeric, p-value of t-test checking the validity of normalised TS
 #' @inheritParams HRT
 #' 
 #' @rdname avHRT
 #' @export
 setMethod("initialize", "avHRT",
           function(.Object, av=mean, orTO=NA_real_, orTS=NA_real_,
+                   pTO=NA_real_, pTS=NA_real_, pTT=NA_real_, pnTS=NA_real_,
                    couplRR=NA_real_, compRR=NA_real_,
                    preRRs=NA_real_, postRRs=NA_real_, ...) {
             .Object@av <- av
             .Object@orTO <- orTO
             .Object@orTS <- orTS
+            .Object@pTO <- pTO
+            .Object@pTS <- pTS
+            .Object@pTT <- pTT
+            .Object@pnTS <- pnTS
             
             .Object <- callNextMethod(.Object, couplRR, compRR, preRRs, postRRs, ...)
             

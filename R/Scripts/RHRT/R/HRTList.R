@@ -198,16 +198,20 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' @param av Function, Type of averaging the VPCSs, either mean or median
 #' @inheritParams getHRTParamsMean
 #' @inheritParams calcHRTParams
+#' @param coTO Numeric, cut-off value for TO
+#' @param coTS Numeric, cut-off value for TS and nTS
+#' @param coTT Numeric, cut-off value for TT
 #' @return avHRTObj
 #' 
 #' @rdname calcAvHRT
-setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL) {
+setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, coTO = COTO, coTS = COTS, coTT = COTT) {
     standardGeneric("calcAvHRT")
 })
 #' @rdname calcAvHRT
 #' @export
-setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL) {
+setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, coTO = COTO, coTS = COTS, coTT = COTT) {
 
+  # sets the type of averaging
     if (!identical(av, mean) && !identical(av, median)) {
       warning(paste("Function", av, "for parameter averaging is unknown, falling back to default."))
       av <- mean
@@ -217,6 +221,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
       rowAv <- matrixStats::rowMedians
     }
   
+  # checks the calculation order and sets it to default if necessary
   if (orTO != 1 && orTO != 2) {
     warning(paste("Value", orTO, "for parameter calculation order is unknown, falling back to default."))
     orTO <- 1
@@ -226,35 +231,54 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     orTS <- 2
   }
   
+  # calculates the mean intervals
     couplRR <- av(sapply(HRTListObj@HRTs, slot, "couplRR"))
     compRR <- av(sapply(HRTListObj@HRTs, slot, "compRR"))
     preRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "preRRs"))
     postRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "postRRs"))
     
+  # initializes the avHRT object
     avHRT <- new("avHRT", couplRR = couplRR, compRR = compRR,
         preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS)
+  
+  # calculates parameters for every VPC seperately
+    TOs <- unlist(getHRTParams(HRTListObj, "TO"))
+    TSs <- unlist(getHRTParams(HRTListObj, "TS"))
+    TTs <- unlist(getHRTParams(HRTListObj, "TT"))
+    if (IL != HRTListObj@IL || normIL != c_normIL)
+      HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
+    nTSs <- unlist(getHRTParams(HRTListObj, "nTS"))
+    nintercepts <- unlist(getHRTParams(HRTListObj, "nintercept"))
     
+    notconstant <- function(x) !length(unique(x)) == 1
+    # calculates p-values
+    # if(notconstant(TOs)) avHRT@pTO <- t.test(TOs, alternative = "less", mu = coTO)$p.value
+    # if(notconstant(TSs)) avHRT@pTS <- t.test(TSs, alternative = "greater", mu = coTS)$p.value
+    # if(notconstant(TTs)) avHRT@pTT <- t.test(TTs, alternative = "less", mu = coTT)$p.value
+    # if(notconstant(nTSs)) avHRT@pnTS <- t.test(nTSs, alternative = "greater", mu = coTS)$p.value    
+    
+  # calculates TO, first in default order, secondly from an averaged tachogram
     if (orTO == 1) {
-      TOs <- unlist(getHRTParams(HRTListObj, "TO"))
       avHRT@TO <- av(TOs)
       }
     if (orTO == 2) {
       avHRT <- calcTO(avHRT)
     }
-    
+  
+  # calculates TS, first for every VPC seperately, secondly in default order
+  # additionally saves TT and intercept 
+
+    # sets averaged parameters
     if (orTS == 1) {
-      avHRT@TS <- av(unlist(getHRTParams(HRTListObj, "TS")))
+      # TS+intercept
+      avHRT@TS <- av(TSs)
       avHRT@intercept <- av(unlist(getHRTParams(HRTListObj, "intercept")))
       
-      TTs <- unlist(getHRTParams(HRTListObj, "TT"))
+      # TT
       avHRT@TT <- av(TTs)
-      
-      if (IL != HRTListObj@IL || normIL != c_normIL)
-          HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
-      nTSs <- unlist(getHRTParams(HRTListObj, "nTS"))
+
+      # normalised TS+intercept if normalising parameters are given
       avHRT@nTS <- av(nTSs)
-      
-      nintercepts <- unlist(getHRTParams(HRTListObj, "nintercept"))
       avHRT@nintercept <- av(nintercepts)
     }
     if (orTS == 2) {

@@ -25,7 +25,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
 
     tempHRTList <- getHRTs(input, annotations, PVCAnn)
     if (length(tempHRTList@HRTs) == 0) {
-        warning("No HRTs found in your data!")
+        stop("No HRTs found in your data!")
     } else {
         tempHRTList@IL <- mean(input)
         tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
@@ -63,7 +63,7 @@ checkInput <- function(input) {
             numSeq, "."))
     }
     if (mean(input) < 1 || mean(input) > 2000) {
-        warning("Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again.")
+        stop("Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again.")
     }
 }
 

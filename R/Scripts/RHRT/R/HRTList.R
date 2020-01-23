@@ -19,7 +19,6 @@
 #' @include HRT.R
 #' @include avHRT.R
 setClass("HRTList", 
-         contains = c("HRT", "avHRT"),
          slots = list(
            IL = "numeric",
            pos = "vector",

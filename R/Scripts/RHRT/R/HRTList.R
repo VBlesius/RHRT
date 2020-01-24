@@ -53,42 +53,95 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' estimating the maximal slope.
 #' 
 #' @param HRTListObj HRTList object
-#' @param avTO Function, Type of averaging for TO, either mean or median
-#' @param avTS Function, Type of averaging for TS, either mean or median
-#' @param orTO Numeric, Order in which TO was calculated, 
-#' either 1 (assessment of parameter and averaging)
-#' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @param orTS Numeric, Order in which TS was calculated,
-#' either 1 (assessment of parameter and averaging)
-#' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @return Named numeric, HRT parameters TO, TS and TT
+#' @param type String, determining the amount of output: 'class' gives the HRT class, 'parameter' the parameter values and 'full' additionally the p-values describing parameter reliability
+#' @param TT Boolean, Should TT be given?
+#' @param safe Boolean, Should all values be given regardless the reliability checks? Note, that 'safe' is ignored when the type is 'full'.
+#' @param pmax Numeric, the significance level
+#' @param num Boolean Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values are not combinable with type 'class'.
+#' @inheritParams calcAvHRT
+#' @return Named vector, character or numeric
 #' 
 #' @rdname getResults
-setGeneric("getResults", function(HRTListObj, type = 1, TT = FALSE, pmax = 0.05, avTO = mean, avTS = mean, orTO = 1, orTS = 2) {
+setGeneric("getResults", function(HRTListObj, type = "class", TT = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
     standardGeneric("getResults")
 })
 #' @rdname getResults
 #' @export
-setMethod("getResults", "HRTList", function(HRTListObj, type = 1, pmax = 0.05, avTO = mean, avTS = mean, orTO = 1, orTS = 2) {
+setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
+  # checks whether the string given in type is viable
+  types <- c("class", "parameter", "full")
+  if(!type %in% types) stop("The given value for 'type' is unknown!")
   
-  if (identical(avTO, HRTListObj@avHRT@av) && identical(orTO, HRTListObj@avHRT@orTO)){
-    to <- HRTListObj@avHRT@TO
-  } else {
-    tempAvHRT <- calcAvHRT(HRTListObj, av = avTO, orTO = orTO)
-    to <- tempAvHRT@TO
+  # sets needed variables
+  av <- HRTListObj@avHRT
+  paramNames <- c("TO", "TS", if(TT) "TT")
+  pNames <- c("pTO", "pTS", if(TT) "pTT")
+  paramValues <- setNames(c(av@TO, av@TS, if(TT) av@TT), paramNames)
+  pValues <- setNames(c(av@pTO, av@pTS, if(TT) av@pTT), pNames)
+  
+  # sets up needed checking function 
+  isSignificant <- function(p) return(p <= pmax)
+  isRisky <- function(val, param) {
+    if(param == "TO") return(val > coTO)
+    if(param == "TS") return(val < coTS)
+    if(param == "TT") return(val > coTT)
+  }
+  concludeResults <- function(val, p) {
+    if(isSignificant(p)) {
+      return(val)
+    } else if(num) {
+      return(NA)
+    } else {
+      return("NR")
+    }
   }
   
-  if (identical(avTS, HRTListObj@avHRT@av) && identical(orTS, HRTListObj@avHRT@orTS)){
-    ts <- HRTListObj@avHRT@TS
-    tt <- HRTListObj@avHRT@TT
-  } else {
-    tempAvHRT <- calcAvHRT(HRTListObj, av = avTS, orTS = orTS)
-    ts <- tempAvHRT@TS
-    tt <- tempAvHRT@TT
+  # Returning results depending on "type"
+  ## full
+  if (type == "full") return(c(paramValues, pValues))
+
+  ## saves results as "NR" or NA if not reliable
+  results <- unlist(mapply(concludeResults, paramValues, pValues, SIMPLIFY = TRUE))
+  
+  ## parameter
+  if (type == "parameter") return(results)
+  
+  ## class
+  if (type == "class") {
+    if(num) {
+      warning("The combination of type 'class' and num 'TRUE' is not possible! Returning NA!")
+      return(NA_real_)
+    }
+    sig <- sapply(pValues, isSignificant)
+    risky <- mapply(isRisky, paramValues, paramNames, SIMPLIFY = TRUE)
+    containsNR <- function(x) "NR" %in% x
+    
+    if(safe) if(containsNR(results)) return("NR")
+    
+    if(TRUE %in% risky && FALSE %in% risky) {
+      if(TT) {
+        class <- "HRTB"
+      } else {
+        class <- "HRT1"
+      }
+    } else if(unique(risky)) {
+      if(TT) {
+        class <- "HRTC"
+      } else {
+        class <- "HRT2"
+      }
+    } else {
+      if(TT) {
+        class <- "HRTA"
+      } else {
+        class <- "HRT0"
+      }
+    }
+    if(!safe && containsNR(results)) class <- paste0(class, "*")
+    
+    return(class)
   }
- 
-  paramsMean <- setNames(c(to, ts, tt), c("TO", "TS", "TT"))
-  return(paramsMean)
+
 })
 
 # -------------------------------------------------------------------------------
@@ -194,7 +247,14 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' 
 #' @param HRTListObj HRTList object
 #' @param av Function, Type of averaging the VPCSs, either mean or median
-#' @inheritParams getHRTParamsMean
+#' @param avTO Function, Type of averaging for TO, either mean or median
+#' @param avTS Function, Type of averaging for TS, either mean or median
+#' @param orTO Numeric, Order in which TO was calculated, 
+#' either 1 (assessment of parameter and averaging)
+#' or 2 (averaging of the VPCSs and assessment of parameter)
+#' @param orTS Numeric, Order in which TS was calculated,
+#' either 1 (assessment of parameter and averaging)
+#' or 2 (averaging of the VPCSs and assessment of parameter)
 #' @inheritParams calcHRTParams
 #' @param coTO Numeric, cut-off value for TO
 #' @param coTS Numeric, cut-off value for TS and nTS

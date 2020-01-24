@@ -63,14 +63,13 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' or 2 (averaging of the VPCSs and assessment of parameter)
 #' @return Named numeric, HRT parameters TO, TS and TT
 #' 
-#' @rdname getHRTParamsMean
-setGeneric("getHRTParamsMean", function(HRTListObj, avTO = mean, avTS = mean, 
-                                        orTO = 1, orTS = 2) {
-    standardGeneric("getHRTParamsMean")
+#' @rdname getResults
+setGeneric("getResults", function(HRTListObj, type = 1, TT = FALSE, pmax = 0.05, avTO = mean, avTS = mean, orTO = 1, orTS = 2) {
+    standardGeneric("getResults")
 })
-#' @rdname getHRTParamsMean
+#' @rdname getResults
 #' @export
-setMethod("getHRTParamsMean", "HRTList", function(HRTListObj, avTO = mean, avTS = mean, orTO = 1, orTS = 2) {
+setMethod("getResults", "HRTList", function(HRTListObj, type = 1, pmax = 0.05, avTO = mean, avTS = mean, orTO = 1, orTS = 2) {
   
   if (identical(avTO, HRTListObj@avHRT@av) && identical(orTO, HRTListObj@avHRT@orTO)){
     to <- HRTListObj@avHRT@TO

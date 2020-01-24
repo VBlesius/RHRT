@@ -69,7 +69,7 @@ data("testdataVariant", package = "RHRT")
 
 tdVariant <- testdataVariant
 hrtlVar <- RHRT::vectorToHRT(tdVariant) # calculate the HRTList
-hrtlVarParams <- RHRT::getHRTParamsMean(hrtlVar) # get the averaged HRT parameters
+hrtlVarParams <- RHRT::getResults(hrtlVar) # get the averaged HRT parameters
 ```
 
 Other useful methods of HRTList:

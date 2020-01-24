@@ -250,10 +250,10 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     
     notconstant <- function(x) !length(unique(x)) == 1
     # calculates p-values
-    # if(notconstant(TOs)) avHRT@pTO <- t.test(TOs, alternative = "less", mu = coTO)$p.value
-    # if(notconstant(TSs)) avHRT@pTS <- t.test(TSs, alternative = "greater", mu = coTS)$p.value
-    # if(notconstant(TTs)) avHRT@pTT <- t.test(TTs, alternative = "less", mu = coTT)$p.value
-    # if(notconstant(nTSs)) avHRT@pnTS <- t.test(nTSs, alternative = "greater", mu = coTS)$p.value    
+    if(notconstant(TOs)) avHRT@pTO <- t.test(TOs, alternative = "less", mu = coTO)$p.value
+    if(notconstant(TSs)) avHRT@pTS <- t.test(TSs, alternative = "greater", mu = coTS)$p.value
+    if(notconstant(TTs)) avHRT@pTT <- t.test(TTs, alternative = "less", mu = coTT)$p.value
+    if(notconstant(nTSs)) avHRT@pnTS <- t.test(nTSs, alternative = "greater", mu = coTS)$p.value    
     
   # calculates TO, first in default order, secondly from an averaged tachogram
     if (orTO == 1) {

@@ -87,7 +87,17 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
     if(param == "TT") return(val > coTT)
   }
   concludeResults <- function(val, p) {
-    if(isSignificant(p)) {
+    # checks for NA
+    if(is.na(val)) return(NA_real_)
+    if(is.na(p) && safe) {
+      if(num) {
+        return(NA_real_)
+      } else {
+        return("NR")
+      }
+    }
+    # if neither val nor p are NA:
+    if(!safe || isSignificant(p)) {
       return(val)
     } else if(num) {
       return(NA)
@@ -100,7 +110,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
   ## full
   if (type == "full") return(c(paramValues, pValues))
 
-  ## saves results as "NR" or NA if not reliable
+  ## saves results as "NR" or NA if not reliable in safe mode, in every other case saves values
   results <- unlist(mapply(concludeResults, paramValues, pValues, SIMPLIFY = TRUE))
   
   ## parameter
@@ -109,14 +119,18 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
   ## class
   if (type == "class") {
     if(num) {
-      warning("The combination of type 'class' and num 'TRUE' is not possible! Returning NA!")
+      warning("The combination of type 'class' and num 'TRUE' is not possible: Returning NA.")
       return(NA_real_)
     }
+    
+    if(any(is.na(paramValues))) {
+      warning("The HRT parameters contain NA, thus the HRT class cannot be determined: Returning NA.")
+      return(NA)
+    }
+    if(safe && "NR" %in% results) return("NR")
+      
     sig <- sapply(pValues, isSignificant)
     risky <- mapply(isRisky, paramValues, paramNames, SIMPLIFY = TRUE)
-    containsNR <- function(x) "NR" %in% x
-    
-    if(safe) if(containsNR(results)) return("NR")
     
     if(TRUE %in% risky && FALSE %in% risky) {
       if(TT) {
@@ -137,7 +151,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
         class <- "HRT0"
       }
     }
-    if(!safe && containsNR(results)) class <- paste0(class, "*")
+    if(!safe && (any(sig == FALSE) || any(is.na(sig)))) class <- paste0(class, "*")
     
     return(class)
   }

@@ -23,3 +23,11 @@
 #'
 #' @format A numeric vector of length 1000.
 "testdataVariantNoHRT" 
+
+#' Valid HRTList object
+#'
+#' A HRTList object based on a dataset provided by Physionet (NSRDB). This object
+#' includes 3 HRTs that result in a significant HRTA class.
+#'
+#' @format A HRTList with 3 HRTs
+"HRTs"

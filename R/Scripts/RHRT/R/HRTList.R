@@ -104,7 +104,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
     if(!safe || isSignificant(p)) {
       return(val)
     } else if(num) {
-      return(NA)
+      return(NA_real_)
     } else {
       return("NR")
     }
@@ -266,8 +266,6 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' 
 #' @param HRTListObj HRTList object
 #' @param av Function, Type of averaging the VPCSs, either mean or median
-#' @param avTO Function, Type of averaging for TO, either mean or median
-#' @param avTS Function, Type of averaging for TS, either mean or median
 #' @param orTO Numeric, Order in which TO was calculated, 
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
@@ -292,8 +290,9 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   
   # sets the type of averaging
     if (!identical(av, mean) && !identical(av, median)) {
-      warning(paste("Function", av, "for parameter averaging is unknown, falling back to default."))
+      warning(paste("Function", as.character(substitute(av)), "for parameter averaging is unknown, falling back to default."))
       av <- mean
+      rowAv <- rowMeans
     } else if (identical(av, mean)) {
       rowAv <- rowMeans
     } else if (identical(av, median)) {
@@ -309,6 +308,9 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     warning(paste("Value", orTS, "for parameter calculation order is unknown, falling back to default."))
     orTS <- 2
   }
+  
+  # checks remaining parameters
+  if(any(!is.numeric(c(IL, normIL, coTO, coTS, coTT)))) stop("Values for normalisation or cut-offs are not numeric.")
   
   # calculates the mean intervals
     couplRR <- av(sapply(HRTListObj@HRTs, slot, "couplRR"))

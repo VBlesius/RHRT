@@ -41,6 +41,7 @@ setGeneric("getPositions", function(HRTListObj) {
 #' @rdname getPositions
 #' @export
 setMethod("getPositions", "HRTList", function(HRTListObj) {
+  checkValidity(HRTListObj, pos = TRUE)
     return(HRTListObj@pos)
 })
 
@@ -68,6 +69,9 @@ setGeneric("getResults", function(HRTListObj, type = "class", TT = FALSE, safe =
 #' @rdname getResults
 #' @export
 setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
+  
+  checkValidity(HRTListObj, av = TRUE)
+  
   # checks whether the string given in type is viable
   types <- c("class", "parameter", "full")
   if(!type %in% types) stop("The given value for 'type' is unknown!")
@@ -175,6 +179,7 @@ setGeneric("getHRTParams", function(HRTListObj, sl) {
 #' @rdname getHRTParams
 #' @export
 setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
+  checkValidity(HRTListObj)
   Params <- lapply(HRTListObj@HRTs, slot, sl)
   return(Params)
 })
@@ -283,6 +288,8 @@ setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL =
 #' @export
 setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, coTO = COTO, coTS = COTS, coTT = COTT) {
 
+  checkValidity(HRTListObj)
+  
   # sets the type of averaging
     if (!identical(av, mean) && !identical(av, median)) {
       warning(paste("Function", av, "for parameter averaging is unknown, falling back to default."))
@@ -382,4 +389,23 @@ setMethod("plot", "HRTList", function(x, cropped = TRUE, showTT = FALSE, ...) {
     })
     
     plot(x@avHRT, add = TRUE, cropped = cropped, showTT = showTT, ...)
-}) 
+})
+
+# -------------------------------------------------------------------------------
+#' Check for HRTList class
+#'
+#' @param x HRTList
+#' @param av Boolean Should avHRT be checked?
+#' @param pos Boolean Should pos be checked?
+#'
+#' @rdname checkValidity
+setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {
+  if(length(x@HRTs) == 0 || (length(x@HRTs) == 1 && is.na(x@HRTs@couplRR)))
+    stop("The HRTList does not contain any HRTs")
+
+  if(av) if(identical(x@avHRT, new("avHRT")))
+    stop("The average HRT is empty. Make sure to calculate it and try again.")
+
+  if(pos) if(is.na(x@pos) || length(x@pos) == 0)
+    stop("There seem to be no HRTs in your HRTList.")
+})

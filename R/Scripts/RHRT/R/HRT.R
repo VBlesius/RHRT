@@ -92,7 +92,7 @@ setGeneric("calcHRTParams", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
 })
 #' @rdname calcHRTParams
 setMethod("calcHRTParams", "HRT", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
-  checkValidity(HRTObj, "intervals")
+  checkValidity(HRTObj)
 
   HRTObj <- calcTO(HRTObj)
   HRTObj <- calcTS(HRTObj)
@@ -114,7 +114,7 @@ setGeneric("calcTO", function(HRTObj) {
 #' @rdname calcTO
 #' @export
 setMethod("calcTO", "HRT", function(HRTObj) {
-  checkValidity(HRTObj, "intervals")
+  checkValidity(HRTObj)
   
   preRRs <- HRTObj@preRRs
   postRRs <- HRTObj@postRRs
@@ -147,7 +147,7 @@ setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL
 #' @rdname calcTS
 #' @export
 setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL) {
-  checkValidity(HRTObj, "intervals")
+  checkValidity(HRTObj)
   
   postRRs <- HRTObj@postRRs
   if (normalising) postRRs <- postRRs*normIL/IL
@@ -275,21 +275,16 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
 #-------------------------------------------------------------------------------
 #' Checks whether slots are set
 #' 
-#' @param HRTObj HRT object
-#' @param type Which slots should be checked? 
-#'     (Only intervals or parameters also?)
+#' @param x Object to be checked
+#' @param ... Other parameters
 #' 
 #' @rdname checkValidity
-setGeneric("checkValidity", function(HRTObj, type = "full") {
+setGeneric("checkValidity", function(x,...) {
   standardGeneric("checkValidity")
 })
 #' @rdname checkValidity
-setMethod("checkValidity", "HRT", function(HRTObj, type = "full") {
-  if(anyNA(getRRs(HRTObj))) {
+setMethod("checkValidity", "HRT", function(x) {
+  if(anyNA(getRRs(x))) {
     stop("One or more interval is not set (NA)! Please make sure you have initialized the HRT object correctly!")
   }
-  if(type == "full" &&
-     anyNA(c(HRTObj@TO, HRTObj@TS, HRTObj@ablineCoefficients))) {
-      stop("One or more HRT parameter of the given object is not set (NA)! Did you calculate the parameters? Use calcHRTParams first and try again!")
-    }
 })

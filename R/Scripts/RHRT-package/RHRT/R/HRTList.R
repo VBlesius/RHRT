@@ -262,7 +262,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     TOs <- unlist(getHRTParams(HRTListObj, "TO"))
     TSs <- unlist(getHRTParams(HRTListObj, "TS"))
     TTs <- unlist(getHRTParams(HRTListObj, "TT"))
-    if (IL != HRTListObj@IL || normIL != c_normIL)
+    if (!all.equal(IL, HRTListObj@IL) || !all.equal(normIL, c_normIL))
       HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
     nTSs <- unlist(getHRTParams(HRTListObj, "nTS"))
     nintercepts <- unlist(getHRTParams(HRTListObj, "nintercept"))

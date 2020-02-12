@@ -338,7 +338,7 @@ setMethod("plot", "HRTList", function(x, cropped = TRUE, showTT = FALSE, ...) {
 #'
 #' @rdname checkValidity
 setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {
-  if(length(x@HRTs) == 0 || (length(x@HRTs) == 1 && is.na(x@HRTs@couplRR)))
+  if(length(x@HRTs) == 0 || (length(x@HRTs) == 1 && is.na(x@HRTs[[1]]@couplRR)))
     stop("The HRTList does not contain any HRTs")
 
   if(av) if(identical(x@avHRT, new("avHRT")))

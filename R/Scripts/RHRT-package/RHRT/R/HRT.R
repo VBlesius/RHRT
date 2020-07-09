@@ -36,9 +36,7 @@ setClass("HRT",
 
          validity = function(object) {
            if(any(length(object@couplRR) != 1,
-                  length(object@compRR) != 1,
-                  length(object@preRRs) < c_numPreRRs,
-                  length(object@postRRs) < c_numPostRRs)) {
+                  length(object@compRR) != 1)) {
              stop("The number of given intervals for the HRT object is incorrect!")
            }
          }
@@ -48,8 +46,8 @@ setClass("HRT",
 #' @param .Object The name of the class
 #' @param couplRR Numeric, Coupling interval
 #' @param compRR Numeric, Compensatory interval
-#' @param preRRs Numeric vector, Preceding 6 intervals
-#' @param postRRs Numeric vector, Following 16 intervals
+#' @param preRRs Numeric vector, Preceding intervals
+#' @param postRRs Numeric vector, Following intervals
 #' @param ... Other values to be saved in the slots of the HRT object 
 #' given in tag = value form
 #' 

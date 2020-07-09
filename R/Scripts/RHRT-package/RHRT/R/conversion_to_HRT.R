@@ -194,7 +194,7 @@ checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPo
       # object
       if (isNotDeviating) {
           tempHRT <- new("HRT", couplRR = couplRR, compRR = compRR, 
-              preRRs = preRRs[-(numPreRRs - 2):0], postRRs = postRRs[1:15])
+              preRRs = preRRs[1:(numPreRRs-1)], postRRs = postRRs[1:(numPostRRs-1)])
           return(tempHRT)
       }
     }

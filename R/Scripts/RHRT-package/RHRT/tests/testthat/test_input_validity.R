@@ -27,7 +27,7 @@ test_that("numerical ranges", {
 
 test_that("length of data", {
   expect_error(vectorToHRT(1), "too short")
-  expect_error(vectorToHRT(seq(1:(numSeq - 1))), "too short")
+  expect_error(vectorToHRT(seq(1:(c_numPreRRs+c_numPostRRs+1))), "too short")
   expect_error(vectorToHRT(c(1, 2, 3)), "too short")
   expect_error(vectorToHRT(list(1, 2, 3)), "too short")
 })

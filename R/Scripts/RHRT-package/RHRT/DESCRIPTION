@@ -1,7 +1,7 @@
 Package: RHRT
 Type: Package
 Title: Scans for PVCs and Calculates HRT Parameters
-Version: 0.2
+Version: 0.3
 Date: 2016-02-11
 Author: Valeria Blesius
 Maintainer: Valeria Blesius <valeria.blesius@mni.thm.de>

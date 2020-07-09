@@ -8,14 +8,20 @@
 #' @param input Numeric vector
 #' @param annotations Alphabetical vector
 #' @param PVCAnn Character
+#' @param numPreRRs Numeric
+#' @param numPostRRs Numeric 
 #' @inheritParams calcHRTParams
 #' @return HRTList HRTList object
 #' 
 #' @export
-vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_normIL) {
-    if (is.list(input)) 
+vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_normIL, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
+    numPreRRs <- numPreRRs + 1
+    numPostRRs <- numPostRRs + 1
+    numSeq <- numPreRRs + numPostRRs + 2
+  
+      if (is.list(input)) 
         input <- unlist(input)
-    checkInput(input)
+    checkInput(input, numSeq)
     
     if(!is.null(annotations)) {
       if (is.list(annotations)) 
@@ -23,7 +29,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
       checkAnnotations(annotations, input, PVCAnn)
     }
 
-    tempHRTList <- getHRTs(input, annotations, PVCAnn)
+    tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSeq)
     if (length(tempHRTList@HRTs) == 0) {
         warning("No HRTs found in your data!")
     } else {
@@ -39,7 +45,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
 #' 
 #' @param input Numeric vector
 #'
-checkInput <- function(input) {
+checkInput <- function(input, numSeq) {
     if (is.null(input)) {
         stop("Given data is NULL! Please make sure your input is of type vector and not empty.")
     }
@@ -105,15 +111,15 @@ checkAnnotations <- function(annotations, input, PVCAnn) {
 #' @param PVCAnn Character
 #' @return HRTListObj
 #' 
-getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V") {
+getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs, numSeq) {
   
   hrts <-
     if (is.null(annotations)) {
-      wapply(intervals, numSeq, by = 1, FUN = checkForHRT)
+      wapply(intervals, numSeq, by = 1, FUN = checkForHRT, numPreRRs, numPostRRs)
     } else {
       PVCIndices <- which(annotations == PVCAnn)
       PVCIndices <- PVCIndices[PVCIndices > numPreRRs & PVCIndices < length(annotations)-numPostRRs]
-      sapply(PVCIndices, function(PVCIndex) checkForHRT(intervals[(PVCIndex-numPreRRs):(PVCIndex+numPostRRs+1)]))
+      sapply(PVCIndices, function(PVCIndex) checkForHRT(intervals[(PVCIndex-numPreRRs):(PVCIndex+numPostRRs+1)], numPreRRs, numPostRRs))
     }
   
   indices <- which(sapply(hrts, is.null) != TRUE)
@@ -136,7 +142,7 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V") {
 #' @param intervals Numeric vector
 #' @return HRT A single HRT object
 #' 
-checkForHRT <- function(intervals) {
+checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
     # Defines    
     # coupling,
     # compensatory,

@@ -37,8 +37,8 @@ setClass("HRT",
          validity = function(object) {
            if(any(length(object@couplRR) != 1,
                   length(object@compRR) != 1,
-                  length(object@preRRs) != numPreRRs,
-                  length(object@postRRs) != numPostRRs)) {
+                  length(object@preRRs) < c_numPreRRs,
+                  length(object@postRRs) < c_numPostRRs)) {
              stop("The number of given intervals for the HRT object is incorrect!")
            }
          }

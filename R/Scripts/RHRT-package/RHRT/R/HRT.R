@@ -121,7 +121,7 @@ setMethod("calcTO", "HRT", function(HRTObj) {
     warning("The sum of the intervals preceding the coupling interval is zero! Turbulence onset can't be calculated!")
     HRTObj@TO <- NA_real_
   } else {
-    HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(preRRs) ) / sum(preRRs) ) * 100
+    HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(tail(preRRs, 2)) ) / sum(tail(preRRs,2)) ) * 100
   }
   
   return(HRTObj)

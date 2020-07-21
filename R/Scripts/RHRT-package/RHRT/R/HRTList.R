@@ -26,7 +26,7 @@ setClass("HRTList",
            pos = "vector",
            HRTs = "list", 
            avHRT = "avHRT",
-           RMSSD = "RMSSD"))
+           RMSSD = "numeric"))
 
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs

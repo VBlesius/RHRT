@@ -36,6 +36,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
         tempHRTList@IL <- mean(input)
         tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
         tempHRTList@avHRT <- calcAvHRT(tempHRTList)
+        tempHRTList@RMSSD <- sqrt(mean(diff(input)^2))
     }
     return(tempHRTList)
 }

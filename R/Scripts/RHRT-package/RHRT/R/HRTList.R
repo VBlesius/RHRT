@@ -9,6 +9,8 @@
 #'     given input
 #' @slot HRTs List, all HRT objects
 #' @slot avHRT avHRT object, the average of all HRTs
+#' @slot RMSSD Numeric, square root of the mean of the squared successive 
+#' differences between adjacent intervals of the whole measurement
 #' 
 #' @note After using \code{vectorToHRT} all slots in the resulting HRTList 
 #' object are set. Please do not set them manually since many functions of the 
@@ -23,7 +25,8 @@ setClass("HRTList",
            IL = "numeric",
            pos = "vector",
            HRTs = "list", 
-           avHRT = "avHRT"))
+           avHRT = "avHRT",
+           RMSSD = "RMSSD"))
 
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs

@@ -11,10 +11,11 @@
 #' @param numPreRRs Numeric
 #' @param numPostRRs Numeric 
 #' @inheritParams calcHRTParams
+#' @param normHallstrom Boolean, should the normalisation of Hallstrom be used?
 #' @return HRTList HRTList object
 #' 
 #' @export
-vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_normIL, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
+vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_normIL, normHallstrom = TRUE, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
     numPreRRs <- numPreRRs + 1
     numPostRRs <- numPostRRs + 1
     numSeq <- numPreRRs + numPostRRs + 2
@@ -35,7 +36,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
     } else {
         tempHRTList@IL <- mean(input)
         tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
-        tempHRTList@avHRT <- calcAvHRT(tempHRTList)
+        tempHRTList@avHRT <- calcAvHRT(tempHRTList, normHallstrom)
         tempHRTList@RMSSD <- sqrt(mean(diff(input)^2))
     }
     return(tempHRTList)

@@ -212,18 +212,19 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
 #' @inheritParams calcHRTParams
+#' @param normHallstrom Boolean, should the normalisation of Hallstrom be used?
 #' @param coTO Numeric, cut-off value for TO
 #' @param coTS Numeric, cut-off value for TS and nTS
 #' @param coTT Numeric, cut-off value for TT
 #' @return avHRTObj
 #' 
 #' @rdname calcAvHRT
-setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, coTO = COTO, coTS = COTS, coTT = COTT) {
+setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
     standardGeneric("calcAvHRT")
 })
 #' @rdname calcAvHRT
 #' @export
-setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, coTO = COTO, coTS = COTS, coTT = COTT) {
+setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
 
   checkValidity(HRTListObj)
   
@@ -288,6 +289,13 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   # calculates TS, first for every VPC seperately, secondly in default order
   # additionally saves TT and intercept 
 
+    # Function to normalise TS after Hallstrom
+    hallstromise <- function(ts, HRTListObj) {
+      k <- length(HRTListObj@avHRT@postRRs)
+      numVPCs <- length(HRTListObj@pos)
+      nTS <- 0.2475 * (k-2)^0.9449 * HRTListObj@RMSSD / sqrt(numVPCs)
+    }
+    
     # sets averaged parameters
     if (orTS == 1) {
       # TS+intercept
@@ -298,14 +306,15 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
       avHRT@TT <- av(TTs)
 
       # normalised TS+intercept if normalising parameters are given
-      avHRT@nTS <- av(nTSs)
+      nTS <- av(nTSs)
+      if(normHallstrom) mavHRT@nTS <- hallstromise(nTS, HRTListObj)
       avHRT@nintercept <- av(nintercepts)
     }
     if (orTS == 2) {
       avHRT <- calcTS(avHRT)
       avHRT <- calcTS(avHRT, normalising = TRUE, IL, normIL)
+      if(normHallstrom) avHRT@nTS <- hallstromise(avHRT@nTS, HRTListObj)
     }
-    
     return(avHRT)
 })
 

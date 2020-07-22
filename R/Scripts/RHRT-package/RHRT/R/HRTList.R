@@ -9,7 +9,7 @@
 #'     given input
 #' @slot HRTs List, all HRT objects
 #' @slot avHRT avHRT object, the average of all HRTs
-#' @slot RMSSD Numeric, square root of the mean of the squared successive 
+#' @slot nRMSSD Numeric, square root of the mean of the squared successive normalised to HR
 #' differences between adjacent intervals of the whole measurement
 #' 
 #' @note After using \code{vectorToHRT} all slots in the resulting HRTList 
@@ -26,7 +26,7 @@ setClass("HRTList",
            pos = "vector",
            HRTs = "list", 
            avHRT = "avHRT",
-           RMSSD = "numeric"))
+           nRMSSD = "numeric"))
 
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs
@@ -290,10 +290,11 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   # additionally saves TT and intercept 
 
     # Function to normalise TS after Hallstrom
-    hallstromise <- function(ts, HRTListObj) {
-      k <- length(HRTListObj@avHRT@postRRs)
+    hallstromise <- function(ts, avHRT, HRTListObj) {
+      k <- length(avHRT@postRRs)
       numVPCs <- length(HRTListObj@pos)
-      nTS <- 0.2475 * (k-2)^0.9449 * HRTListObj@RMSSD / sqrt(numVPCs)
+      TSk <- 0.02475 * (k-2)^0.9449 * HRTListObj@nRMSSD / sqrt(numVPCs)
+      nTS <- avHRT@nTS - TSk
     }
     
     # sets averaged parameters
@@ -307,13 +308,13 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 
       # normalised TS+intercept if normalising parameters are given
       nTS <- av(nTSs)
-      if(normHallstrom) mavHRT@nTS <- hallstromise(nTS, HRTListObj)
+      if(normHallstrom) avHRT@nTS <- hallstromise(nTS, HRTListObj)
       avHRT@nintercept <- av(nintercepts)
     }
     if (orTS == 2) {
       avHRT <- calcTS(avHRT)
       avHRT <- calcTS(avHRT, normalising = TRUE, IL, normIL)
-      if(normHallstrom) avHRT@nTS <- hallstromise(avHRT@nTS, HRTListObj)
+      if(normHallstrom) avHRT@nTS <- hallstromise(avHRT@nTS, avHRT, HRTListObj)
     }
     return(avHRT)
 })

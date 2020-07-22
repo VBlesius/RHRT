@@ -36,8 +36,8 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
     } else {
         tempHRTList@IL <- mean(input)
         tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
-        tempHRTList@avHRT <- calcAvHRT(tempHRTList, normHallstrom)
-        tempHRTList@RMSSD <- sqrt(mean(diff(input)^2))
+        tempHRTList@nRMSSD <- sqrt(mean(diff(input)^2))*normIL/tempHRTList@IL
+        tempHRTList@avHRT <- calcAvHRT(tempHRTList, normHallstrom = normHallstrom)
     }
     return(tempHRTList)
 }

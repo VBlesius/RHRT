@@ -20,8 +20,8 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
     numPostRRs <- numPostRRs + 1
     numSeq <- numPreRRs + numPostRRs + 2
   
-      if (is.list(input)) 
-        input <- unlist(input)
+    if (is.list(input))
+      input <- unlist(input)
     checkInput(input, numSeq)
     
     if(!is.null(annotations)) {
@@ -29,14 +29,15 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
         annotations <- unlist(annotations)
       checkAnnotations(annotations, input, PVCAnn)
     }
-
+    
+    inputCleaned <- cleanInput(input)
     tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSeq)
     if (length(tempHRTList@HRTs) == 0) {
         warning("No HRTs found in your data!")
     } else {
-        tempHRTList@IL <- mean(input)
+        tempHRTList@IL <- mean(inputCleaned)
         tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
-        tempHRTList@nRMSSD <- sqrt(mean(diff(input)^2))*normIL/tempHRTList@IL
+        tempHRTList@nRMSSD <- sqrt(mean(diff(inputCleaned)^2))*normIL/tempHRTList@IL
         tempHRTList@avHRT <- calcAvHRT(tempHRTList, normHallstrom = normHallstrom)
     }
     return(tempHRTList)
@@ -66,13 +67,25 @@ checkInput <- function(input, numSeq) {
   
     input = input[2:length(input)]
   
+       stop("Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again.")
+    }
     if (length(input) < numSeq) {
-        stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ", 
-            numSeq, "."))
-    }
     if (mean(input) < 1 || mean(input) > 2000) {
-        stop("Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again.")
+      stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ", 
+               numSeq, "."))
     }
+
+}
+
+# -------------------------------------------------------------------------------
+#' Cleans data input for further checks or calculation
+#' 
+#' @param input Numeric vector
+#'
+cleanInput <- function(input) {
+  inputNew <- input[input > 300 & input < 2000]
+  inputNew <- tail(input, -1)[abs(diff(input)) <= head(input, -1)*0.2]
+  return(inputNew)
 }
 
 # -------------------------------------------------------------------------------

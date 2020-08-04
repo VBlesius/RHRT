@@ -34,5 +34,4 @@ test_that("length of data", {
 
 test_that("unit of data", {
   expect_error(vectorToHRT(rep(0.5, 100)), "seconds")
-  expect_error(vectorToHRT(rep(2001, 100)), "seconds")
 })

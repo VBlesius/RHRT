@@ -12,6 +12,7 @@ test_that("Finding HRTs", {
   expect_length(vectorToHRT(testdataVariantNoHRT)@HRTs, 0)
      
   expect_warning(vectorToHRT(rep(782, 1000)), "No HRTs")
+  expect_warning(vectorToHRT(rep(2001, 100)), "No HRTs")
   expect_warning(vectorToHRT(testdataVariantNoHRT), "No HRTs")
   
 })

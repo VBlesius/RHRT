@@ -84,7 +84,7 @@ checkInput <- function(input, numSeq) {
 #'
 cleanInput <- function(input) {
   inputNew <- input[input > 300 & input < 2000]
-  inputNew <- tail(input, -1)[abs(diff(input)) <= head(input, -1)*0.2]
+  inputNew <- tail(inputNew, -1)[abs(diff(inputNew)) <= head(inputNew, -1)*0.2]
   return(inputNew)
 }
 

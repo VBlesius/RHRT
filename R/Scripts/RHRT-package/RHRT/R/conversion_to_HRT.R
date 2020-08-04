@@ -18,13 +18,13 @@
 vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_normIL, normHallstrom = TRUE, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
     numPreRRs <- numPreRRs + 1
     numPostRRs <- numPostRRs + 1
-    numSeq <- numPreRRs + numPostRRs + 2
+    numSnippet <- numPreRRs + numPostRRs + 2
     inputName <- names(input)
     if(any(is.null(inputName)) || any(is.na(inputName))) inputName <- as.name(NA)
   
     if (is.list(input))
       input <- unlist(input)
-    checkInput(input, numSeq)
+    checkInput(input, numSnippet)
     
     if(!is.null(annotations)) {
       if (is.list(annotations)) 
@@ -33,7 +33,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
     }
     
     inputCleaned <- cleanInput(input)
-    tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSeq)
+    tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSnippet)
     if (length(tempHRTList@HRTs) == 0) {
         warning("No HRTs found in your data!")
     } else {
@@ -49,9 +49,10 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
 # -------------------------------------------------------------------------------
 #' Checks data input for compatibility
 #' 
-#' @param input Numeric vector
+#' @param numSnippet Numeric, number of RRs in the the HRT snippet
+#' @inheritParams vectorToHRT
 #'
-checkInput <- function(input, numSeq) {
+checkInput <- function(input, numSnippet) {
     if (is.null(input)) {
         stop("Given data is NULL! Please make sure your input is of type vector and not empty.")
     }
@@ -70,9 +71,9 @@ checkInput <- function(input, numSeq) {
     if (mean(input) < 1 ) {
        stop("Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again.")
     }
-    if (length(input) < numSeq) {
+    if (length(input) < numSnippet) {
       stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ", 
-               numSeq, "."))
+               numSnippet, "."))
     }
 
 }
@@ -80,7 +81,7 @@ checkInput <- function(input, numSeq) {
 # -------------------------------------------------------------------------------
 #' Cleans data input for further checks or calculation
 #' 
-#' @param input Numeric vector
+#' @inheritParams vectorToHRT
 #'
 cleanInput <- function(input) {
   inputNew <- input[input > 300 & input < 2000]
@@ -91,9 +92,7 @@ cleanInput <- function(input) {
 # -------------------------------------------------------------------------------
 #' Checks annotations for compatibility
 #' 
-#' @param annotations Alphabetical vector
-#' @param input Numeric vector
-#' @param PVCAnn Character
+#' @inheritParams vectorToHRT
 #'
 checkAnnotations <- function(annotations, input, PVCAnn) {
   if (is.null(annotations)) {
@@ -122,15 +121,15 @@ checkAnnotations <- function(annotations, input, PVCAnn) {
 #' Scans for HRTs in the given vector and returns an HRTList object.
 #'
 #' @param intervals Numeric vector
-#' @param annotations Alphabetical vector
-#' @param PVCAnn Character
+#' @param numSnippet Numeric, number of RRs in the the HRT snippet
+#' @inheritParams vectorToHRT
 #' @return HRTListObj
 #' 
-getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs, numSeq) {
+getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs, numSnippet) {
   
   hrts <-
     if (is.null(annotations)) {
-      wapply(intervals, numSeq, by = 1, FUN = checkForHRT, numPreRRs, numPostRRs)
+      wapply(intervals, numSnippet, by = 1, FUN = checkForHRT, numPreRRs, numPostRRs)
     } else {
       PVCIndices <- which(annotations == PVCAnn)
       PVCIndices <- PVCIndices[PVCIndices > numPreRRs & PVCIndices < length(annotations)-numPostRRs]
@@ -154,7 +153,7 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_n
 # -------------------------------------------------------------------------------
 #' Checks RR-intervals for HRT criteria and returns an HRT object
 #'
-#' @param intervals Numeric vector
+#' @inheritParams getHRTs
 #' @return HRT A single HRT object
 #' 
 checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {

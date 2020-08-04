@@ -19,6 +19,8 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
     numPreRRs <- numPreRRs + 1
     numPostRRs <- numPostRRs + 1
     numSeq <- numPreRRs + numPostRRs + 2
+    inputName <- names(input)
+    if(any(is.null(inputName)) || any(is.na(inputName))) inputName <- as.name(NA)
   
     if (is.list(input))
       input <- unlist(input)
@@ -35,6 +37,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
     if (length(tempHRTList@HRTs) == 0) {
         warning("No HRTs found in your data!")
     } else {
+        tempHRTList@name <- inputName
         tempHRTList@IL <- mean(inputCleaned)
         tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
         tempHRTList@nRMSSD <- sqrt(mean(diff(inputCleaned)^2))*normIL/tempHRTList@IL

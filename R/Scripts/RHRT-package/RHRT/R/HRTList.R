@@ -4,6 +4,7 @@
 #' also saves an averaged HRT for calculation of the averaged HRT parameters and
 #' plotting of all HRTs in a single plot.
 #'
+#' @slot name Name, Name of the vector if given
 #' @slot IL Numeric, Arithmetic mean of the overall interval length of the vector
 #' @slot pos Numeric vector, Positions of premature ventricular complexes in 
 #'     given input
@@ -22,6 +23,7 @@
 #' @include avHRT.R
 setClass("HRTList", 
          slots = list(
+           name = "name",
            IL = "numeric",
            pos = "vector",
            HRTs = "list", 

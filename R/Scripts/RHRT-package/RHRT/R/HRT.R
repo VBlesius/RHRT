@@ -161,10 +161,11 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
   
   # Calculate intercept for regression line in plot
   ## Formula for the intercept: mean(y) - slope*mean(x)
+  n_preRRs <- length(HRTObj@preRRs)
   slope <- TS_temp
   index <- which.max(slopes)
-  TS_intervals <- postRRs[index:(index + 4)]
-  intercept <- mean(c(min(TS_intervals), max(TS_intervals))) - slope*(mean(x)+3+index)
+  TS_intervals <- postRRs[index:(index + n_preRRs)]
+  intercept <- mean(c(min(TS_intervals), max(TS_intervals))) - slope*(mean(x)+n_preRRs+1+index)
   # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
   
   if (normalising) {
@@ -224,6 +225,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
                                   ylab = "length of RR interval (ms)",
                                   ...) {
   rrs <- getRRs(x)
+  n_preRRs <- length(x@preRRs)
 
   if(!add) {
     ymin <- min(c(x@preRRs, x@postRRs))
@@ -238,13 +240,12 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
          type = type,
          pch = pch,
          xlab = xlab,
-         ylab = ylab,
-         ...)
+         ylab = ylab)
   } else {
     lines(seq(1:length(rrs)), rrs)
   }
 
-  axis(1, at = seq(1:length(rrs)), labels = c(-2, -1, "couplRR", "compRR", seq(1:(length(rrs)-4))), las=2)
+  axis(1, at = seq(1:length(rrs)), labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))), las=2)
   if (showTT) {
     legend("bottomright", c("Turbulence onset", "Turbulence slope", "Turbulence Timing"),
            lty = c(3), pch = c(19, NA), col = c("red", "blue", "chartreuse3")) 
@@ -254,12 +255,13 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
    }
 
   # Turbulence onset
-  points(c(1,2,5,6), c(rrs[1:2], rrs[5:6]), bg= "red", pch = 21)
+  to_indices <- c(n_preRRs-1, n_preRRs, n_preRRs+3, n_preRRs+4)
+  points(c(to_indices), c(rrs[to_indices]), bg= "red", pch = 21)
   #arrows(1, rrs[1], 6, rrs[1], lty = 3, col = "red", code = 0)
   #arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
 
   # Turbulence slope
-  TTcorr <- x@TT+4
+  TTcorr <- x@TT+n_preRRs+2
   points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = "blue", pch = 21)
   abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
   

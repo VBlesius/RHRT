@@ -17,10 +17,10 @@
 #' @slot nTS Numeric, Normalised Turbulence slope
 #' @slot nintercept Numeric, Intercept of regression line of nTS
 
-#' 
+#'
 #' @name HRT
-#' 
-#' @importFrom methods setMethod 
+#'
+#' @importFrom methods setMethod
 setClass("HRT",
          slots = list(
            couplRR = "numeric",
@@ -48,9 +48,9 @@ setClass("HRT",
 #' @param compRR Numeric, Compensatory interval
 #' @param preRRs Numeric vector, Preceding intervals
 #' @param postRRs Numeric vector, Following intervals
-#' @param ... Other values to be saved in the slots of the HRT object 
+#' @param ... Other values to be saved in the slots of the HRT object
 #' given in tag = value form
-#' 
+#'
 #' @rdname HRT
 #' @export
 setMethod("initialize", "HRT",
@@ -73,17 +73,17 @@ setMethod("initialize", "HRT",
 
 #-------------------------------------------------------------------------------
 #' Calculate HRT parameters
-#' 
-#' Calculates all HRT parameters needed for an HRT object 
+#'
+#' Calculates all HRT parameters needed for an HRT object
 #' and saves them in the corresponding slots.
-#' 
+#'
 #' This method is a wrapper for the methods calcTO and calcTS.
-#' 
+#'
 #' @param HRTObj HRT, The HRT object of which the parameters should be calculated
-#' @param IL Numeric, The overall arithmetic mean of the interval length of the 
+#' @param IL Numeric, The overall arithmetic mean of the interval length of the
 #' measurement to normalise TS
 #' @param normIL Numeric, The interval length to which TS should be normalised
-#' 
+#'
 #' @rdname calcHRTParams
 setGeneric("calcHRTParams", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
   standardGeneric("calcHRTParams")
@@ -101,10 +101,10 @@ setMethod("calcHRTParams", "HRT", function(HRTObj, IL = c_normIL, normIL = c_nor
 
 #-------------------------------------------------------------------------------
 #' Calculate TO parameters
-#' 
+#'
 #' Calculates the TO parameters and saves it in the corresponding slot
 #' @param HRTObj HRT, The HRT object, for which TO should be calculated
-#' 
+#'
 #' @rdname calcTO
 setGeneric("calcTO", function(HRTObj) {
   standardGeneric("calcTO")
@@ -113,31 +113,31 @@ setGeneric("calcTO", function(HRTObj) {
 #' @export
 setMethod("calcTO", "HRT", function(HRTObj) {
   checkValidity(HRTObj)
-  
+
   preRRs <- HRTObj@preRRs
   postRRs <- HRTObj@postRRs
-  
+
   if(sum(preRRs) == 0) {
     warning("The sum of the intervals preceding the coupling interval is zero! Turbulence onset can't be calculated!")
     HRTObj@TO <- NA_real_
   } else {
     HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(tail(preRRs, 2)) ) / sum(tail(preRRs,2)) ) * 100
   }
-  
+
   return(HRTObj)
 })
 
 #-------------------------------------------------------------------------------
 #' Calculate TS parameters
-#' 
+#'
 #' Calculates all TS parameters (TS itself, its index TT (turbulence timing)
 #' and the intercept for the plot) and saves them in the corresponding slots.
 #' Can also calculate normalised TS and intercept.
-#' 
+#'
 #' @param HRTObj HRT, The HRT object, for which TS should be calculated
 #' @param normalising Boolean, Should the normalised TS be calculated?
 #' @inheritParams calcHRTParams
-#' 
+#'
 #' @rdname calcTS
 setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL) {
   standardGeneric("calcTS")
@@ -146,10 +146,10 @@ setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL
 #' @export
 setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL) {
   checkValidity(HRTObj)
-  
+
   postRRs <- HRTObj@postRRs
   if (normalising) postRRs <- postRRs*normIL/IL
-  
+
   # Calculate TS
   ## Formula for the slope: (n * sum(xy) - (sum(x))(sum(y))) / (n x sum(x)^2 - (sum(x))^2)
   x <- seq(1,5)
@@ -158,7 +158,7 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
     return((n*sum(x*y)-sum(x)*sum(y)) / (n*sum(x^2)-sum(x)^2))
   })
   TS_temp <- max(slopes, na.rm = TRUE)
-  
+
   # Calculate intercept for regression line in plot
   ## Formula for the intercept: mean(y) - slope*mean(x)
   n_preRRs <- length(HRTObj@preRRs)
@@ -167,7 +167,7 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
   TS_intervals <- postRRs[index:(index + n_preRRs)]
   intercept <- mean(c(min(TS_intervals), max(TS_intervals))) - slope*(mean(x)+n_preRRs+1+index)
   # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
-  
+
   if (normalising) {
     HRTObj@nTS <- slope
     HRTObj@nintercept <- intercept
@@ -182,14 +182,15 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
 
 #-------------------------------------------------------------------------------
 #' Returns the VPCS intervals in right order
-#' 
+#'
 #' @param HRTObj HRT object
-#' 
+#'
 #' @rdname getRRs
 setGeneric("getRRs", function(HRTObj) {
   standardGeneric("getRRs")
 })
 #' @rdname getRRs
+#' @export
 setMethod("getRRs", "HRT", function(HRTObj) {
   return(c(HRTObj@preRRs,
            HRTObj@couplRR,
@@ -199,10 +200,10 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 
 #-------------------------------------------------------------------------------
 #' Plot an HRT object
-#' 
+#'
 #' Plots RR-intervals saved in the HRT object and marks
 #' turbulence onset and turbulence slope.
-#' 
+#'
 #' @param x HRT, A HRT object
 #' @param cropped Boolean, Should the plot be cut to focuse on the HRT parameters?
 #' To show all points use FALSE.
@@ -213,10 +214,10 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param xlab Character, Label for the x axis
 #' @param ylab Character Label for the x axis
 #' @param ... Other arguments in tag = value form. See graphics::par for more information.
-#' 
-#' @note Please note that the argument xaxt and ylim can't be set, 
+#'
+#' @note Please note that the argument xaxt and ylim can't be set,
 #'  since the axis as well as the ranges of the y axis are set by the function.
-#' 
+#'
 #' @export
 setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE,
                                   type = "o",
@@ -231,7 +232,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
     ymin <- min(c(x@preRRs, x@postRRs))
     ymax <- max(c(x@preRRs, x@postRRs))
     ydiff <- ymax - ymin
-    
+
     plot(seq(1:length(rrs)), rrs,
          xaxt = "n",
          ylim = if(cropped)
@@ -248,7 +249,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
   axis(1, at = seq(1:length(rrs)), labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))), las=2)
   if (showTT) {
     legend("bottomright", c("Turbulence onset", "Turbulence slope", "Turbulence Timing"),
-           lty = c(3), pch = c(19, NA), col = c("red", "blue", "chartreuse3")) 
+           lty = c(3), pch = c(19, NA), col = c("red", "blue", "chartreuse3"))
    } else {
      legend("bottomright", c("Turbulence onset", "Turbulence slope"),
             lty = c(3), pch = c(19, NA), col = c("red", "blue"))
@@ -264,7 +265,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
   TTcorr <- x@TT+n_preRRs+2
   points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = "blue", pch = 21)
   abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
-  
+
   # Turbulence timing
   if (showTT) {
     points(TTcorr, rrs[TTcorr], col = "chartreuse3", cex = 3, pch = 8)
@@ -274,10 +275,10 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
 
 #-------------------------------------------------------------------------------
 #' Checks whether slots are set
-#' 
+#'
 #' @param x Object to be checked
 #' @param ... Other parameters
-#' 
+#'
 #' @rdname checkValidity
 setGeneric("checkValidity", function(x,...) {
   standardGeneric("checkValidity")

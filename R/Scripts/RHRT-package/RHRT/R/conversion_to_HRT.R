@@ -1,37 +1,37 @@
 #' Convert a vector to HRTList
-#' 
+#'
 #' Scans for heart rate turbulence in a vector of RR-intervals and returns an
 #' HRTList object including all found HRT objects.
 #' The HRT criteria used were published by Schmidt et al.
 #' (more information can be found in the vignette.)
-#' 
+#'
 #' @param input Numeric vector
 #' @param annotations Alphabetical vector
 #' @param PVCAnn Character
 #' @param numPreRRs Numeric
-#' @param numPostRRs Numeric 
+#' @param numPostRRs Numeric
 #' @inheritParams calcHRTParams
 #' @param normHallstrom Boolean, should the normalisation of Hallstrom be used?
 #' @return HRTList HRTList object
-#' 
+#'
 #' @export
 vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_normIL, normHallstrom = TRUE, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
     numPreRRs <- numPreRRs + 1
     numPostRRs <- numPostRRs + 1
     numSnippet <- numPreRRs + numPostRRs + 2
     inputName <- names(input)
-    if(any(is.null(inputName)) || any(is.na(inputName))) inputName <- as.name(NA)
-  
+    if(any(is.null(inputName)) || any(is.na(inputName))) inputName <- as.character(NA)
+
     if (is.list(input))
       input <- unlist(input)
     checkInput(input, numSnippet)
-    
+
     if(!is.null(annotations)) {
-      if (is.list(annotations)) 
+      if (is.list(annotations))
         annotations <- unlist(annotations)
       checkAnnotations(annotations, input, PVCAnn)
     }
-    
+
     inputCleaned <- cleanInput(input)
     tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSnippet)
     if (length(tempHRTList@HRTs) == 0) {
@@ -48,7 +48,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
 
 # -------------------------------------------------------------------------------
 #' Checks data input for compatibility
-#' 
+#'
 #' @param numSnippet Numeric, number of RRs in the the HRT snippet
 #' @inheritParams vectorToHRT
 #'
@@ -72,7 +72,7 @@ checkInput <- function(input, numSnippet) {
        stop("Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again.")
     }
     if (length(input) < numSnippet) {
-      stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ", 
+      stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ",
                numSnippet, "."))
     }
 
@@ -80,7 +80,7 @@ checkInput <- function(input, numSnippet) {
 
 # -------------------------------------------------------------------------------
 #' Cleans data input for further checks or calculation
-#' 
+#'
 #' @inheritParams vectorToHRT
 #'
 cleanInput <- function(input) {
@@ -91,7 +91,7 @@ cleanInput <- function(input) {
 
 # -------------------------------------------------------------------------------
 #' Checks annotations for compatibility
-#' 
+#'
 #' @inheritParams vectorToHRT
 #'
 checkAnnotations <- function(annotations, input, PVCAnn) {
@@ -124,9 +124,9 @@ checkAnnotations <- function(annotations, input, PVCAnn) {
 #' @param numSnippet Numeric, number of RRs in the the HRT snippet
 #' @inheritParams vectorToHRT
 #' @return HRTListObj
-#' 
+#'
 getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs, numSnippet) {
-  
+
   hrts <-
     if (is.null(annotations)) {
       wapply(intervals, numSnippet, by = 1, FUN = checkForHRT, numPreRRs, numPostRRs)
@@ -135,15 +135,15 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_n
       PVCIndices <- PVCIndices[PVCIndices > numPreRRs & PVCIndices < length(annotations)-numPostRRs]
       sapply(PVCIndices, function(PVCIndex) checkForHRT(intervals[(PVCIndex-numPreRRs):(PVCIndex+numPostRRs+1)], numPreRRs, numPostRRs))
     }
-  
+
   indices <- which(sapply(hrts, is.null) != TRUE)
-  pos <- 
+  pos <-
     if (is.null(annotations)) {
       indices + numPreRRs
     }  else {
       PVCIndices[indices]
     }
-  
+
   tempHRTList <- new("HRTList")
   tempHRTList@pos <- pos
   tempHRTList@HRTs <- hrts[indices]  # removes NULL entries
@@ -155,9 +155,9 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_n
 #'
 #' @inheritParams getHRTs
 #' @return HRT A single HRT object
-#' 
+#'
 checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
-    # Defines    
+    # Defines
     # coupling,
     # compensatory,
     # preceding
@@ -174,11 +174,11 @@ checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPo
     preRRs <- intervals[1:numPreRRs]
     postRRs <- intervals[(numPreRRs + 3):length(intervals)]
     regRR <- c(preRRs, postRRs)
-    
+
     # Reference
     # interval
     ref <- mean(preRRs)
-    
+
     ## Filtering
     ## methods
     ## checks
@@ -192,22 +192,22 @@ checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPo
     # and
     # artefacts
     isInRange <- all(regRR > 300 && regRR < 2000)
-    
+
     if(isCouplRR & isCompRR & isInRange) {
-    
+
       isNotDeviating <- all(
         regRR >= ref * 0.8,
         regRR <= ref * 1.2,
         diff(preRRs) <= 200,
         diff(postRRs) <= 200
       )
-    
+
       # Saves
       # HRT
       # as
       # object
       if (isNotDeviating) {
-          tempHRT <- new("HRT", couplRR = couplRR, compRR = compRR, 
+          tempHRT <- new("HRT", couplRR = couplRR, compRR = compRR,
               preRRs = tail(preRRs, numPreRRs-1), postRRs = postRRs[1:(numPostRRs-1)])
           return(tempHRT)
       }

@@ -241,7 +241,8 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
          type = type,
          pch = pch,
          xlab = xlab,
-         ylab = ylab)
+         ylab = ylab,
+         ...)
   } else {
     lines(seq(1:length(rrs)), rrs)
   }

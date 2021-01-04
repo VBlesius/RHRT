@@ -164,7 +164,7 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
   n_preRRs <- length(HRTObj@preRRs)
   slope <- TS_temp
   index <- which.max(slopes)
-  TS_intervals <- postRRs[index:(index + n_preRRs)]
+  TS_intervals <- postRRs[index:(index + n_preRRs-1)]
   intercept <- mean(c(min(TS_intervals), max(TS_intervals))) - slope*(mean(x)+n_preRRs+1+index)
   # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
 

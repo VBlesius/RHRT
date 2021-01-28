@@ -21,8 +21,8 @@ test_that("NA", {
 })
 
 test_that("numerical ranges", {
-  expect_error(vectorToHRT(0), "zero or negative")
-  expect_error(vectorToHRT(-1), "zero or negative")
+  expect_warning(vectorToHRT(c(0, seq(1:30))), "zero or negative")
+  expect_warning(vectorToHRT(c(-1, seq(1:30))), "zero or negative")
 })
 
 test_that("length of data", {

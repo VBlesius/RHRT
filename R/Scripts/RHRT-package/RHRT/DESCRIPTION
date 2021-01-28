@@ -8,7 +8,7 @@ Maintainer: Valeria Blesius <valeria.blesius@mni.thm.de>
 Description: Methods to scan interval data for PVCs (premature ventricular
     complexes) and parameterise and plot the resulting HRT.
 Depends:
-    R (>= 2.10.0)
+    R (>= 3.5.0)
 License: MIT + file LICENCE
 LazyData: TRUE
 Imports:

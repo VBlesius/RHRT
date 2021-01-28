@@ -66,7 +66,7 @@ checkInput <- function(input, numSnippet) {
         stop("Given vector includes NA! Please make sure to remove them before using vectorToHRT!")
     }
     if (any(sapply(input, `<=`, 0))) {
-        stop("Given vector includes zero or negative values! Is your data incorrect?")
+        warning("Given vector includes zero or negative values! Is your data incorrect?")
     }
     if (mean(input) < 1 ) {
        stop("Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again.")
@@ -111,7 +111,7 @@ checkAnnotations <- function(annotations, input, PVCAnn) {
     stop("The lengths of given annotation and RR vectors differ!")
   }
   if(!PVCAnn %in% annotations) {
-    warning("The given annotation for PVCs could not be found in your annotation vector!")
+    warning("The given annotation for PVCs could not be found in your annotation vector.")
   }
 }
 

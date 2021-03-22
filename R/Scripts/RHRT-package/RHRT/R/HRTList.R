@@ -160,7 +160,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
         class <- "HRT0"
       }
     }
-    if(!safe && (any(sig == FALSE) || any(is.na(sig)))) class <- paste0(class, "*")
+    #if(!safe && (any(sig == FALSE) || any(is.na(sig)))) class <- paste0(class, "*")
 
     return(class)
   }

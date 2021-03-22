@@ -63,7 +63,7 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' @param TT Boolean, Should TT be given?
 #' @param safe Boolean, Should all values be given regardless of reliability checks? Note, that 'safe' is ignored when the type is 'full'.
 #' @param pmax Numeric, the significance level
-#' @param num Boolean Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values are not combinable with type 'class'.
+#' @param num Boolean Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.
 #' @inheritParams calcAvHRT
 #' @return Named vector, character or numeric
 #'
@@ -79,7 +79,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 
   # checks whether the string given in type is viable
   types <- c("class", "parameter", "full")
-  if(!type %in% types) stop("The given value for 'type' is unknown!")
+  if(!type %in% types) stop(paste("The given value for 'type' is unknown! Please choose one of the following: ", types))
 
   # sets needed variables
   av <- HRTListObj@avHRT
@@ -335,10 +335,14 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 #' @export
 setMethod("plot", "HRTList", function(x, cropped = TRUE, showTT = FALSE, ...) {
     plot(x@avHRT, cropped = cropped, showTT = showTT, ...)
+    avPivot <- tail(x@avHRT@preRRs, n = 1)
 
     lapply(x@HRTs, function(y) {
-        rrs <- getRRs(y)
-        lines(seq(1:length(rrs)), rrs, col = "grey")
+      rrs <- getRRs(y)
+      pivot <- tail(y@preRRs, n = 1)
+      diff <- avPivot - pivot
+      rrs <- rrs + diff
+      lines(seq(1:length(rrs)), rrs, col = "grey")
     })
 
     plot(x@avHRT, add = TRUE, cropped = cropped, showTT = showTT, ...)

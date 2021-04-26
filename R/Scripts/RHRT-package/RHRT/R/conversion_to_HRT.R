@@ -8,28 +8,33 @@
 #' @param input Numeric vector
 #' @param annotations Alphabetical vector
 #' @param PVCAnn Character
+#' @param normHallstrom Boolean, should the normalisation of Hallstrom be used?
 #' @param numPreRRs Numeric
 #' @param numPostRRs Numeric
+#' @param inputName String, name of the data
 #' @inheritParams calcHRTParams
-#' @param normHallstrom Boolean, should the normalisation of Hallstrom be used?
 #' @return HRTList HRTList object
 #'
 #' @export
-vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_normIL, normHallstrom = TRUE, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
+vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
+                        normIL = c_normIL, normHallstrom = TRUE,
+                        numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs,
+                        inputName = as.character(NA)) {
     numPreRRs <- numPreRRs + 1
     numPostRRs <- numPostRRs + 1
     numSnippet <- numPreRRs + numPostRRs + 2
-    inputName <- names(input)
-    if(any(is.null(inputName)) || any(is.na(inputName))) inputName <- as.character(NA)
+
+    # checking input and annotations
+    label <- if(is.na(inputName) || is.null(inputName)) NULL else c(inputName, ": ") # needed for error messages in checkInput and checkAnnotations
 
     if (is.list(input))
       input <- unlist(input)
-    checkInput(input, numSnippet)
+    checkInput(input, numSnippet, label)
 
     if(!is.null(annotations)) {
       if (is.list(annotations))
         annotations <- unlist(annotations)
-      checkAnnotations(annotations, input, PVCAnn)
+      checkAnnotations(annotations, input, PVCAnn, label)
     }
 
     inputCleaned <- cleanInput(input)
@@ -50,29 +55,30 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V", normIL = c_norm
 #' Checks data input for compatibility
 #'
 #' @param numSnippet Numeric, number of RRs in the the HRT snippet
+#' @param label Name of the data given and formatted for output
 #' @inheritParams vectorToHRT
 #'
-checkInput <- function(input, numSnippet) {
+checkInput <- function(input, numSnippet, label) {
     if (is.null(input)) {
-        stop("Given data is NULL! Please make sure your input is of type vector and not empty.")
+      stop(c(label, "Given data is NULL! Please make sure your input is of type vector and not empty."))
     }
     if (!is.vector(input)) {
-        stop("Given data has not the right type! Please make sure your input is of type vector.")
+      stop(c(label, "Given data has not the right type! Please make sure your input is of type vector."))
     }
     if (!is.numeric(input)) {
-        stop("Given RR vector is not numeric!")
+      stop(c(label, "Given RR vector is not numeric!"))
     }
     if (NA %in% input) {
-        stop("Given vector includes NA! Please make sure to remove them before using vectorToHRT!")
+        stop(c(label, "Given vector includes NA! Please make sure to remove them before using vectorToHRT!"))
     }
     if (any(sapply(input, `<=`, 0))) {
-        warning("Given vector includes zero or negative values! Is your data incorrect?")
+        warning(c(label, "Given vector includes zero or negative values! Is your data incorrect?"))
     }
     if (mean(input) < 1 ) {
-       stop("Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again.")
+       stop(c(label, "Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again."))
     }
     if (length(input) < numSnippet) {
-      stop(paste("Your vector is too short! Please consider the number of intervals has to be at least ",
+      stop(c(label, "Your vector is too short! Please consider the number of intervals has to be at least ",
                numSnippet, "."))
     }
 
@@ -93,25 +99,26 @@ cleanInput <- function(input) {
 #' Checks annotations for compatibility
 #'
 #' @inheritParams vectorToHRT
+#' @inheritParams checkInput
 #'
-checkAnnotations <- function(annotations, input, PVCAnn) {
+checkAnnotations <- function(annotations, input, PVCAnn, label) {
   if (is.null(annotations)) {
-    stop("Given data is NULL! Please make sure your annotations are of type vector and not empty.")
+    stop(c(label, "Given data is NULL! Please make sure your annotations are of type vector and not empty."))
   }
   if (!is.vector(annotations)) {
-    stop("Given annotations do not have the right type! Please make sure your annotations are of type vector.")
+    stop(c(label, "Given annotations do not have the right type! Please make sure your annotations are of type vector."))
   }
   if (!is.character(annotations)) {
-    stop("Given annotation vector is not alphabetical!")
+    stop(c(label, "Given annotation vector is not alphabetical!"))
   }
   if (NA %in% annotations) {
-    stop("Given vector includes NA! Please make sure to remove them before using vectorToHRT!")
+    stop(c(label, "Given vector includes NA! Please make sure to remove them before using vectorToHRT!"))
   }
   if(length(annotations) != length(input)) {
-    stop("The lengths of given annotation and RR vectors differ!")
+    stop(c(label, "The lengths of given annotation and RR vectors differ!"))
   }
   if(!PVCAnn %in% annotations) {
-    warning("The given annotation for PVCs could not be found in your annotation vector.")
+    warning(c(label, "The given annotation for PVCs could not be found in your annotation vector."))
   }
 }
 

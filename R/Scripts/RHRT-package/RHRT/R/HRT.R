@@ -52,6 +52,7 @@ setClass("HRT",
 #' given in tag = value form
 #'
 #' @rdname HRT
+#' @importFrom methods initialize
 #' @export
 setMethod("initialize", "HRT",
           function(.Object, couplRR=NA_real_, compRR=NA_real_,
@@ -121,7 +122,7 @@ setMethod("calcTO", "HRT", function(HRTObj) {
     warning("The sum of the intervals preceding the coupling interval is zero! Turbulence onset can't be calculated!")
     HRTObj@TO <- NA_real_
   } else {
-    HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(tail(preRRs, 2)) ) / sum(tail(preRRs,2)) ) * 100
+    HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(utils::tail(preRRs, 2)) ) / sum(utils::tail(preRRs,2)) ) * 100
   }
 
   return(HRTObj)
@@ -244,32 +245,32 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
          ylab = ylab,
          ...)
   } else {
-    lines(seq(1:length(rrs)), rrs)
+    graphics::lines(seq(1:length(rrs)), rrs)
   }
 
-  axis(1, at = seq(1:length(rrs)), labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))), las=2)
+  graphics::axis(1, at = seq(1:length(rrs)), labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))), las=2)
   if (showTT) {
-    legend("bottomright", c("Turbulence onset", "Turbulence slope", "Turbulence Timing"),
+    graphics::legend("bottomright", c("Turbulence onset", "Turbulence slope", "Turbulence Timing"),
            lty = c(3), pch = c(19, NA), col = c("red", "blue", "chartreuse3"))
    } else {
-     legend("bottomright", c("Turbulence onset", "Turbulence slope"),
+     graphics::legend("bottomright", c("Turbulence onset", "Turbulence slope"),
             lty = c(3), pch = c(19, NA), col = c("red", "blue"))
    }
 
   # Turbulence onset
   to_indices <- c(n_preRRs-1, n_preRRs, n_preRRs+3, n_preRRs+4)
-  points(c(to_indices), c(rrs[to_indices]), bg= "red", pch = 21)
+  graphics::points(c(to_indices), c(rrs[to_indices]), bg= "red", pch = 21)
   #arrows(1, rrs[1], 6, rrs[1], lty = 3, col = "red", code = 0)
   #arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
 
   # Turbulence slope
   TTcorr <- x@TT+n_preRRs+2
-  points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = "blue", pch = 21)
-  abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
+  graphics::points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = "blue", pch = 21)
+  graphics::abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
 
   # Turbulence timing
   if (showTT) {
-    points(TTcorr, rrs[TTcorr], col = "chartreuse3", cex = 3, pch = 8)
+    graphics::points(TTcorr, rrs[TTcorr], col = "chartreuse3", cex = 3, pch = 8)
   }
 
 })

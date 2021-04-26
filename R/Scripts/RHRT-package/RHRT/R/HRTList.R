@@ -85,8 +85,8 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
   av <- HRTListObj@avHRT
   paramNames <- c("TO", "TS", if(TT) "TT")
   pNames <- c("pTO", "pTS", if(TT) "pTT")
-  paramValues <- setNames(c(av@TO, av@TS, if(TT) av@TT), paramNames)
-  pValues <- setNames(c(av@pTO, av@pTS, if(TT) av@pTT), pNames)
+  paramValues <- stats::setNames(c(av@TO, av@TS, if(TT) av@TT), paramNames)
+  pValues <- stats::setNames(c(av@pTO, av@pTS, if(TT) av@pTT), pNames)
 
   # sets up needed checking function
   isSignificant <- function(p) return(p <= pmax)
@@ -185,7 +185,7 @@ setGeneric("getHRTParams", function(HRTListObj, sl) {
 #' @export
 setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
   checkValidity(HRTListObj)
-  Params <- lapply(HRTListObj@HRTs, slot, sl)
+  Params <- lapply(HRTListObj@HRTs, methods::slot, sl)
   return(Params)
 })
 
@@ -220,6 +220,8 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' @param coTT Numeric, cut-off value for TT
 #' @return avHRTObj
 #'
+#' @importFrom methods slot
+#' @importFrom stats t.test
 #' @rdname calcAvHRT
 setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
     standardGeneric("calcAvHRT")
@@ -231,13 +233,13 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   checkValidity(HRTListObj)
 
   # sets the type of averaging
-    if (!identical(av, mean) && !identical(av, median)) {
+    if (!identical(av, mean) && !identical(av, stats::median)) {
       warning(paste("Function", as.character(substitute(av)), "for parameter averaging is unknown, falling back to default."))
       av <- mean
       rowAv <- rowMeans
     } else if (identical(av, mean)) {
       rowAv <- rowMeans
-    } else if (identical(av, median)) {
+    } else if (identical(av, stats::median)) {
       rowAv <- matrixStats::rowMedians
     }
 
@@ -261,7 +263,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     postRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "postRRs"))
 
   # initializes the avHRT object
-    avHRT <- new("avHRT", couplRR = couplRR, compRR = compRR,
+    avHRT <- methods::new("avHRT", couplRR = couplRR, compRR = compRR,
         preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS)
 
   # calculates parameters for every VPC seperately
@@ -335,14 +337,14 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 #' @export
 setMethod("plot", "HRTList", function(x, cropped = TRUE, showTT = FALSE, ...) {
     plot(x@avHRT, cropped = cropped, showTT = showTT, ...)
-    avPivot <- tail(x@avHRT@preRRs, n = 1)
+    avPivot <- utils::tail(x@avHRT@preRRs, n = 1)
 
     lapply(x@HRTs, function(y) {
       rrs <- getRRs(y)
-      pivot <- tail(y@preRRs, n = 1)
+      pivot <- utils::tail(y@preRRs, n = 1)
       diff <- avPivot - pivot
       rrs <- rrs + diff
-      lines(seq(1:length(rrs)), rrs, col = "grey")
+      graphics::lines(seq(1:length(rrs)), rrs, col = "grey")
     })
 
     plot(x@avHRT, add = TRUE, cropped = cropped, showTT = showTT, ...)
@@ -360,7 +362,7 @@ setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {
   if(length(x@HRTs) == 0 || (length(x@HRTs) == 1 && is.na(x@HRTs[[1]]@couplRR)))
     stop("The HRTList does not contain any HRTs")
 
-  if(av) if(identical(x@avHRT, new("avHRT")))
+  if(av) if(identical(x@avHRT, methods::new("avHRT")))
     stop("The average HRT is empty. Make sure to calculate it and try again.")
 
   if(pos) if(is.na(x@pos) || length(x@pos) == 0)

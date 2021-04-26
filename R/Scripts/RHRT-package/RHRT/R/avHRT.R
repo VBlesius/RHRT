@@ -2,9 +2,9 @@
 #'
 #' This class extends the HRT class. An avHRT is the average of an HRTList and
 #' saves the way in which it was calculated.
-#' 
+#'
 #' @slot av Function, Type of averaging, either mean or median
-#' @slot orTO Numeric, Order in which TO was calculated, 
+#' @slot orTO Numeric, Order in which TO was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
 #' @slot orTS Numeric, Order in which TS was calculated,
@@ -14,10 +14,10 @@
 #' @slot pTS Numeric, p-value of t-test checking the validity of TS
 #' @slot pTT Numeric, p-value of t-test checking the validity of TT
 #' @slot pnTS Numeric, p-value of t-test checking the validity of normalised TS
-#' 
+#'
 #' @name avHRT
-#' 
-#' @importFrom methods setMethod 
+#'
+#' @importFrom methods setMethod
 #' @include HRT.R
 setClass("avHRT",
          contains = "HRT",
@@ -31,7 +31,7 @@ setClass("avHRT",
            pnTS = "numeric"),
 
          validity = function(object) {
-           if(any(!identical(av, mean) && !identical(av, median),
+           if(any(!identical(av, mean) && !identical(av, stats::median),
                   length(object@orTO) != 1,
                   length(object@orTS) != 1)) {
              stop("The given numbers for the avHRT object are incorrect!")
@@ -42,7 +42,7 @@ setClass("avHRT",
 #-------------------------------------------------------------------------------
 #' @param .Object The name of the class
 #' @param av Function, Type of averaging, either mean or median
-#' @param orTO Numeric, Order in which TO was calculated, 
+#' @param orTO Numeric, Order in which TO was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
 #' @param orTS Numeric, Order in which TS was calculated,
@@ -53,8 +53,9 @@ setClass("avHRT",
 #' @param pTT Numeric, p-value of t-test checking the validity of TT
 #' @param pnTS Numeric, p-value of t-test checking the validity of normalised TS
 #' @inheritParams HRT
-#' 
+#'
 #' @rdname avHRT
+#' @importFrom methods initialize
 #' @export
 setMethod("initialize", "avHRT",
           function(.Object, av=mean, orTO=NA_real_, orTS=NA_real_,
@@ -68,9 +69,9 @@ setMethod("initialize", "avHRT",
             .Object@pTS <- pTS
             .Object@pTT <- pTT
             .Object@pnTS <- pnTS
-            
-            .Object <- callNextMethod(.Object, couplRR, compRR, preRRs, postRRs, ...)
-            
+
+            .Object <- methods::callNextMethod(.Object, couplRR, compRR, preRRs, postRRs, ...)
+
             return(.Object)
           }
 )

@@ -3,8 +3,8 @@ context("calculating avHRT for a HRTList")
 
 data("testdataVariant_HRTObj")
 
-HRTs_temp@avHRT <- new("avHRT")
 HRTs_temp <- testdataVariant_HRTObj
+HRTs_temp@avHRT <- methods::new("avHRT")
 
 test_that("parameter handling: HRTListObj", {
   expect_error(getResults(HRTs_temp), "The average HRT is empty")

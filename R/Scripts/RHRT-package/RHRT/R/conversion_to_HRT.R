@@ -81,11 +81,11 @@ checkInput <- function(input, numSnippet) {
 # -------------------------------------------------------------------------------
 #' Cleans data input for further checks or calculation
 #'
-#' @inheritParams vectorToHRT
+#' @inheritParams checkInput
 #'
 cleanInput <- function(input) {
   inputNew <- input[input > 300 & input < 2000]
-  inputNew <- tail(inputNew, -1)[abs(diff(inputNew)) <= head(inputNew, -1)*0.2]
+  inputNew <- utils::tail(inputNew, -1)[abs(diff(inputNew)) <= utils::head(inputNew, -1)*0.2]
   return(inputNew)
 }
 
@@ -144,7 +144,7 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_n
       PVCIndices[indices]
     }
 
-  tempHRTList <- new("HRTList")
+  tempHRTList <- methods::new("HRTList")
   tempHRTList@pos <- pos
   tempHRTList@HRTs <- hrts[indices]  # removes NULL entries
   return(tempHRTList)
@@ -207,8 +207,8 @@ checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPo
       # as
       # object
       if (isNotDeviating) {
-          tempHRT <- new("HRT", couplRR = couplRR, compRR = compRR,
-              preRRs = tail(preRRs, numPreRRs-1), postRRs = postRRs[1:(numPostRRs-1)])
+          tempHRT <- methods::new("HRT", couplRR = couplRR, compRR = compRR,
+              preRRs = utils::tail(preRRs, numPreRRs-1), postRRs = postRRs[1:(numPostRRs-1)])
           return(tempHRT)
       }
     }

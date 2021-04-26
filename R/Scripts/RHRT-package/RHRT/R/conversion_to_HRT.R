@@ -128,7 +128,7 @@ checkAnnotations <- function(annotations, input, PVCAnn, label) {
 #' Scans for HRTs in the given vector and returns an HRTList object.
 #'
 #' @param intervals Numeric vector
-#' @param numSnippet Numeric, number of RRs in the the HRT snippet
+#' @param numSnippet Numeric, number of RRs in the HRT snippet
 #' @inheritParams vectorToHRT
 #' @return HRTListObj
 #'
@@ -198,7 +198,7 @@ checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPo
     # arrhythmias
     # and
     # artefacts
-    isInRange <- all(regRR > 300 && regRR < 2000)
+    isInRange <- all(regRR > 300 & regRR < 2000)
 
     if(isCouplRR & isCompRR & isInRange) {
 

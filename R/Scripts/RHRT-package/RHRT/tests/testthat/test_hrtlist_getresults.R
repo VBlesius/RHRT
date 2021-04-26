@@ -1,23 +1,23 @@
 library(RHRT)
 context("calculating avHRT for a HRTList")
 
-data("testdataHRTs")
+data("testdataVariant_HRTObj")
 
-HRTs_temp <- HRTs
 HRTs_temp@avHRT <- new("avHRT")
+HRTs_temp <- testdataVariant_HRTObj
 
 test_that("parameter handling: HRTListObj", {
   expect_error(getResults(HRTs_temp), "The average HRT is empty")
 })
 
 test_that("output for best case", {
-  expect_true(is.character(getResults(HRTs)))
-  expect_length(getResults(HRTs, type = "parameter"), 2)
-  expect_true(is.numeric(getResults(HRTs, type = "parameter")["TO"]))  
-  expect_length(getResults(HRTs, type = "full"), 4)
+  expect_true(is.character(getResults(testdataVariant_HRTObj)))
+  expect_length(getResults(testdataVariant_HRTObj, type = "parameter"), 2)
+  expect_true(is.numeric(getResults(testdataVariant_HRTObj, type = "parameter")["TO"]))
+  expect_length(getResults(testdataVariant_HRTObj, type = "full"), 4)
 })
 
-HRTsNS <- HRTs
+HRTsNS <- testdataVariant_HRTObj
 HRTsNS@avHRT@pTO <- 0.5
 
 test_that("handling of insignificant parameters", {
@@ -25,10 +25,10 @@ test_that("handling of insignificant parameters", {
   expect_equal(getResults(HRTsNS, safe = FALSE), "HRT0*")
   expect_true(is.character(getResults(HRTsNS, type = "parameter")["TO"]))
   expect_true(is.numeric(getResults(HRTsNS, type = "parameter", safe=FALSE)["TO"]))
-  expect_equal(getResults(HRTs, type = "full"), getResults(HRTs, type = "full", safe = FALSE))
+  expect_equal(getResults(HRTsNS, type = "full"), getResults(HRTsNS, type = "full", safe = FALSE))
 })
 
-HRTsNA <- HRTs
+HRTsNA <- testdataVariant_HRTObj
 HRTsNA@avHRT@TO <- NA_real_
 
 test_that("handling of NA parameters", {

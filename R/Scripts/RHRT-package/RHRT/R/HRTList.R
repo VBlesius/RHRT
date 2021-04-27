@@ -329,9 +329,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 #' Plots RR-intervals saved in the HRT object and marks HRT parameters.
 #'
 #' @param x HRTList
-#' @param cropped Boolean, Should the plot be cut to focuse on the HRT parameters?
-#' To show all points use FALSE.
-#' @param showTT Boolean, Should Turbulence timing be marked?
+#' @inheritParams plot,HRT-method
 #' @param ... Other arguments in tag = value form
 #'
 #' @export

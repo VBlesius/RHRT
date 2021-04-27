@@ -68,7 +68,7 @@ Example workflow:
 data("testdataVariant", package = "RHRT")
 
 tdVariant <- testdataVariant
-hrtlVar <- RHRT::vectorToHRT(tdVariant) # calculate the HRTList
+hrtlVar <- RHRT::vectorToHRT(tdVariant, minHRT = 3) # calculate the HRTList
 hrtlVarParams <- RHRT::getResults(hrtlVar) # get the averaged HRT parameters
 ```
 

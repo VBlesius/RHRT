@@ -32,6 +32,6 @@ HRTsNA <- testdataVariant_HRTObj
 HRTsNA@avHRT@TO <- NA_real_
 
 test_that("handling of NA parameters", {
-  expect_warning(getResults(HRTsNA), "The HRT parameters contain NA")
-  expect_true(is.na(getResults(HRTsNA)))
+  expect_warning(a <- getResults(HRTsNA), "The HRT parameters contain NA")
+  expect_true(is.na(a))
 })

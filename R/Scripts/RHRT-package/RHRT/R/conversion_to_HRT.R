@@ -12,6 +12,7 @@
 #' @param numPreRRs Numeric
 #' @param numPostRRs Numeric
 #' @param inputName String, name of the data
+#' @param minHRT Numeric, minimal number of HRTs that are needed to create a HRTList object
 #' @inheritParams calcHRTParams
 #' @return HRTList HRTList object
 #'
@@ -19,7 +20,8 @@
 vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
                         normIL = c_normIL, normHallstrom = TRUE,
                         numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs,
-                        inputName = as.character(NA)) {
+                        inputName = as.character(NA),
+                        minHRT = 5) {
     numPreRRs <- numPreRRs + 1
     numPostRRs <- numPostRRs + 1
     numSnippet <- numPreRRs + numPostRRs + 2
@@ -39,8 +41,8 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
 
     inputCleaned <- cleanInput(input)
     tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSnippet)
-    if (length(tempHRTList@HRTs) == 0) {
-        warning("No HRTs found in your data!")
+    if (length(tempHRTList@HRTs) < minHRT) {
+        warning("No or too few HRTs found in your data!")
     } else {
         tempHRTList@name <- inputName
         tempHRTList@IL <- mean(inputCleaned)

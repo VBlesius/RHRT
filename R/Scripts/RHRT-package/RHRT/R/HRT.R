@@ -214,17 +214,20 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param pch Numeric, Plotting character, for other options see graphics::var
 #' @param xlab Character, Label for the x axis
 #' @param ylab Character Label for the x axis
+#' @param paramsLegend Boolean, should the parameter values of the HRT be plotted?
 #' @param ... Other arguments in tag = value form. See graphics::par for more information.
 #'
 #' @note Please note that the argument xaxt and ylim can't be set,
 #'  since the axis as well as the ranges of the y axis are set by the function.
 #'
+#' @import graphics
 #' @export
 setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE,
                                   type = "o",
                                   pch = 20,
                                   xlab = "# of RR interval",
                                   ylab = "length of RR interval (ms)",
+                                  paramsLegend = TRUE,
                                   ...) {
   rrs <- getRRs(x)
   n_preRRs <- length(x@preRRs)
@@ -245,32 +248,33 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
          ylab = ylab,
          ...)
   } else {
-    graphics::lines(seq(1:length(rrs)), rrs)
+    lines(seq(1:length(rrs)), rrs)
   }
 
-  graphics::axis(1, at = seq(1:length(rrs)), labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))), las=2)
+  axis(1, at = seq(1:length(rrs)), labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))), las=2)
   if (showTT) {
-    graphics::legend("bottomright", c("Turbulence onset", "Turbulence slope", "Turbulence Timing"),
+    legend("bottomright", c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
+                            paste("TS", if(paramsLegend) {round(x@TS, 2)}),
+                            paste("TT", if(paramsLegend) {round(x@TT, 2)})),
            lty = c(3), pch = c(19, NA), col = c("red", "blue", "chartreuse3"))
    } else {
-     graphics::legend("bottomright", c("Turbulence onset", "Turbulence slope"),
+     legend("bottomright", c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
+                             paste("TS", if(paramsLegend) {round(x@TS, 2)})),
             lty = c(3), pch = c(19, NA), col = c("red", "blue"))
    }
 
   # Turbulence onset
   to_indices <- c(n_preRRs-1, n_preRRs, n_preRRs+3, n_preRRs+4)
-  graphics::points(c(to_indices), c(rrs[to_indices]), bg= "red", pch = 21)
-  #arrows(1, rrs[1], 6, rrs[1], lty = 3, col = "red", code = 0)
-  #arrows(6, rrs[1], 6, rrs[6], lty = 3, col = "red", code = 2)
+  points(c(to_indices), c(rrs[to_indices]), bg= "red", pch = 21)
 
   # Turbulence slope
   TTcorr <- x@TT+n_preRRs+2
-  graphics::points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = "blue", pch = 21)
-  graphics::abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
+  points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = "blue", pch = 21)
+  abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
 
   # Turbulence timing
   if (showTT) {
-    graphics::points(TTcorr, rrs[TTcorr], col = "chartreuse3", cex = 3, pch = 8)
+    points(TTcorr, rrs[TTcorr], col = "chartreuse3", cex = 3, pch = 8)
   }
 
 })

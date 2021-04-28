@@ -61,6 +61,7 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' @param HRTListObj HRTList object
 #' @param type String, determining the amount of output: 'class' gives the HRT class, 'parameter' the parameter values and 'full' additionally the p-values describing parameter reliability
 #' @param TT Boolean, Should TT be given?
+#' @param nTS Should the normalised TS (nTS) be given or used for the determination of the HRT class?
 #' @param safe Boolean, Should all values be given regardless of reliability checks? Note, that 'safe' is ignored when the type is 'full'.
 #' @param pmax Numeric, the significance level
 #' @param num Boolean Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.
@@ -68,12 +69,12 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' @return Named vector, character or numeric
 #'
 #' @rdname getResults
-setGeneric("getResults", function(HRTListObj, type = "class", TT = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
+setGeneric("getResults", function(HRTListObj, type = "class", TT = FALSE, nTS = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
     standardGeneric("getResults")
 })
 #' @rdname getResults
 #' @export
-setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
+setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FALSE, nTS = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
 
   checkValidity(HRTListObj, av = TRUE)
 
@@ -83,10 +84,10 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 
   # sets needed variables
   av <- HRTListObj@avHRT
-  paramNames <- c("TO", "TS", if(TT) "TT")
-  pNames <- c("pTO", "pTS", if(TT) "pTT")
-  paramValues <- stats::setNames(c(av@TO, av@TS, if(TT) av@TT), paramNames)
-  pValues <- stats::setNames(c(av@pTO, av@pTS, if(TT) av@pTT), pNames)
+  paramNames <- c("TO", if(nTS) "nTS" else "TS", if(TT) "TT")
+  pNames <- c("pTO", if(nTS) "pnTS" else "pTS", if(TT) "pTT")
+  paramValues <- stats::setNames(c(av@TO, if(nTS) av@nTS else av@TS, if(TT) av@TT), paramNames)
+  pValues <- stats::setNames(c(av@pTO, if(nTS) av@pnTS else av@pTS, if(TT) av@pTT), pNames)
 
   # sets up needed checking function
   isSignificant <- function(p) return(p <= pmax)
@@ -160,7 +161,6 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
         class <- "HRT0"
       }
     }
-    #if(!safe && (any(sig == FALSE) || any(is.na(sig)))) class <- paste0(class, "*")
 
     return(class)
   }

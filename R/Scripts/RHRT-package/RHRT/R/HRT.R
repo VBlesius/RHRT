@@ -111,7 +111,6 @@ setGeneric("calcTO", function(HRTObj) {
   standardGeneric("calcTO")
 })
 #' @rdname calcTO
-#' @export
 setMethod("calcTO", "HRT", function(HRTObj) {
   checkValidity(HRTObj)
 
@@ -144,7 +143,6 @@ setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL
   standardGeneric("calcTS")
 })
 #' @rdname calcTS
-#' @export
 setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL) {
   checkValidity(HRTObj)
 

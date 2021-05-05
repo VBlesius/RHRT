@@ -9,7 +9,84 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The RHRT package helps you assess **Heart Rate Turbulence** (HRT) in RR intervals. calulates **turbulence onset** (TO), **slope** (TS) and **timing** (TT). It can plot the tachograms and give a reliability table. The **ventricular premature beats** (VPCs) with **coupling** (CPI) and **compensatory interval** (CMI) can either be given with annotations or found on the basis of the filter rules provided by Schmidt et al.^[Website about HRT by Schmidt et al.: http://www.h-r-t.com/hrt/en/calc.html]. The type of average and order of calculation for all parameters can be set.
+The RHRT package helps you assess **Heart Rate Turbulence** (HRT) in RR intervals. calculates **turbulence onset** (TO), **slope** (TS) and **timing** (TT). It can plot the tachograms and give a reliability table. The **ventricular premature beats** (VPCs) with **coupling** (CPI) and **compensatory interval** (CMI) can either be given with annotations or found on the basis of the filter rules provided by Schmidt et al.^[Website about HRT by Schmidt et al.: http://www.h-r-t.com/hrt/en/calc.html]. The type of average and order of calculation for all parameters can be set.
+
+--------
+
+## Synopsis for the hasty
+
+This chapter sums up the most common functions and parameters needed when using RHRT.
+
+First, the **core function** of RHRT is `vectorToHRT` that finds valid VPCs in RR intervals and returns an `HRTList` object (see chapter *HRTList object* for more information):
+
+```{r, echo = FALSE}
+library("RHRT")
+data("testdataLong", package = "RHRT")
+data <- testdataLong
+data("testdataLong_Ann", package = "RHRT")
+ann <- testdataLong_Ann
+```
+
+### Checking data for HRTs
+```{r}
+hrtl <- vectorToHRT(data) # data is a numeric vector of RR intervals in msec
+```
+
+Every RR interval sequence that matches the needed interval lengths is considered to be a coupling and compensatory interval of a VPC, which can lead to wrong matches. If your data is annotated, you can provide the **annotation data** with the parameters `annotations` and `PVCAnn`.
+
+```{r}
+hrtl <- vectorToHRT(data, annotations = ann, PVCAnn = "V") 
+  # ann is a vector of characters with the same length as data
+```
+
+Other parameters are:
+
+* `numPreRRs` & `numPostRRs` are used to modify the **filter rules** to find HRTs (number of intervals before and after the VPC that have to match the filter criteria).
+* `minHRT` is the **minimal number of HRTs** needed to calculate HRT / create a HRTList
+* `normHallstrom` defines whether TS should be **normalised** with the method of Hallstrom et al. (see chapter *Normalisation*). 
+
+### Getting HRT parameters or class
+```{r}
+getResults(hrtl) # get the HRT class of the data
+```
+
+Per default `getResults` checks whether all needed HRT parameters can be calculated reliably. This is done via a t-test per parameter value (for more information see chapter *Reliability Check*). If any of the parameter values is **not reliable** `getResults` returns NR (not reliable). 
+
+```{r}
+getResults(hrtl, safe = FALSE) # get the HRT class without safety check
+```
+
+In addition to the classification system HRT0-2 RHRT implements **HRTA-C** that is based on the three parameters TO, TS and TT. 
+
+```{r}
+getResults(hrtl, safe = FALSE, TT = TRUE) # include TT
+```
+
+With the parameter `type` you can choose between getting only the HRT **class**, all **parameter values** or the parameter values with the corresponding **p-values** (types "class", "parameter" or "full", respectively).
+
+```{r}
+getResults(hrtl, type = "parameter", TT = TRUE) # get the averaged HRT parameters
+```
+
+Other parameters are:
+
+* `nTS`: the **normalised TS** is returned or used for classification instead of TS.
+* `num`: forces the function to return **numerics** when using `type = parameter`. Depending on the results and your setting of `type` the `getResults` returns characters or numerics.
+* `pmax`: changes the needed **significance level** for the parameters to be reliable.
+
+### Plotting
+
+```{r, fig.width=7, fig.height=4}
+plot(hrtl, TT = TRUE) # plots the averaged VPCS and all underlying VPCSs in background
+```
+
+Per default the VPCS is **zoomed** in. If you want to also see the CPI and CMI use `cropped = FALSE`.
+
+```{r, fig.width=7, fig.height=4}
+plot(hrtl, cropped = FALSE) # shows also coupling and compensatory interval
+```
+
+--------
 
 ## Filter Rules
 
@@ -96,5 +173,10 @@ RHRT::plot(hrtlVar, cropped = FALSE, main = "Not cropped")
 
 TT is hidden by default, but can be displayed.
 ```{r,  fig.width=7, fig.height=4}
-RHRT::plot(hrtlVar, cropped = FALSE, showTT=TRUE)
+RHRT::plot(hrtlVar, cropped = FALSE, TT=TRUE)
 ```
+
+## Reliability Check
+
+## Normalisation
+- Hallstrom

@@ -209,7 +209,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param cropped Boolean, Should the plot be cut to focuse on the HRT parameters?
 #' To show all points use FALSE.
 #' @param add Boolean, Should the given HRT be added to a plot?
-#' @param showTT Boolean, Should Turbulence timing be marked?
+#' @param TT Boolean, Should Turbulence timing be marked?
 #' @param type Character, Type of the plot, for other options see graphics::plot.xy
 #' @param pch Numeric, Plotting character, for other options see graphics::var
 #' @param xlab Character, Label for the x axis
@@ -222,7 +222,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #'
 #' @import graphics
 #' @export
-setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE,
+setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
                                   type = "o",
                                   pch = 20,
                                   xlab = "# of RR interval",
@@ -252,7 +252,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
   }
 
   axis(1, at = seq(1:length(rrs)), labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))), las=2)
-  if (showTT) {
+  if (TT) {
     legend("bottomright", c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
                             paste("TS", if(paramsLegend) {round(x@TS, 2)}),
                             paste("TT", if(paramsLegend) {round(x@TT, 2)})),
@@ -273,7 +273,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, showTT = FALSE
   abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
 
   # Turbulence timing
-  if (showTT) {
+  if (TT) {
     points(TTcorr, rrs[TTcorr], col = "chartreuse3", cex = 3, pch = 8)
   }
 

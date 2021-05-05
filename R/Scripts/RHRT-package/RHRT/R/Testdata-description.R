@@ -47,3 +47,19 @@
 #'
 #' @format  An empty HRTList object.
 "testdataVariantNoHRT_HRTObj"
+
+#' Long term data
+#'
+#' Interval data provided by Physionet (001 of NSR2DB). This dataset
+#' contains a full long term measurement with several HRTs.
+#'
+#' @format A numeric vector.
+"testdataLong"
+
+#' Long term data annotations
+#'
+#' Interval data provided by Physionet (001 of NSR2DB). This dataset
+#' contains the annotations matching testdataLong.
+#'
+#' @format A vector of characters.
+"testdataLong_Ann"

@@ -33,7 +33,7 @@ setClass("HRTList",
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs
 #'
-#' Returns the positions of all ventricular premture complexes (VPCs) and
+#' Returns the positions of all ventricular premature complexes (VPCs) and
 #' accordingly the coupling intervals that were found in the given vector
 #' when the HRTList was created.
 #'
@@ -333,8 +333,8 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 #' @param ... Other arguments in tag = value form
 #'
 #' @export
-setMethod("plot", "HRTList", function(x, cropped = TRUE, showTT = FALSE, ...) {
-    plot(x@avHRT, cropped = cropped, showTT = showTT, ...)
+setMethod("plot", "HRTList", function(x, ...) {
+    plot(x@avHRT, ...)
     avPivot <- utils::tail(x@avHRT@preRRs, n = 1)
 
     lapply(x@HRTs, function(y) {
@@ -345,7 +345,7 @@ setMethod("plot", "HRTList", function(x, cropped = TRUE, showTT = FALSE, ...) {
       graphics::lines(seq(1:length(rrs)), rrs, col = "grey")
     })
 
-    plot(x@avHRT, add = TRUE, cropped = cropped, showTT = showTT, ...)
+    plot(x@avHRT, add = TRUE, ...)
 })
 
 # -------------------------------------------------------------------------------

@@ -92,6 +92,8 @@ plot(hrtl, cropped = FALSE) # shows also coupling and compensatory interval
 
 ### HRT
 
+#### Slots
+
 An HRT object saves the data of one VPCS and its HRT results. It consists of the following slots:
 
 - **Intervals**
@@ -110,25 +112,34 @@ An HRT object saves the data of one VPCS and its HRT results. It consists of the
   - `intercept`: The intercept of the TS regression line that is needed for plotting
   - `nintercept`: Analogously, the intercept of `nTS`
 
-#### Slots
-
 #### Functions
 
+- **`getRRs`** &nbsp;&nbsp; This function returns all intervals saved in the HRT object. This if helpful for i.e. calculating an averaged VPCS out of a set of HRT objects.
+
+- **`plot`** &nbsp;&nbsp; Per default `plot` displays a zoomed in plot of the VPCS with highlighted TO and TS and a legend given the rounded HRT parameter values. In addition to the common parameters of graphics.plot the method accepts the following parameters:
+  - `cropped`: switches between showing a zoomed in version and the full VPCS including CPI and CMI, the default is `TRUE`
+  - `add`: adds the plot to the current one
+  - `TT`: highlights TT and includes it to the legend
+  - `paramsLegend`: switches between showing and hiding the parameter values in the legend, the default is `TRUE`
+
 ### HRTList
-
-The HRTList object sums up all HRTs found in your given dataset. It consists of:
-
-- **Positions** &nbsp;&nbsp; The indices of the VPCs as found in the given vector.
-
-- **HRTs** &nbsp;&nbsp; All found HRTs saved in HRT objects.
-
-- **averaged HRT** &nbsp;&nbsp; The averaged HRT object which is calculated via estimating the mean of the intervals of all HRT objects.
 
 An HRTList object is created when `vectorToHRT` is called. All HRT parameters are calculated automatically in this process and can be called with the `getHRTParams`-methods.
 
 #### Slots
 
+The HRTList object sums up all HRTs found in the given dataset. The slots are:
+
+- `name`: The name of the object if given to `vectorToHRT`
+- `IL`: the average length of all intervals in the given vector 
+- `pos`: the indices of the CPIs as found in the given vector
+- `HRTs`: list of all HRT objects found
+- `avHRT`: an avHRT object averaged from all HRTs
+- `nRMSSD`: the HRV parameter nRMSSD calculated from all intervals in the given vector
+
 #### Functions
+
+- **`plot`** &nbsp;&nbsp; Analogously to the plot function of the HRT object HRTList objects can be plotted. This function plots the avHRT and adds the VPCSs of all HRTs as grey lines in the background.
 
 ## Methods & Background
 
@@ -158,6 +169,8 @@ There are two types of filter rules applied on the interval data:
 ### Normalisation of Turbulence Slope
 
 ### Reliability Check
+
+### Calculation Order
 
 ## Example Pipelines
 

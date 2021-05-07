@@ -13,7 +13,7 @@ The RHRT package helps you assess **Heart Rate Turbulence** (HRT) in RR interval
 
 --------
 
-## Synopsis for the hasty
+## Synopsis for the hasty (Quick-start guide)
 
 This chapter sums up the most common functions and parameters needed when using RHRT.
 
@@ -88,7 +88,51 @@ plot(hrtl, cropped = FALSE) # shows also coupling and compensatory interval
 
 --------
 
-## Filter Rules
+## Implementation and Functions
+
+### HRT
+
+An HRT object saves the data of one VPCS and its HRT results. It consists of the following slots:
+
+- **Intervals**
+  - `preRRs`: preceding regular intervals, 5 per default
+  - `couplRR`: CPI
+  - `compRR`: CMI
+  - `postRRs`: following regular intervals, 15 per default
+
+- **HRT Parameters**
+  - `TO`
+  - `TS`
+  - `TT`
+  - `nTS`: normalised TS, for more Information see chapter *Normalisation of Turbulence Slope*
+
+- **Line coefficients**
+  - `intercept`: The intercept of the TS regression line that is needed for plotting
+  - `nintercept`: Analogously, the intercept of `nTS`
+
+#### Slots
+
+#### Functions
+
+### HRTList
+
+The HRTList object sums up all HRTs found in your given dataset. It consists of:
+
+- **Positions** &nbsp;&nbsp; The indices of the VPCs as found in the given vector.
+
+- **HRTs** &nbsp;&nbsp; All found HRTs saved in HRT objects.
+
+- **averaged HRT** &nbsp;&nbsp; The averaged HRT object which is calculated via estimating the mean of the intervals of all HRT objects.
+
+An HRTList object is created when `vectorToHRT` is called. All HRT parameters are calculated automatically in this process and can be called with the `getHRTParams`-methods.
+
+#### Slots
+
+#### Functions
+
+## Methods & Background
+
+### Filter Rules
 
 There are two types of filter rules applied on the interval data:
 
@@ -111,29 +155,19 @@ There are two types of filter rules applied on the interval data:
 
     The five preceding and fifteen following intervals of CPI and CMI are checked. If any of the intervals do not fit the rules, the complete set is neglected.
 
+### Normalisation of Turbulence Slope
 
-## HRT Object
+### Reliability Check
 
-An HRT object saves the following attributes of the found interval sequence:
+## Example Pipelines
 
-- **Intervals** &nbsp;&nbsp; The HRT Object consists of the two intervals surrounding the VPC (CPI & CMI), the two preceding and fifteen following intervals.
+### Determining the HRT class of a person
 
-- **HRT Parameters** &nbsp;&nbsp; The parameters TO, TS and TT are automatically calculated within `vectorToHRT` and are saved in the HRT object.
+### Comparing HRT results with different methodological parameters
 
-- **Line coefficients** &nbsp;&nbsp; The slope and intercept of the TS regression line.
+--------
 
-
-## HRTList Object
-
-The HRTList object sums up all HRTs found in your given dataset. It consists of:
-
-- **Positions** &nbsp;&nbsp; The indices of the VPCs as found in the given vector.
-
-- **HRTs** &nbsp;&nbsp; All found HRTs saved in HRT objects.
-
-- **averaged HRT** &nbsp;&nbsp; The averaged HRT object which is calculated via estimating the mean of the intervals of all HRT objects.
-
-An HRTList object is created when `vectorToHRT` is called. All HRT parameters are calculated automatically in this process and can be called with the `getHRTParams`-methods.
+Old stuff
 
 ## Workflow
 
@@ -175,8 +209,3 @@ TT is hidden by default, but can be displayed.
 ```{r,  fig.width=7, fig.height=4}
 RHRT::plot(hrtlVar, cropped = FALSE, TT=TRUE)
 ```
-
-## Reliability Check
-
-## Normalisation
-- Hallstrom

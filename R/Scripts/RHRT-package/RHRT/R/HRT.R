@@ -8,8 +8,8 @@
 #'
 #' @slot couplRR Numeric, Coupling interval
 #' @slot compRR Numeric, Compensatory interval
-#' @slot preRRs Numeric vector, Preceding 6 intervals
-#' @slot postRRs Numeric vector, Following 16 intervals
+#' @slot preRRs Numeric vector, Preceding intervals
+#' @slot postRRs Numeric vector, Following intervals
 #' @slot TO Numeric, Turbulence onset
 #' @slot TS Numeric, Turbulence slope
 #' @slot TT Numeric, Turbulence timing
@@ -208,7 +208,6 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' To show all points use FALSE.
 #' @param add Boolean, Should the given HRT be added to a plot?
 #' @param TT Boolean, Should Turbulence timing be marked?
-#' @param type Character, Type of the plot, for other options see graphics::plot.xy
 #' @param pch Numeric, Plotting character, for other options see graphics::var
 #' @param xlab Character, Label for the x axis
 #' @param ylab Character Label for the x axis
@@ -221,7 +220,6 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @import graphics
 #' @export
 setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
-                                  type = "o",
                                   pch = 20,
                                   xlab = "# of RR interval",
                                   ylab = "length of RR interval (ms)",
@@ -240,7 +238,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
          ylim = if(cropped)
            c(ymin-ydiff*0.3,
              ymax+ydiff*0.3),
-         type = type,
+         type = "o",
          pch = pch,
          xlab = xlab,
          ylab = ylab,

@@ -13,6 +13,8 @@ The RHRT package helps you assess **Heart Rate Turbulence** (HRT) in RR interval
 
 --------
 
+--------
+
 ## Synopsis for the hasty (Quick-start guide)
 
 This chapter sums up the most common functions and parameters needed when using RHRT.
@@ -88,9 +90,11 @@ plot(hrtl, cropped = FALSE) # shows also coupling and compensatory interval
 
 --------
 
+--------
+
 ## Implementation and Functions
 
-### HRT
+### HRT Object
 
 #### Slots
 
@@ -122,7 +126,7 @@ An HRT object saves the data of one VPCS and its HRT results. It consists of the
   - `TT`: highlights TT and includes it to the legend
   - `paramsLegend`: switches between showing and hiding the parameter values in the legend, the default is `TRUE`
 
-### HRTList
+### HRTList Object
 
 An HRTList object is created when `vectorToHRT` is called. All HRT parameters are calculated automatically in this process and can be called with the `getHRTParams`-methods.
 
@@ -131,52 +135,155 @@ An HRTList object is created when `vectorToHRT` is called. All HRT parameters ar
 The HRTList object sums up all HRTs found in the given dataset. The slots are:
 
 - `name`: The name of the object if given to `vectorToHRT`
-- `IL`: the average length of all intervals in the given vector 
+- `IL`: the average length of all intervals in the given cleaned vector (see *VectorToHRT: Cleaning Input* for more information) 
 - `pos`: the indices of the CPIs as found in the given vector
 - `HRTs`: list of all HRT objects found
 - `avHRT`: an avHRT object averaged from all HRTs
-- `nRMSSD`: the HRV parameter nRMSSD calculated from all intervals in the given vector
+- `nRMSSD`: the HRV parameter nRMSSD calculated from all intervals in the given cleaned vector (see *VectorToHRT: Cleaning Input* for more information)
 
 #### Functions
 
+- **`calcAvHRT`** &nbsp;&nbsp; The function calculates the parameters of the averaged HRT. This is called automatically when using `vectorToHRT` with default parameters. If the avHRT should be calculated differently the follwing options are available:
+  - `av`: The function with which averaging should be done: `mean` oder `median`.
+  - `orTO` and `orTS`: sets the order in which TO and TS should be calculated. With `1` the parameter is assessed separately for every HRT and averaged afterwards, with `2` the intervals of all VPCSs are averaged first and the parameter is assessed afterwards. The gefault is `1` for `orTO` and `2` for `orTS`.
+  - `IL`: the average interval length that is needed to calculate nTS. The default value is automatically calculated from the whole cleaned vector (see *VectorToHRT: Cleaning Input* for more information) when calling `vectorToHRT` and saved in the `IL` slot of the HRTList object. 
+  - `normIL`: the interval length to which the other parameters should be normalised. The default is 800 ms.
+  - `normHallstrom`: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is `TRUE`.
+  - `coTO`, `coTS` and `coTT`: The cut-off that should be used to calculate the reliability check for the different parameters. The default is `coTO` 0, `coTS` 2.5 and `coTT` 10.
+- **`getResults`** &nbsp;&nbsp; This function returns either the HRT class or the parameter values. You can determine the output with
+  - `type`: "class" returns the HRT class (system HRT0-2 or HRTA-C depending on `TT`), "parameter" returns the HRT parameters and "full" returns the HRT parameters and the p-values of the reliability check.
+  - `TT`: Should TT be included in the return? The default is `TRUE`.
+  - `nTS`: Switches between giving TS (default) and nTS.
+  - `safe`: Per default `safe` is `TRUE` so only results that are reliable are returned. For not reliable results the function returns "NR" or, if `num` is `TRUE`, `NA`.
+  - `pmax`: The cut-off of the p-value to determine reliability. Per default this is 0.05.
+  - `num`: Forces the function to return numerics. Keep in mind that this is inapplicable when using `type` "class", in this case the function gives a warning and returns `NA`. With `type` "full" `num` is ignored, because in that case the result is already numeric.
+  - `coTO`, `coTS` and `coTT`: Analogously to `calcAvHRT` the cut-off that should be used to determine whether the parameter values are normal. The default is `coTO` 0, `coTS` 2.5 and `coTT` 10. Be sure to give the same cut-offs to `calcAvHRT` and `getResults` if you don't use the result, otherwise the p-values won't match the results.
+- **`getHRTParams`** &nbsp;&nbsp; Returns the values of the given slot of all HRT objects in the `HRTList.` This can be used to quickly list all separate HRT parameters of an `HRTList`. Although the function name focuses on the HRT parameters, it can return any other slot of the HRT objects.
+- **`getPositions`** &nbsp;&nbsp; Returns the positions of the couplRRs which is identical to `HRTList@pos`.
 - **`plot`** &nbsp;&nbsp; Analogously to the plot function of the HRT object HRTList objects can be plotted. This function plots the avHRT and adds the VPCSs of all HRTs as grey lines in the background.
+
+### vectorToHRT
+
+This is the core function of the package. It finds VPCs, checks the respective VPCS for validity and saves the results in an HRTList object. Its parameters are
+
+- `annotations`: If no annotations are given `vectorToHRT` searches for matching patterns of interval lengths in the given vector regardless of any other information in respect to the type of beats. Therefore the function could also save HRTs based on atrial premature complexes or other arrhythmia if the surrounding intervals match the filter rules (for more information see *Methods & Background: Filter Rules*). If annotations are given the function only checks the intervals marked to stem from ventricular beats. This leads to more accurate results and speeds up the runtime considerably.  
+- `PVCAnn`: A character or string with which the VPCs are marked in the annotation vector. The default is "V".
+- `normIL`: The interval length to which the other parameters should be normalised. The default is 800 ms.
+- `normHallstrom`: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is `TRUE`.
+- `numPreRRs` and `numPostRRs`: The number of regular intervals before and after the CPI and CMI, respectively, on which the filter rules are applied and from which TS and nTS are being calculated. The default is 5 and 15, respectively.
+- `inputName`: You can give a name to the `HRTList` to easier organise your data. If no name is given, the slot is set with `NA`. 
+- `minHRT`: This sets the minimal amount of HRTs that have to be found. Per default an `HRTList` is only created if the vector contains 5 or more HRTs.
+- `cleaning`: To calculate `IL` and `RMSSD` the data is cleaned per default. (for more information see *VectorToHRT: Cleaning Input*).
+
+#### Cleaning Input
+The `IL` and `RMSSD` can be highly biased through outliers. Since ECG data can include artefacts, especially at the end and the beginning, RHRT cleans the data before calculating these parameters. Intervals are removed if they
+
+- are greater than 2000 or less than 300 ms or
+- differ more than 20 % of their own value from the next interval.
+
+--------
 
 ## Methods & Background
 
 ### Filter Rules
 
-There are two types of filter rules applied on the interval data:
+To ensure snippets free of any bias and containing effective VPCs, the VPCSs are filtered based on their interval lengths. The first publication to mention filter rules was [Grimm et al.][FR1]. With little variations these are the criteria that are used in the package as possible VPCSs are only saved as HRT objects if they match the following criteria:
 
-1) First the filter rules for CPI and CMI are as following:
+1) Filter rules for CPI and CMI:
 
     * CPI must have a maximal length of 80 % 
-    
     * CMI must have a minimal length of 120 %
 
-    Both intervals are compared to the **reference interval (RFI)**. This interval is calculated as the mean of the last five preceding intervals before the coupling interval.
+    Both intervals are compared to the **reference interval (RFI)**. This interval is calculated as the mean of the preceding intervals before the coupling interval.
 <br><br>
 
-2) Second all "normal" intervals have to be inspected for artefacts. Therefore they have to pass the following rules:
+2) Filter rules for regular intervals:
 
     * The length has to be between 300 ms and 2000 ms
-    
     * They must not differ more than 20 % from RFI
-    
     * or more than 200 ms from the preceding interval
 
-    The five preceding and fifteen following intervals of CPI and CMI are checked. If any of the intervals do not fit the rules, the complete set is neglected.
+    How many preceding and following intervals of CPI and CMI are checked is based on `numPreRRs` and `numPostRRs` of `vectorToHRT`. The default is 5 and 15, respectively.  If any of the intervals do not fit the rules, the complete set is neglected.
+
+[FR1]: https://doi.org/10.1046/j.1542-474X.2003.08206.x "Grimm et al., Heart rate turbulence following ventricular premature beats in healthy controls, 2003, Ann. Noninvas. Electro. 8 127–31"
 
 ### Normalisation of Turbulence Slope
 
+HRT is influenced by the heart rate. While there ist no clear conclusion for TO, TS values clearly positively correlate with the RR interval length (reviewed in [Blesius et al. 2020][NTS1]). Therefore, RHRT calculates `nTS` that is normalised to a fixed interval length (800 ms per default) in addition to the common TS.
+
+Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in [Blesius et al. 2020][NTS1]). While physiological reasons were suggested for this phenomenon ([Cygankiewicz et al. 2004][NTS2] and [chen 2009][NTS3]), [Hallstrom et al. 2004][4] reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Secondly, the following formula is used:
+
+  nTS = TS - ( 0.02475 * (numPostRRs-2)^0.9449 * (RMSSD / √#VPCSs) )
+    
+RHRT uses this normalisation per default. This can be changed with the boolean parameter `normHallstrom` in `vectorToHRT` and `calcAvHRT`. 
+
+[NTS1]: https://doi.org/10.1088/1361-6579/ab98b3 "Blesius et al., HRT assessment reviewed: a systematic review of heart rate turbulence methodology, 2020, Physiol. Meas. 41 08TR01"
+[NTS2]: https://doi.org/10.1046/j.1540-8167.2004.03613.x "Cygankiewicz et al., Relationship between heart rate turbulence and heart rate, heart rate variability, and number of ventricular premature beats in coronary patients, 2004, J. Cardiovasc. Electrophysiol. 15 731–7"
+[NTS3]: https://doi.org/10.1111/j.1542-474X.2009.00322.x "Chen, Impact of preceding ventricular premature beats on heart rate turbulence, 2009, Ann. Noninvas. Electro. 14 333–9"
+[NTS4]: https://doi.org/10.1109/TBME.2004.828049 "Hallstrom et al., Structural relationships between measures based on heart beat intervals: potential for improved risk assessment, 2004, IEEE. Trans. Biomed. Eng. 51 1414–20"
+
 ### Reliability Check
+The HRT parameter values pre se do not give any information about 1) how many VPCSs have been used to determine them and 2) how reliable the values are. However, two identical values are inherently different if one is calculated from a VPCS with a highly varying values and the other from a high amount of VPCS with hardly any variation. Still, HRT classification generally does not take this into account.
+
+RHRT implements a reliability check to give the opportunity to only use HRT parameter values that are reliable to a desired extent. This check consists of a one-sided t-test (`t.test` of the stats package) off all separate values against the respective cut-off of the parameter. The resulting p-value implicates the possibility of the classification being true based on being the combination of average and variability of the parameter values and therefore the reliability of the averaged value.
+
+These t-tests are being done automatically during `calcAvHRT` which is called by `vectorToHRT`. The default values of the cut-offs are 0 for `TO`, 2.5 for `TS` as well as `nTS` and 10 for `TT`.
+`getResults` returns the results if reliable. However, it returns all results ignoring the reliability check via the boolean parameter `safe` and changes the p-value cut-off with `pmax` (0.05 per default).
+
+Keep in mind that the parameter value cut-offs `coTO`, `coTS` and `coTT` are only used to compare the values and classify them. They are not related to the identically named parameters of `calcAvHRT` that are used for the t-tests.
 
 ### Calculation Order
+The order in which the HRT parameters are calculated has an impact on the resulting values ([Chen 2011][CO1]). Though [Schmidt et al. 1999][CO2] proposed to first calculate an averaged tachogram and determine TS then and for TO to first assess it from the separate VPCSs and average the results afterwards, the order gets switched in some studies as reviewed in [Blesius et al. 2020][CO3]. Therefore, RHRT gives the opportunity to change the calculation order for TO and TS through the parameters `orTO` and `orTS` of `calcAvHRT`. By default the order is as suggested by Schmidt et al. Additionally with `av` you can switch between `mean` and `median` as averaging function.
+
+[CO1]: https://doi.org/10.4081/hi.2011.e7 "Chen, Implications of turbulence slope variations in different approaches, 2011, Heart Int. 6 21–5"
+[CO2]: https://doi.org/10.1016/S0140-6736(98)08428-1 "Schmidt et al., Heart-rate turbulence after ventricular premature beats as a predictor of mortality after acute myocardial infarction, 1999, The Lancet 353 1390–6"
+[CO3]: https://doi.org/10.1088/1361-6579/ab98b3 "Blesius et al., HRT assessment reviewed: a systematic review of heart rate turbulence methodology, 2020, Physiol. Meas. 41 08TR01"
+
+--------
 
 ## Example Pipelines
 
 ### Determining the HRT class of a person
 
+The main focus of the package is to determine the HRT parameters or class of a person by a long-term ECG measurement. Load the data as a numeric vector and use `vectorToHRT` to find HRTs, then `getResults` and `plot` to check the results:
+
+```{r, fig.width=7, fig.height=4}
+hrtl <- vectorToHRT(testdataLong) # create the HRTList
+getResults(hrtl) # get the averaged HRT parameters
+plot(hrtl) # plot the HRTs and check the variability
+```
+
+The results do not pass the reliability check so we get "NR" as HRT class. The plot shows that firstly TO is near to zero and secondly there is a high variability in the VPCSs. We can go deeper into the data by checking the exact parameters (including TT as an additional hint to the person's status) and zooming out of the plot:
+
+```{r, fig.width=7, fig.height=4}
+round(
+  getResults(hrtl, "full", TT = TRUE),
+digits = 2) # get the parameters and p-values of the variability check
+plot(hrtl, cropped = FALSE) # plot the full VPCSs
+```
+
+As expected TO is not reliable with a p-value over 0.05. The VPCSs still seem to fluctuate a lot with the first two postRRs that determine TO varying above and below the ones of the avHRT. We can can get a picture on all TO values by using `getHRTParams`:
+
+```{r}
+tos <- unlist(getHRTParams(hrtl, "TO"))
+tos
+summary(tos)
+boxplot(tos)
+```
+
+These results can help to come to a well-founded decision on whether to classify the patient as HRT0/HRTA and trust the TO value or rather classify them conservatively as HRT1/HRTB. 
+
 ### Comparing HRT results with different methodological parameters
+
+This is an example how the package can be used to analyse the HRT methodology. Due to data size we use single VPCSs of one person rather than averaged HRTs. For example, we can compare the difference in `TS` values when using different `numPostRRs`.
+
+```{r, fig.width=7, fig.height=4}
+hrtl10 <- getHRTParams(vectorToHRT(testdataLong, numPostRRs = 10), "TS")
+hrtl20 <- getHRTParams(vectorToHRT(testdataLong, numPostRRs = 20), "TS")
+getResults(hrtl) # get the averaged HRT parameters
+plot(hrtl) # plot the HRTs and check the variability
+
+```
 
 --------
 
@@ -188,12 +295,12 @@ At first use `vectorToHRT` to run through your interval data and find interval s
 
 Example workflow:
 
-```{r}
-data("testdataVariant", package = "RHRT")
-
-tdVariant <- testdataVariant
-hrtlVar <- RHRT::vectorToHRT(tdVariant, minHRT = 3) # calculate the HRTList
-hrtlVarParams <- RHRT::getResults(hrtlVar) # get the averaged HRT parameters
+```{r, fig.width=7, fig.height=4}
+# data("testdataVariant", package = "RHRT")
+# 
+# tdVariant <- testdataVariant
+# hrtlVar <- RHRT::vectorToHRT(tdVariant) # calculate the HRTList
+# hrtlVarParams <- RHRT::getResults(hrtlVar) # get the averaged HRT parameters
 ```
 
 Other useful methods of HRTList:
@@ -206,19 +313,19 @@ Other useful methods of HRTList:
 You can plot either a single HRT object or an HRTList. For the latter the averaged HRT object is plotted in dark tone while the other HRT objects are plotted behind in light tone. TO and TS are labeled for the HRT object or the averaged HRT object, respectively.
 
 ```{r,  fig.width=7, fig.height=4}
-RHRT::plot(hrtlVar@HRTs[[1]], main = "One HRT object")
+# RHRT::plot(hrtlVar@HRTs[[1]], main = "One HRT object")
 ```
 
 ```{r,  fig.width=7, fig.height=4}
-RHRT::plot(hrtlVar, main = "All HRT objects in an HRTList object")
+# RHRT::plot(hrtlVar, main = "All HRT objects in an HRTList object")
 ```
 In either case you can specify whether you want the plot to be cropped vertically so TO and TS can be better inspected. Consequently CPI and CMI are not visible.
 
 ```{r,  fig.width=7, fig.height=4}
-RHRT::plot(hrtlVar, cropped = FALSE, main = "Not cropped")
+# RHRT::plot(hrtlVar, cropped = FALSE, main = "Not cropped")
 ```
 
 TT is hidden by default, but can be displayed.
 ```{r,  fig.width=7, fig.height=4}
-RHRT::plot(hrtlVar, cropped = FALSE, TT=TRUE)
+# RHRT::plot(hrtlVar, cropped = FALSE, TT=TRUE)
 ```

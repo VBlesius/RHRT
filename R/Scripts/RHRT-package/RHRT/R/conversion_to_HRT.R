@@ -13,6 +13,7 @@
 #' @param numPostRRs Numeric
 #' @param inputName String, name of the data
 #' @param minHRT Numeric, minimal number of HRTs that are needed to create a HRTList object
+#' @param cleaning Boolean, Should the input be roughly cleaned from artefacts before calculating IL and RMSSD?
 #' @inheritParams calcHRTParams
 #' @return HRTList HRTList object
 #'
@@ -21,7 +22,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
                         normIL = c_normIL, normHallstrom = TRUE,
                         numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs,
                         inputName = as.character(NA),
-                        minHRT = 5) {
+                        minHRT = 5, cleaning = TRUE) {
     numPreRRs <- numPreRRs + 1
     numPostRRs <- numPostRRs + 1
     numSnippet <- numPreRRs + numPostRRs + 2
@@ -39,7 +40,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
       checkAnnotations(annotations, input, PVCAnn, label)
     }
 
-    inputCleaned <- cleanInput(input)
+    inputCleaned <- if(cleaning) cleanInput(input) else input
     tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSnippet)
     if (length(tempHRTList@HRTs) < minHRT) {
         warning("No or too few HRTs found in your data!")
@@ -93,7 +94,8 @@ checkInput <- function(input, numSnippet, label) {
 #'
 cleanInput <- function(input) {
   inputNew <- input[input > 300 & input < 2000]
-  inputNew <- utils::tail(inputNew, -1)[abs(diff(inputNew)) <= utils::head(inputNew, -1)*0.2]
+  inputNew <- utils::tail(inputNew, -1) # removes first interval
+  inputNew <- inputNew[abs(diff(inputNew)) <= utils::head(inputNew, -1)*0.2] # removes all intervals that differ more than 20 % of their own value from the next interval
   return(inputNew)
 }
 

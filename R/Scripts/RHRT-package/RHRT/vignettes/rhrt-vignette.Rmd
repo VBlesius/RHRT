@@ -275,57 +275,11 @@ These results can help to come to a well-founded decision on whether to classify
 
 ### Comparing HRT results with different methodological parameters
 
-This is an example how the package can be used to analyse the HRT methodology. Due to data size we use single VPCSs of one person rather than averaged HRTs. For example, we can compare the difference in `TS` values when using different `numPostRRs`.
+This is an example how the package can be used to analyse the HRT methodology. Due to data size we use a set of HRTs of one person rather than a set of averaged HRTs. For example, we can compare the difference in `TS` values when using different `numPostRRs`.
 
-```{r, fig.width=7, fig.height=4}
+```{r, fig.width=4, fig.height=4}
 hrtl10 <- getHRTParams(vectorToHRT(testdataLong, numPostRRs = 10), "TS")
 hrtl20 <- getHRTParams(vectorToHRT(testdataLong, numPostRRs = 20), "TS")
-getResults(hrtl) # get the averaged HRT parameters
-plot(hrtl) # plot the HRTs and check the variability
-
-```
-
---------
-
-Old stuff
-
-## Workflow
-
-At first use `vectorToHRT` to run through your interval data and find interval sequences that fit to the filter rules. Once you have the HRTList object you can get the HRT parameters TO and TS of your dataset and the positions where the HRT objects were found and plot it.
-
-Example workflow:
-
-```{r, fig.width=7, fig.height=4}
-# data("testdataVariant", package = "RHRT")
-# 
-# tdVariant <- testdataVariant
-# hrtlVar <- RHRT::vectorToHRT(tdVariant) # calculate the HRTList
-# hrtlVarParams <- RHRT::getResults(hrtlVar) # get the averaged HRT parameters
-```
-
-Other useful methods of HRTList:
-
-- `getPositions` returns the indices of the coupling intervals of the found HRT objects in your vector
-- `getHRTParamsAll` returns TO and TS for all HRT objects (except for the averaged HRT) in HRTList as matrix
-
-## Plot
-
-You can plot either a single HRT object or an HRTList. For the latter the averaged HRT object is plotted in dark tone while the other HRT objects are plotted behind in light tone. TO and TS are labeled for the HRT object or the averaged HRT object, respectively.
-
-```{r,  fig.width=7, fig.height=4}
-# RHRT::plot(hrtlVar@HRTs[[1]], main = "One HRT object")
-```
-
-```{r,  fig.width=7, fig.height=4}
-# RHRT::plot(hrtlVar, main = "All HRT objects in an HRTList object")
-```
-In either case you can specify whether you want the plot to be cropped vertically so TO and TS can be better inspected. Consequently CPI and CMI are not visible.
-
-```{r,  fig.width=7, fig.height=4}
-# RHRT::plot(hrtlVar, cropped = FALSE, main = "Not cropped")
-```
-
-TT is hidden by default, but can be displayed.
-```{r,  fig.width=7, fig.height=4}
-# RHRT::plot(hrtlVar, cropped = FALSE, TT=TRUE)
+boxplot(hrtl10, hrtl20, names = c("TSRR = 10", "TSRR = 20"))
+t.test(hrtl10, hrtl20)
 ```

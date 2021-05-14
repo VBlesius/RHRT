@@ -265,7 +265,7 @@ plot(hrtl, cropped = FALSE) # plot the full VPCSs
 As expected TO is not reliable with a p-value over 0.05. The VPCSs still seem to fluctuate a lot with the first two postRRs that determine TO varying above and below the ones of the avHRT. We can can get a picture on all TO values by using `getHRTParams`:
 
 ```{r}
-tos <- unlist(getHRTParams(hrtl, "TO"))
+tos <- getHRTParams(hrtl, "TO")
 tos
 summary(tos)
 boxplot(tos)

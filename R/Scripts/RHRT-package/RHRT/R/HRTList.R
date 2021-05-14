@@ -175,7 +175,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 #'
 #' @param HRTListObj HRTList object
 #' @param sl Character, choose a slot saved by an HRT object
-#' @return List
+#' @return Vector
 #'
 #' @rdname getHRTParams
 setGeneric("getHRTParams", function(HRTListObj, sl) {
@@ -186,7 +186,7 @@ setGeneric("getHRTParams", function(HRTListObj, sl) {
 setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
   checkValidity(HRTListObj)
   Params <- lapply(HRTListObj@HRTs, methods::slot, sl)
-  return(Params)
+  return(unlist(Params))
 })
 
 
@@ -267,13 +267,13 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
         preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS)
 
   # calculates parameters for every VPC seperately
-    TOs <- unlist(getHRTParams(HRTListObj, "TO"))
-    TSs <- unlist(getHRTParams(HRTListObj, "TS"))
-    TTs <- unlist(getHRTParams(HRTListObj, "TT"))
+    TOs <- getHRTParams(HRTListObj, "TO")
+    TSs <- getHRTParams(HRTListObj, "TS")
+    TTs <- getHRTParams(HRTListObj, "TT")
     if (!all.equal(IL, HRTListObj@IL) || !all.equal(normIL, c_normIL))
       HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
-    nTSs <- unlist(getHRTParams(HRTListObj, "nTS"))
-    nintercepts <- unlist(getHRTParams(HRTListObj, "nintercept"))
+    nTSs <- getHRTParams(HRTListObj, "nTS")
+    nintercepts <- getHRTParams(HRTListObj, "nintercept")
 
     notconstant <- function(x) !length(unique(x)) == 1
     # calculates p-values
@@ -305,7 +305,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     if (orTS == 1) {
       # TS+intercept
       avHRT@TS <- av(TSs)
-      avHRT@intercept <- av(unlist(getHRTParams(HRTListObj, "intercept")))
+      avHRT@intercept <- av(HRTListObj, "intercept")
 
       # TT
       avHRT@TT <- av(TTs)

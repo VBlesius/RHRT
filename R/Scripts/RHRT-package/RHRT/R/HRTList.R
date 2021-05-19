@@ -80,7 +80,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 
   # checks whether the string given in type is viable
   types <- c("class", "parameter", "full")
-  if(!type %in% types) stop(paste("The given value for 'type' is unknown! Please choose one of the following: ", types))
+  if(!type %in% types) stop(paste0("The given value for 'type' is unknown! Please choose one of the following: ", paste(types, collapse = ', ')))
 
   # sets needed variables
   av <- HRTListObj@avHRT

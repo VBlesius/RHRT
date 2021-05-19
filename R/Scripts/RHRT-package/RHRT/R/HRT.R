@@ -212,6 +212,9 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param xlab Character, Label for the x axis
 #' @param ylab Character Label for the x axis
 #' @param paramsLegend Boolean, should the parameter values of the HRT be plotted?
+#' @param colTO Character, colour used to highlight TO
+#' @param colTS Character, colour used to highlight TS
+#' @param colTT Character, colour used to highlight TT
 #' @param ... Other arguments in tag = value form. See graphics::par for more information.
 #'
 #' @note Please note that the argument xaxt and ylim can't be set,
@@ -224,9 +227,13 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
                                   xlab = "# of RR interval",
                                   ylab = "length of RR interval (ms)",
                                   paramsLegend = TRUE,
+                                  colTO = "#ec2023",
+                                  colTS = "#006AFF",
+                                  colTT = "#6800DE",
                                   ...) {
   rrs <- getRRs(x)
   n_preRRs <- length(x@preRRs)
+  pchParams <- if(pch == 20) 21 else pch
 
   if(!add) {
     ymin <- min(c(x@preRRs, x@postRRs))
@@ -247,32 +254,33 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
     lines(seq(1:length(rrs)), rrs)
   }
 
-  axis(1, at = seq(1:length(rrs)), labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))), las=2)
-  if (TT) {
-    legend("bottomright", c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
-                            paste("TS", if(paramsLegend) {round(x@TS, 2)}),
-                            paste("TT", if(paramsLegend) {round(x@TT, 2)})),
-           lty = c(3), pch = c(19, NA), col = c("red", "blue", "chartreuse3"))
-   } else {
-     legend("bottomright", c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
-                             paste("TS", if(paramsLegend) {round(x@TS, 2)})),
-            lty = c(3), pch = c(19, NA), col = c("red", "blue"))
-   }
+  axis(1, at = seq(1:length(rrs)), las=2,
+       labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))))
+
+  legend("bottomright",
+         c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
+           paste("TS", if(paramsLegend) {round(x@TS, 2)}),
+           if (TT) {paste("TT", if(paramsLegend) {round(x@TT, 2)})}),
+         lty = c(0, 3, 0),
+         pch = c(pchParams),
+         col = c(colTO, colTS, colTT),
+         pt.bg = c(colTO, 0, 0),
+         pt.cex = c(1, 1, 2)
+  )
 
   # Turbulence onset
   to_indices <- c(n_preRRs-1, n_preRRs, n_preRRs+3, n_preRRs+4)
-  points(c(to_indices), c(rrs[to_indices]), bg= "red", pch = 21)
+  points(c(to_indices), c(rrs[to_indices]), bg = colTO, col = colTO, pch = pchParams)
 
   # Turbulence slope
   TTcorr <- x@TT+n_preRRs+2
-  points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = "blue", pch = 21)
-  abline(coef = c(x@intercept, x@TS), lty = 3, col = "blue")
+  points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = colTS, pch = pchParams)
+  abline(coef = c(x@intercept, x@TS), lty = 3, col = colTS)
 
   # Turbulence timing
   if (TT) {
-    points(TTcorr, rrs[TTcorr], col = "chartreuse3", cex = 3, pch = 8)
+    points(TTcorr, rrs[TTcorr], col = colTT, cex = 2, pch = pchParams)
   }
-
 })
 
 #-------------------------------------------------------------------------------

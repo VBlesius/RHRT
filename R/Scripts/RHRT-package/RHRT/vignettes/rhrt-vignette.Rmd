@@ -125,6 +125,7 @@ An HRT object saves the data of one VPCS and its HRT results. It consists of the
   - `add`: adds the plot to the current one
   - `TT`: highlights TT and includes it to the legend
   - `paramsLegend`: switches between showing and hiding the parameter values in the legend, the default is `TRUE`
+  - `colTO`, `colTS` and `colTT` determine the colour in which the different parameters are highlighted in the plot (red, blue and purple per default).
 
 ### HRTList Object
 

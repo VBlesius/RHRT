@@ -2,8 +2,6 @@
 
 export(vectorToHRT)
 exportMethods(calcAvHRT)
-exportMethods(calcTO)
-exportMethods(calcTS)
 exportMethods(getHRTParams)
 exportMethods(getPositions)
 exportMethods(getRRs)

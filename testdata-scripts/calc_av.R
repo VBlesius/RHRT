@@ -1,4 +1,4 @@
-source("wapply.R")
+source("../RHRT/R/wapply.R")
 
 # Read in measured data
 args <- commandArgs(TRUE)

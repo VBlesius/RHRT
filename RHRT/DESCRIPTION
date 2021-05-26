@@ -2,7 +2,7 @@ Package: RHRT
 Type: Package
 Title: Scans for PVCs and Calculates HRT Parameters
 Version: 0.5
-Date: 20120-04-19
+Date: 2021-05-26
 Author: Valeria Blesius
 Maintainer: Valeria Blesius <valeria.blesius@mni.thm.de>
 Description: Methods to scan interval data for PVCs (premature ventricular

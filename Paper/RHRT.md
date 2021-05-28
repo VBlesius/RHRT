@@ -38,7 +38,7 @@ The package works best and fastest when given annotation data, but can also find
 Most filtering parameters and calculation methods can be set freely to enable research on the methodology itself.
 In addition to parameter calculation ``RHRT`` can classify the data into common risk categories and estimates the reliability of the results based on the number and parameter values of the HRTs.
 
-The package can be found on [GitHub](https://github.com/VBlesius/RHRT).
+The package can be found on [CRAN] and [GitHub](https://github.com/VBlesius/RHRT).
 
 # Statement of need
 
@@ -47,6 +47,18 @@ The package can be found on [GitHub](https://github.com/VBlesius/RHRT).
 HRT is a feasible method to estimate the health risk of a person since it reflects the status of the autonomic nervous system.
 HRT analysis is already used for risk stratification in the clinical practice, although the optimal methodology for HRT assessment has still not been systematically set [@blesius_hrt_2020].
 ``RHRT`` is the first R package for HRT analysis and aims to enable further research about HRT.
+
+# Minimal example
+
+To install ``RHRT``just use
+
+install.packages("RHRT")
+
+for the version on CRAN or
+
+devtools::install_github("vblesius/RHRT")
+
+for the continuosly developed version on GitHub.
 
 # Acknowledgements
 

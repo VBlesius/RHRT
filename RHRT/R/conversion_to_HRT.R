@@ -140,7 +140,7 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_n
 
   hrts <-
     if (is.null(annotations)) {
-      wapply(intervals, numSnippet, by = 1, FUN = checkForHRT, numPreRRs, numPostRRs)
+      roll(intervals, numSnippet, checkForHRT, numPreRRs, numPostRRs)
     } else {
       PVCIndices <- which(annotations == PVCAnn)
       PVCIndices <- PVCIndices[PVCIndices > numPreRRs & PVCIndices < length(annotations)-numPostRRs]

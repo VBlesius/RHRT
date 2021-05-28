@@ -153,10 +153,10 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
   ## Formula for the slope: (n * sum(xy) - (sum(x))(sum(y))) / (n x sum(x)^2 - (sum(x))^2)
   x <- seq(1,5)
   n <- 5
-  slopes <- wapply(postRRs, 5, by = 1, FUN = function(y) {
+  slopes <- roll(postRRs, 5, function(y) {
     return((n*sum(x*y)-sum(x)*sum(y)) / (n*sum(x^2)-sum(x)^2))
   })
-  TS_temp <- max(slopes, na.rm = TRUE)
+  TS_temp <- max(unlist(slopes), na.rm = TRUE)
 
   # Calculate intercept for regression line in plot
   ## Formula for the intercept: mean(y) - slope*mean(x)

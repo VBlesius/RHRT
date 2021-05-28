@@ -29,4 +29,5 @@ Collate:
     'Testdata-description.R'
     'constants.R'
     'conversion_to_HRT.R'
+    'roll.R'
     'wapply.R'

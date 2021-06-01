@@ -69,12 +69,13 @@ createVPCS <- function(numPreRRs, numPostRRs, avRR, sd) {
 #' 
 #' @return numeric or character vector
 createDummyData <- function(length, numVPCSs, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs, avRR = c_normIL, sd = avRR/100, ann = FALSE) {
+  
+  lengthVPCS <- numPreRRs+numPostRRs+2
   if(length < numVPCSs*lengthVPCS) {
     warning("The given length of the dummy data is to short for the amount of VPCSs to be included! Returning NULL!")
     return(NULL)
   }
   
-  lengthVPCS <- numPreRRs+numPostRRs+2
   numIntervalsBetween <- (length-lengthVPCS*numVPCSs) %/% (numVPCSs+1) # calculates the number of intervals needed between the VPCSs
   modu <- (length-lengthVPCS*numVPCSs) %% (numVPCSs+1) # calculates modulo to fill the whole length of intervals
   

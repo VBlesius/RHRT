@@ -34,18 +34,18 @@ createIntervals <- function(n, avRR, sd) {
 
 #' Creates VPCSs
 #'
-#' Calls createIntervals to 
+#' Multiplies a part of a given numeric vector with HRTPattern. The first index
+#' is numPreRRs + 2, because RHRT needs one interval more than preRRs to find
+#' a VPCS (some filter rules need preceding intervals).
 #'
 #' @param n numeric, number of intervals to be created
 #' @inheritParams createDummyData
 #' @return 
-createVPCS <- function(numPreRRs, numPostRRs, avRR, sd) {
-  VPCS <- c(
-    createIntervals(numPreRRs, avRR, sd),
-    createIntervals(17, avRR, sd)*HRTPattern,
-    if(numPostRRs > 15) createIntervals(numPostRRs-15, avRR, sd)
-  )
-  return(VPCS)
+createVPCS <- function(chunk, numPreRRs) {
+  iStart <- numPreRRs+2
+  iEnd <- iStart+16 #length of HRTPattern -1
+  chunk[iStart:iEnd] <- chunk[iStart:iEnd]*HRTPattern
+  return(chunk)
 }
 
 #' Creates dummy interval or annotation data
@@ -71,25 +71,27 @@ createVPCS <- function(numPreRRs, numPostRRs, avRR, sd) {
 createDummyData <- function(length, numVPCSs, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs, avRR = c_normIL, sd = avRR/100, ann = FALSE) {
   
   lengthVPCS <- numPreRRs+numPostRRs+2
-  if(length < numVPCSs*lengthVPCS) {
-    warning("The given length of the dummy data is to short for the amount of VPCSs to be included! Returning NULL!")
+  if(length < numVPCSs*(lengthVPCS+1)) {
+    warning("The given length of the dummy data is to short for the amount of VPCSs to be included! The length must be bigger than numVPCSs*(lengthVPCS+1). Returning NULL!")
     return(NULL)
   }
   
-  numIntervalsBetween <- (length-lengthVPCS*numVPCSs) %/% (numVPCSs+1) # calculates the number of intervals needed between the VPCSs
-  modu <- (length-lengthVPCS*numVPCSs) %% (numVPCSs+1) # calculates modulo to fill the whole length of intervals
+  lengthChunks <- length/numVPCSs
+ 
+   if(ann) {
+    data <- rep("N", length)
+  } else {
+    data <- createIntervals(length, avRR = avRR, sd = sd)
+  }
+
+  chunks <- split(data, ceiling(seq_along(data)/lengthChunks))
   
   if(ann) {
-    res <- c( 
-      rep(
-        c(rep("N", numIntervalsBetween+numPreRRs), "V", rep("N", numPostRRs+1)),
-        numVPCSs),
-      rep("N", numIntervalsBetween+modu))
-    return(res)
+    chunks <- lapply(chunks, replace, 7, "V")
+  } else {
+    chunks <- lapply(chunks, createVPCS, numPreRRs)
   }
   
-  res <- c( sapply(seq(1,numVPCSs), function(x) c(createIntervals(numIntervalsBetween, avRR, sd), createVPCS(numPreRRs, numPostRRs, avRR, sd))), # normal intervals + VPCS
-            createIntervals(numIntervalsBetween+modu, avRR, sd) # remaining normal intervals
-  )
+  res <- Reduce(c, chunks)
   return(res)
 }

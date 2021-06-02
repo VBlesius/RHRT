@@ -1,6 +1,6 @@
 #' Intervals without noise
 #'
-#' Artificial dummy interval data: This dataset includes 5 identical VPCSs 
+#' Artificial dummy interval data: This dataset includes 5 identical VPCSs
 #' that fit the HRT filter rules and was created without noise.
 #'
 #' @format A numeric vector of length 1000.
@@ -8,7 +8,7 @@
 
 #' Intervals with noise
 #'
-#' Artificial dummy interval data: This dataset includes 5 different VPCSs 
+#' Artificial dummy interval data: This dataset includes 5 different VPCSs
 #' that fit the HRT filter rules.
 #'
 #' @format A numeric vector of length 1000.
@@ -54,7 +54,7 @@
 
 #' Long term data annotations
 #'
-#' Artificial dummy interval data: This dataset contains the annotations 
+#' Artificial dummy interval data: This dataset contains the annotations
 #' matching testdataLong.
 #'
 #' @format A vector of characters.

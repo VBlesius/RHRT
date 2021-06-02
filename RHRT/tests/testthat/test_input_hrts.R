@@ -18,5 +18,4 @@ test_that("Finding HRTs", {
 
   expect_warning(vectorToHRT(rep(782, 1000)), "No or too few HRTs")
   expect_warning(vectorToHRT(rep(2001, 100)), "No or too few HRTs")
-
 })

@@ -22,24 +22,26 @@
 #'
 #' @importFrom methods setMethod
 setClass("HRT",
-         slots = list(
-           couplRR = "numeric",
-           compRR = "numeric",
-           preRRs = "vector",
-           postRRs = "vector",
-           TO = "numeric",
-           TS = "numeric",
-           TT = "numeric",
-           intercept = "numeric",
-           nTS = "numeric",
-           nintercept = "numeric"),
-
-         validity = function(object) {
-           if(any(length(object@couplRR) != 1,
-                  length(object@compRR) != 1)) {
-             stop("The number of given intervals for the HRT object is incorrect!")
-           }
-         }
+  slots = list(
+    couplRR = "numeric",
+    compRR = "numeric",
+    preRRs = "vector",
+    postRRs = "vector",
+    TO = "numeric",
+    TS = "numeric",
+    TT = "numeric",
+    intercept = "numeric",
+    nTS = "numeric",
+    nintercept = "numeric"
+  ),
+  validity = function(object) {
+    if (any(
+      length(object@couplRR) != 1,
+      length(object@compRR) != 1
+    )) {
+      stop("The number of given intervals for the HRT object is incorrect!")
+    }
+  }
 )
 
 #-------------------------------------------------------------------------------
@@ -54,22 +56,23 @@ setClass("HRT",
 #' @rdname HRT
 #' @importFrom methods initialize
 #' @export
-setMethod("initialize", "HRT",
-          function(.Object, couplRR=NA_real_, compRR=NA_real_,
-                   preRRs=NA_real_, postRRs=NA_real_, ...) {
-            .Object@couplRR <- couplRR
-            .Object@compRR <- compRR
-            .Object@preRRs <- preRRs
-            .Object@postRRs <- postRRs
-            .Object@TO <- NA_real_
-            .Object@TS <- NA_real_
-            .Object@TT <- NA_real_
-            .Object@intercept <- NA_real_
-            .Object@nTS <- NA_real_
-            .Object@nintercept <- NA_real_
+setMethod(
+  "initialize", "HRT",
+  function(.Object, couplRR = NA_real_, compRR = NA_real_,
+           preRRs = NA_real_, postRRs = NA_real_, ...) {
+    .Object@couplRR <- couplRR
+    .Object@compRR <- compRR
+    .Object@preRRs <- preRRs
+    .Object@postRRs <- postRRs
+    .Object@TO <- NA_real_
+    .Object@TS <- NA_real_
+    .Object@TT <- NA_real_
+    .Object@intercept <- NA_real_
+    .Object@nTS <- NA_real_
+    .Object@nintercept <- NA_real_
 
-            return(.Object)
-            }
+    return(.Object)
+  }
 )
 
 #-------------------------------------------------------------------------------
@@ -117,11 +120,11 @@ setMethod("calcTO", "HRT", function(HRTObj) {
   preRRs <- HRTObj@preRRs
   postRRs <- HRTObj@postRRs
 
-  if(sum(preRRs) == 0) {
+  if (sum(preRRs) == 0) {
     warning("The sum of the intervals preceding the coupling interval is zero! Turbulence onset can't be calculated!")
     HRTObj@TO <- NA_real_
   } else {
-    HRTObj@TO <- ( (sum(postRRs[1:2]) - sum(utils::tail(preRRs, 2)) ) / sum(utils::tail(preRRs,2)) ) * 100
+    HRTObj@TO <- ((sum(postRRs[1:2]) - sum(utils::tail(preRRs, 2))) / sum(utils::tail(preRRs, 2))) * 100
   }
 
   return(HRTObj)
@@ -147,14 +150,14 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
   checkValidity(HRTObj)
 
   postRRs <- HRTObj@postRRs
-  if (normalising) postRRs <- postRRs*normIL/IL
+  if (normalising) postRRs <- postRRs * normIL / IL
 
   # Calculate TS
   ## Formula for the slope: (n * sum(xy) - (sum(x))(sum(y))) / (n x sum(x)^2 - (sum(x))^2)
-  x <- seq(1,5)
+  x <- seq(1, 5)
   n <- 5
   slopes <- roll(postRRs, 5, function(y) {
-    return((n*sum(x*y)-sum(x)*sum(y)) / (n*sum(x^2)-sum(x)^2))
+    return((n * sum(x * y) - sum(x) * sum(y)) / (n * sum(x^2) - sum(x)^2))
   })
   TS_temp <- max(unlist(slopes), na.rm = TRUE)
 
@@ -163,8 +166,8 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
   n_preRRs <- length(HRTObj@preRRs)
   slope <- TS_temp
   index <- which.max(slopes)
-  TS_intervals <- postRRs[index:(index + n_preRRs-1)]
-  intercept <- mean(c(min(TS_intervals), max(TS_intervals))) - slope*(mean(x)+n_preRRs+1+index)
+  TS_intervals <- postRRs[index:(index + n_preRRs - 1)]
+  intercept <- mean(c(min(TS_intervals), max(TS_intervals))) - slope * (mean(x) + n_preRRs + 1 + index)
   # The intercept has to be adapted for the plot, which also shows preRRS, coupling interval and compensatory interval, so it has to be "moved" by 4 "steps"
 
   if (normalising) {
@@ -191,10 +194,12 @@ setGeneric("getRRs", function(HRTObj) {
 #' @rdname getRRs
 #' @export
 setMethod("getRRs", "HRT", function(HRTObj) {
-  return(c(HRTObj@preRRs,
-           HRTObj@couplRR,
-           HRTObj@compRR,
-           HRTObj@postRRs))
+  return(c(
+    HRTObj@preRRs,
+    HRTObj@couplRR,
+    HRTObj@compRR,
+    HRTObj@postRRs
+  ))
 })
 
 #-------------------------------------------------------------------------------
@@ -233,48 +238,54 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
                                   ...) {
   rrs <- getRRs(x)
   n_preRRs <- length(x@preRRs)
-  pchParams <- if(pch == 20) 21 else pch
+  pchParams <- if (pch == 20) 21 else pch
 
-  if(!add) {
+  if (!add) {
     ymin <- min(c(x@preRRs, x@postRRs))
     ymax <- max(c(x@preRRs, x@postRRs))
     ydiff <- ymax - ymin
 
     plot(seq(1:length(rrs)), rrs,
-         xaxt = "n",
-         ylim = if(cropped)
-           c(ymin-ydiff*0.3,
-             ymax+ydiff*0.3),
-         type = "o",
-         pch = pch,
-         xlab = xlab,
-         ylab = ylab,
-         ...)
+      xaxt = "n",
+      ylim = if (cropped) {
+        c(
+          ymin - ydiff * 0.3,
+          ymax + ydiff * 0.3
+        )
+      },
+      type = "o",
+      pch = pch,
+      xlab = xlab,
+      ylab = ylab,
+      ...
+    )
   } else {
     lines(seq(1:length(rrs)), rrs)
   }
 
-  axis(1, at = seq(1:length(rrs)), las=2,
-       labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs)-n_preRRs-2))))
+  axis(1,
+    at = seq(1:length(rrs)), las = 2,
+    labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs) - n_preRRs - 2)))
+  )
 
   legend("bottomright",
-         c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
-           paste("TS", if(paramsLegend) {round(x@TS, 2)}),
-           if (TT) {paste("TT", if(paramsLegend) {round(x@TT, 2)})}),
-         lty = c(0, 3, 0),
-         pch = c(pchParams),
-         col = c(colTO, colTS, colTT),
-         pt.bg = c(colTO, 0, 0),
-         pt.cex = c(1, 1, 2)
+    c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
+      paste("TS", if(paramsLegend) {round(x@TS, 2)}),
+      if (TT) {paste("TT", if(paramsLegend) {round(x@TT, 2)})}),
+    lty = c(0, 3, 0),
+    pch = c(pchParams),
+    col = c(colTO, colTS, colTT),
+    pt.bg = c(colTO, 0, 0),
+    pt.cex = c(1, 1, 2)
   )
 
   # Turbulence onset
-  to_indices <- c(n_preRRs-1, n_preRRs, n_preRRs+3, n_preRRs+4)
+  to_indices <- c(n_preRRs - 1, n_preRRs, n_preRRs + 3, n_preRRs + 4)
   points(c(to_indices), c(rrs[to_indices]), bg = colTO, col = colTO, pch = pchParams)
 
   # Turbulence slope
-  TTcorr <- x@TT+n_preRRs+2
-  points(seq(TTcorr,TTcorr+4), c(rrs[TTcorr:(TTcorr+4)]), col = colTS, pch = pchParams)
+  TTcorr <- x@TT + n_preRRs + 2
+  points(seq(TTcorr, TTcorr + 4), c(rrs[TTcorr:(TTcorr + 4)]), col = colTS, pch = pchParams)
   abline(coef = c(x@intercept, x@TS), lty = 3, col = colTS)
 
   # Turbulence timing
@@ -290,12 +301,12 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
 #' @param ... Other parameters
 #'
 #' @rdname checkValidity
-setGeneric("checkValidity", function(x,...) {
+setGeneric("checkValidity", function(x, ...) {
   standardGeneric("checkValidity")
 })
 #' @rdname checkValidity
 setMethod("checkValidity", "HRT", function(x) {
-  if(anyNA(getRRs(x))) {
+  if (anyNA(getRRs(x))) {
     stop("One or more interval is not set (NA)! Please make sure you have initialized the HRT object correctly!")
   }
 })

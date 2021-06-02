@@ -20,23 +20,26 @@
 #' @importFrom methods setMethod
 #' @include HRT.R
 setClass("avHRT",
-         contains = "HRT",
-         slots = list(
-           av = "function",
-           orTO = "numeric",
-           orTS = "numeric",
-           pTO = "numeric",
-           pTS = "numeric",
-           pTT = "numeric",
-           pnTS = "numeric"),
-
-         validity = function(object) {
-           if(any(!identical(av, mean) && !identical(av, stats::median),
-                  length(object@orTO) != 1,
-                  length(object@orTS) != 1)) {
-             stop("The given numbers for the avHRT object are incorrect!")
-           }
-         }
+  contains = "HRT",
+  slots = list(
+    av = "function",
+    orTO = "numeric",
+    orTS = "numeric",
+    pTO = "numeric",
+    pTS = "numeric",
+    pTT = "numeric",
+    pnTS = "numeric"
+  ),
+  validity = function(object) {
+    if (
+      any(
+        !identical(av, mean) && !identical(av, stats::median),
+        length(object@orTO) != 1,
+        length(object@orTS) != 1
+      )) {
+      stop("The given numbers for the avHRT object are incorrect!")
+    }
+  }
 )
 
 #-------------------------------------------------------------------------------
@@ -57,21 +60,22 @@ setClass("avHRT",
 #' @rdname avHRT
 #' @importFrom methods initialize
 #' @export
-setMethod("initialize", "avHRT",
-          function(.Object, av=mean, orTO=NA_real_, orTS=NA_real_,
-                   pTO=NA_real_, pTS=NA_real_, pTT=NA_real_, pnTS=NA_real_,
-                   couplRR=NA_real_, compRR=NA_real_,
-                   preRRs=NA_real_, postRRs=NA_real_, ...) {
-            .Object@av <- av
-            .Object@orTO <- orTO
-            .Object@orTS <- orTS
-            .Object@pTO <- pTO
-            .Object@pTS <- pTS
-            .Object@pTT <- pTT
-            .Object@pnTS <- pnTS
+setMethod(
+  "initialize", "avHRT",
+  function(.Object, av = mean, orTO = NA_real_, orTS = NA_real_,
+           pTO = NA_real_, pTS = NA_real_, pTT = NA_real_, pnTS = NA_real_,
+           couplRR = NA_real_, compRR = NA_real_,
+           preRRs = NA_real_, postRRs = NA_real_, ...) {
+    .Object@av <- av
+    .Object@orTO <- orTO
+    .Object@orTS <- orTS
+    .Object@pTO <- pTO
+    .Object@pTS <- pTS
+    .Object@pTT <- pTT
+    .Object@pnTS <- pnTS
 
-            .Object <- methods::callNextMethod(.Object, couplRR, compRR, preRRs, postRRs, ...)
+    .Object <- methods::callNextMethod(.Object, couplRR, compRR, preRRs, postRRs, ...)
 
-            return(.Object)
-          }
+    return(.Object)
+  }
 )

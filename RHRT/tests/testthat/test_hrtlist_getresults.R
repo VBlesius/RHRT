@@ -24,7 +24,7 @@ test_that("handling of insignificant parameters", {
   expect_equal(getResults(HRTsNS), "NR")
   expect_equal(getResults(HRTsNS, safe = FALSE), "HRT0")
   expect_true(is.character(getResults(HRTsNS, type = "parameter")["TO"]))
-  expect_true(is.numeric(getResults(HRTsNS, type = "parameter", safe=FALSE)["TO"]))
+  expect_true(is.numeric(getResults(HRTsNS, type = "parameter", safe = FALSE)["TO"]))
   expect_equal(getResults(HRTsNS, type = "full"), getResults(HRTsNS, type = "full", safe = FALSE))
 })
 

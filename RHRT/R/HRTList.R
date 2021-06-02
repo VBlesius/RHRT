@@ -22,13 +22,15 @@
 #' @include HRT.R
 #' @include avHRT.R
 setClass("HRTList",
-         slots = list(
-           name = "character",
-           IL = "numeric",
-           pos = "vector",
-           HRTs = "list",
-           avHRT = "avHRT",
-           nRMSSD = "numeric"))
+  slots = list(
+    name = "character",
+    IL = "numeric",
+    pos = "vector",
+    HRTs = "list",
+    avHRT = "avHRT",
+    nRMSSD = "numeric"
+  )
+)
 
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs
@@ -41,13 +43,13 @@ setClass("HRTList",
 #'
 #' @rdname getPositions
 setGeneric("getPositions", function(HRTListObj) {
-    standardGeneric("getPositions")
+  standardGeneric("getPositions")
 })
 #' @rdname getPositions
 #' @export
 setMethod("getPositions", "HRTList", function(HRTListObj) {
   checkValidity(HRTListObj, pos = TRUE)
-    return(HRTListObj@pos)
+  return(HRTListObj@pos)
 })
 
 # -------------------------------------------------------------------------------
@@ -70,27 +72,28 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #'
 #' @rdname getResults
 setGeneric("getResults", function(HRTListObj, type = "class", TT = FALSE, nTS = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
-    standardGeneric("getResults")
+  standardGeneric("getResults")
 })
 #' @rdname getResults
 #' @export
 setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FALSE, nTS = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
-
   checkValidity(HRTListObj, av = TRUE)
 
   # checks whether the string given in type is viable
   types <- c("class", "parameter", "full")
-  if(!type %in% types) stop(paste0("The given value for 'type' is unknown! Please choose one of the following: ", paste(types, collapse = ', ')))
+  if (!type %in% types) stop(paste0("The given value for 'type' is unknown! Please choose one of the following: ", paste(types, collapse = ", ")))
 
   # sets needed variables
   av <- HRTListObj@avHRT
-  paramNames <- c("TO", if(nTS) "nTS" else "TS", if(TT) "TT")
-  pNames <- c("pTO", if(nTS) "pnTS" else "pTS", if(TT) "pTT")
-  paramValues <- stats::setNames(c(av@TO, if(nTS) av@nTS else av@TS, if(TT) av@TT), paramNames)
-  pValues <- stats::setNames(c(av@pTO, if(nTS) av@pnTS else av@pTS, if(TT) av@pTT), pNames)
+  paramNames <- c("TO", if (nTS) "nTS" else "TS", if (TT) "TT")
+  pNames <- c("pTO", if (nTS) "pnTS" else "pTS", if (TT) "pTT")
+  paramValues <- stats::setNames(c(av@TO, if (nTS) av@nTS else av@TS, if (TT) av@TT), paramNames)
+  pValues <- stats::setNames(c(av@pTO, if (nTS) av@pnTS else av@pTS, if (TT) av@pTT), pNames)
 
   # sets up needed checking function
-  isSignificant <- function(p) return(p <= pmax)
+  isSignificant <- function(p) {
+    return(p <= pmax)
+  }
   isRisky <- function(val, param) {
     if(param == "TO") return(val > coTO)
     if(param == "TS") return(val < coTS)
@@ -98,18 +101,20 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
   }
   concludeResults <- function(val, p) {
     # checks for NA
-    if(is.na(val)) return(NA_real_)
-    if(is.na(p) && safe) {
-      if(num) {
+    if (is.na(val)) {
+      return(NA_real_)
+    }
+    if (is.na(p) && safe) {
+      if (num) {
         return(NA_real_)
       } else {
         return("NR")
       }
     }
     # if neither val nor p are NA:
-    if(!safe || isSignificant(p)) {
+    if (!safe || isSignificant(p)) {
       return(val)
-    } else if(num) {
+    } else if (num) {
       return(NA_real_)
     } else {
       return("NR")
@@ -118,44 +123,50 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 
   # Returning results depending on "type"
   ## full
-  if (type == "full") return(c(paramValues, pValues))
+  if (type == "full") {
+    return(c(paramValues, pValues))
+  }
 
   ## saves results as "NR" or NA if not reliable in safe mode, in every other case saves values
   results <- unlist(mapply(concludeResults, paramValues, pValues, SIMPLIFY = TRUE))
 
   ## parameter
-  if (type == "parameter") return(results)
+  if (type == "parameter") {
+    return(results)
+  }
 
   ## class
   if (type == "class") {
-    if(num) {
+    if (num) {
       warning("The combination of type 'class' and num 'TRUE' is not possible: Returning NA.")
       return(NA_real_)
     }
 
-    if(any(is.na(paramValues))) {
+    if (any(is.na(paramValues))) {
       warning("The HRT parameters contain NA, thus the HRT class cannot be determined: Returning NA.")
       return(NA)
     }
-    if(safe && "NR" %in% results) return("NR")
+    if (safe && "NR" %in% results) {
+      return("NR")
+    }
 
     sig <- sapply(pValues, isSignificant)
     risky <- mapply(isRisky, paramValues, paramNames, SIMPLIFY = TRUE)
 
-    if(TRUE %in% risky && FALSE %in% risky) {
-      if(TT) {
+    if (TRUE %in% risky && FALSE %in% risky) {
+      if (TT) {
         class <- "HRTB"
       } else {
         class <- "HRT1"
       }
-    } else if(unique(risky)) {
-      if(TT) {
+    } else if (unique(risky)) {
+      if (TT) {
         class <- "HRTC"
       } else {
         class <- "HRT2"
       }
     } else {
-      if(TT) {
+      if (TT) {
         class <- "HRTA"
       } else {
         class <- "HRT0"
@@ -164,7 +175,6 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 
     return(class)
   }
-
 })
 
 # -------------------------------------------------------------------------------
@@ -224,24 +234,23 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' @importFrom stats t.test
 #' @rdname calcAvHRT
 setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
-    standardGeneric("calcAvHRT")
+  standardGeneric("calcAvHRT")
 })
 #' @rdname calcAvHRT
 #' @export
 setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
-
   checkValidity(HRTListObj)
 
   # sets the type of averaging
-    if (!identical(av, mean) && !identical(av, stats::median)) {
-      warning(paste("Function", as.character(substitute(av)), "for parameter averaging is unknown, falling back to default."))
-      av <- mean
-      rowAv <- rowMeans
-    } else if (identical(av, mean)) {
-      rowAv <- rowMeans
-    } else if (identical(av, stats::median)) {
-      rowAv <- matrixStats::rowMedians
-    }
+  if (!identical(av, mean) && !identical(av, stats::median)) {
+    warning(paste("Function", as.character(substitute(av)), "for parameter averaging is unknown, falling back to default."))
+    av <- mean
+    rowAv <- rowMeans
+  } else if (identical(av, mean)) {
+    rowAv <- rowMeans
+  } else if (identical(av, stats::median)) {
+    rowAv <- matrixStats::rowMedians
+  }
 
   # checks the calculation order and sets it to default if necessary
   if (orTO != 1 && orTO != 2) {
@@ -254,73 +263,76 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   }
 
   # checks remaining parameters
-  if(any(!is.numeric(c(IL, normIL, coTO, coTS, coTT)))) stop("Values for normalisation or cut-offs are not numeric.")
+  if (any(!is.numeric(c(IL, normIL, coTO, coTS, coTT)))) stop("Values for normalisation or cut-offs are not numeric.")
 
   # calculates the mean intervals
-    couplRR <- av(sapply(HRTListObj@HRTs, slot, "couplRR"))
-    compRR <- av(sapply(HRTListObj@HRTs, slot, "compRR"))
-    preRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "preRRs"))
-    postRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "postRRs"))
+  couplRR <- av(sapply(HRTListObj@HRTs, slot, "couplRR"))
+  compRR <- av(sapply(HRTListObj@HRTs, slot, "compRR"))
+  preRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "preRRs"))
+  postRRs <- rowAv(sapply(HRTListObj@HRTs, slot, "postRRs"))
 
   # initializes the avHRT object
-    avHRT <- methods::new("avHRT", couplRR = couplRR, compRR = compRR,
-        preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS)
+  avHRT <- methods::new("avHRT",
+    couplRR = couplRR, compRR = compRR,
+    preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS
+  )
 
   # calculates parameters for every VPC seperately
-    TOs <- getHRTParams(HRTListObj, "TO")
-    TSs <- getHRTParams(HRTListObj, "TS")
-    TTs <- getHRTParams(HRTListObj, "TT")
-    if (!all.equal(IL, HRTListObj@IL) || !all.equal(normIL, c_normIL))
-      HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
-    nTSs <- getHRTParams(HRTListObj, "nTS")
-    nintercepts <- getHRTParams(HRTListObj, "nintercept")
+  TOs <- getHRTParams(HRTListObj, "TO")
+  TSs <- getHRTParams(HRTListObj, "TS")
+  TTs <- getHRTParams(HRTListObj, "TT")
+  if (!all.equal(IL, HRTListObj@IL) || !all.equal(normIL, c_normIL)) {
+    HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
+  }
+  nTSs <- getHRTParams(HRTListObj, "nTS")
+  nintercepts <- getHRTParams(HRTListObj, "nintercept")
 
-    notconstant <- function(x) !length(unique(x)) == 1
-    # calculates p-values
-    if(notconstant(TOs)) avHRT@pTO <- t.test(TOs, alternative = "less", mu = coTO)$p.value
-    if(notconstant(TSs)) avHRT@pTS <- t.test(TSs, alternative = "greater", mu = coTS)$p.value
-    if(notconstant(TTs)) avHRT@pTT <- t.test(TTs, alternative = "less", mu = coTT)$p.value
-    if(notconstant(nTSs)) avHRT@pnTS <- t.test(nTSs, alternative = "greater", mu = coTS)$p.value
+  notconstant <- function(x) !length(unique(x)) == 1
+  # calculates p-values
+  if (notconstant(TOs)) avHRT@pTO <- t.test(TOs, alternative = "less", mu = coTO)$p.value
+  if (notconstant(TSs)) avHRT@pTS <- t.test(TSs, alternative = "greater", mu = coTS)$p.value
+  if (notconstant(TTs)) avHRT@pTT <- t.test(TTs, alternative = "less", mu = coTT)$p.value
+  if (notconstant(nTSs)) avHRT@pnTS <- t.test(nTSs, alternative = "greater", mu = coTS)$p.value
 
   # calculates TO, first in default order, secondly from an averaged tachogram
-    if (orTO == 1) {
-      avHRT@TO <- av(TOs)
-      }
-    if (orTO == 2) {
-      avHRT <- calcTO(avHRT)
-    }
+  if (orTO == 1) {
+    avHRT@TO <- av(TOs)
+  }
+  if (orTO == 2) {
+    avHRT <- calcTO(avHRT)
+  }
 
   # calculates TS, first for every VPC seperately, secondly in default order
   # additionally saves TT and intercept
 
-    # Function to normalise TS after Hallstrom
-    hallstromise <- function(ts, avHRT, HRTListObj) {
-      k <- length(avHRT@postRRs)
-      numVPCs <- length(HRTListObj@pos)
-      TSk <- 0.02475 * (k-2)^0.9449 * HRTListObj@nRMSSD / sqrt(numVPCs)
-      nTS <- avHRT@nTS - TSk
-    }
+  # Function to normalise TS after Hallstrom
+  hallstromise <- function(ts, avHRT, HRTListObj) {
+    k <- length(avHRT@postRRs)
+    numVPCs <- length(HRTListObj@pos)
+    TSk <- 0.02475 * (k - 2)^0.9449 * HRTListObj@nRMSSD / sqrt(numVPCs)
+    nTS <- avHRT@nTS - TSk
+  }
 
-    # sets averaged parameters
-    if (orTS == 1) {
-      # TS+intercept
-      avHRT@TS <- av(TSs)
-      avHRT@intercept <- av(HRTListObj, "intercept")
+  # sets averaged parameters
+  if (orTS == 1) {
+    # TS+intercept
+    avHRT@TS <- av(TSs)
+    avHRT@intercept <- av(HRTListObj, "intercept")
 
-      # TT
-      avHRT@TT <- av(TTs)
+    # TT
+    avHRT@TT <- av(TTs)
 
-      # normalised TS+intercept if normalising parameters are given
-      nTS <- av(nTSs)
-      if(normHallstrom) avHRT@nTS <- hallstromise(nTS, HRTListObj)
-      avHRT@nintercept <- av(nintercepts)
-    }
-    if (orTS == 2) {
-      avHRT <- calcTS(avHRT)
-      avHRT <- calcTS(avHRT, normalising = TRUE, IL, normIL)
-      if(normHallstrom) avHRT@nTS <- hallstromise(avHRT@nTS, avHRT, HRTListObj)
-    }
-    return(avHRT)
+    # normalised TS+intercept if normalising parameters are given
+    nTS <- av(nTSs)
+    if (normHallstrom) avHRT@nTS <- hallstromise(nTS, HRTListObj)
+    avHRT@nintercept <- av(nintercepts)
+  }
+  if (orTS == 2) {
+    avHRT <- calcTS(avHRT)
+    avHRT <- calcTS(avHRT, normalising = TRUE, IL, normIL)
+    if (normHallstrom) avHRT@nTS <- hallstromise(avHRT@nTS, avHRT, HRTListObj)
+  }
+  return(avHRT)
 })
 
 # -------------------------------------------------------------------------------
@@ -334,18 +346,18 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 #'
 #' @export
 setMethod("plot", "HRTList", function(x, ...) {
-    plot(x@avHRT, ...)
-    avPivot <- utils::tail(x@avHRT@preRRs, n = 1)
+  plot(x@avHRT, ...)
+  avPivot <- utils::tail(x@avHRT@preRRs, n = 1)
 
-    lapply(x@HRTs, function(y) {
-      rrs <- getRRs(y)
-      pivot <- utils::tail(y@preRRs, n = 1)
-      diff <- avPivot - pivot
-      rrs <- rrs + diff
-      graphics::lines(seq(1:length(rrs)), rrs, col = "grey")
-    })
+  lapply(x@HRTs, function(y) {
+    rrs <- getRRs(y)
+    pivot <- utils::tail(y@preRRs, n = 1)
+    diff <- avPivot - pivot
+    rrs <- rrs + diff
+    graphics::lines(seq(1:length(rrs)), rrs, col = "grey")
+  })
 
-    plot(x@avHRT, add = TRUE, ...)
+  plot(x@avHRT, add = TRUE, ...)
 })
 
 # -------------------------------------------------------------------------------
@@ -357,12 +369,19 @@ setMethod("plot", "HRTList", function(x, ...) {
 #'
 #' @rdname checkValidity
 setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {
-  if(length(x@HRTs) == 0 || (length(x@HRTs) == 1 && is.na(x@HRTs[[1]]@couplRR)))
+  if (length(x@HRTs) == 0 || (length(x@HRTs) == 1 && is.na(x@HRTs[[1]]@couplRR))) {
     stop("The HRTList does not contain any HRTs")
+  }
 
-  if(av) if(identical(x@avHRT, methods::new("avHRT")))
-    stop("The average HRT is empty. Make sure to calculate it and try again.")
+  if (av) {
+    if (identical(x@avHRT, methods::new("avHRT"))) {
+      stop("The average HRT is empty. Make sure to calculate it and try again.")
+    }
+  }
 
-  if(pos) if(is.na(x@pos) || length(x@pos) == 0)
-    stop("There seem to be no HRTs in your HRTList.")
+  if (pos) {
+    if (is.na(x@pos) || length(x@pos) == 0) {
+      stop("There seem to be no HRTs in your HRTList.")
+    }
+  }
 })

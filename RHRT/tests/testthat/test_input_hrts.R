@@ -1,13 +1,13 @@
 library(RHRT)
 context("HRTs in input")
 
-data("testdataRegular")
-data("testdataVariant")
-data("testdataVariantNoHRT")
+load(test_path("testdata", "testdataRegular.rda"))
+load(test_path("testdata", "testdataVariant.rda"))
+load(test_path("testdata", "testdataVariantNoHRT.rda"))
 
-data(list("testdataRegular_HRTObj"))
-data(list("testdataVariant_HRTObj"))
-data(list("testdataVariantNoHRT_HRTObj"))
+load(test_path("testdata", "testdataRegular_HRTObj.rda"))
+load(test_path("testdata", "testdataVariant_HRTObj.rda"))
+load(test_path("testdata", "testdataVariantNoHRT_HRTObj.rda"))
 
 test_that("Finding HRTs", {
   expect_equal(vectorToHRT(testdataRegular), testdataRegular_HRTObj)

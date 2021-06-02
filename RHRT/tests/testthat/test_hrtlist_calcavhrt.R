@@ -1,7 +1,7 @@
 library(RHRT)
 context("calculating avHRT for a HRTList")
 
-data("testdataVariant_HRTObj")
+load(test_path("testdata", "testdataVariant_HRTObj.rda"))
 
 test_that("parameter handling: HRTListObj", {
   expect_error(calcAvHRT(new("HRTList")), "The HRTList does not contain any HRTs")

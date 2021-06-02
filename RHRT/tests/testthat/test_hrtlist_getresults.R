@@ -1,7 +1,7 @@
 library(RHRT)
 context("calculating avHRT for a HRTList")
 
-data("testdataVariant_HRTObj")
+load(test_path("testdata", "testdataVariant_HRTObj.rda"))
 
 HRTs_temp <- testdataVariant_HRTObj
 HRTs_temp@avHRT <- methods::new("avHRT")

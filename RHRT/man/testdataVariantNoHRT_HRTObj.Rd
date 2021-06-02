@@ -12,6 +12,6 @@ testdataVariantNoHRT_HRTObj
 }
 \description{
 HRTList Object that was generated from testdataVariantNoHRT. This HRTList
-does not include any HRT. For more information see the vignette.
+does not include any HRT.
 }
 \keyword{datasets}

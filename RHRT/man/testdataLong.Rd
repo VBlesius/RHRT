@@ -11,7 +11,7 @@ A numeric vector.
 testdataLong
 }
 \description{
-Interval data provided by Physionet (001 of NSR2DB). This dataset
-contains a full long term measurement with several HRTs.
+Artificial dummy interval data: This dataset represents a long-term
+measurement and includes 15 VPCSs that fit the HRT filter rules.
 }
 \keyword{datasets}

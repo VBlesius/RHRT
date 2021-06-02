@@ -11,7 +11,6 @@ An HRTList object.
 testdataVariant_HRTObj
 }
 \description{
-HRTList Object that was generated from testdataVariant and includes 3 HRTs
-based on data from Physionet (NSRDB). For more information see the vignette.
+HRTList Object that was generated from testdataVariant and includes 5 HRTs.
 }
 \keyword{datasets}

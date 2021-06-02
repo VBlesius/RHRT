@@ -11,7 +11,6 @@ A numeric vector of length 1000.
 testdataVariantNoHRT
 }
 \description{
-Interval data based on a dataset provided by Physionet (NSRDB). This dataset
-does not include any HRTs. For more information see the vignette.
+Artificial dummy interval data: This dataset does not include any VPCSs.
 }
 \keyword{datasets}

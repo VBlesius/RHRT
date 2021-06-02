@@ -11,7 +11,7 @@ A vector of characters.
 testdataLong_Ann
 }
 \description{
-Interval data provided by Physionet (001 of NSR2DB). This dataset
-contains the annotations matching testdataLong.
+Artificial dummy interval data: This dataset contains the annotations 
+matching testdataLong.
 }
 \keyword{datasets}

@@ -11,7 +11,7 @@ data(list("testdataVariantNoHRT_HRTObj"))
 
 test_that("Finding HRTs", {
   expect_equal(vectorToHRT(testdataRegular), testdataRegular_HRTObj)
-  expect_equal(vectorToHRT(testdataVariant, minHRT = 0), testdataVariant_HRTObj)
+  expect_equal(vectorToHRT(testdataVariant), testdataVariant_HRTObj)
 
   expect_warning(a <- vectorToHRT(testdataVariantNoHRT), "No or too few HRTs")
   expect_equal(a, testdataVariantNoHRT_HRTObj)

@@ -12,6 +12,6 @@ testdataRegular_HRTObj
 }
 \description{
 HRTList Object that was generated from testdataRegular and includes 5
-identical HRTs. For more information see the vignette.
+identical HRTs.
 }
 \keyword{datasets}

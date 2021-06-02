@@ -11,8 +11,7 @@ A numeric vector of length 1000.
 testdataVariant
 }
 \description{
-Interval data based on a dataset provided by Physionet (NSRDB). This dataset
-includes 3 HRTs that fit the HRT filter rules. For more information see the
-vignette
+Artificial dummy interval data: This dataset includes 5 different VPCSs 
+that fit the HRT filter rules.
 }
 \keyword{datasets}

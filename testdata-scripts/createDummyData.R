@@ -70,22 +70,28 @@ createVPCS <- function(chunk, numPreRRs) {
 #' @return numeric or character vector
 createDummyData <- function(length, numVPCSs, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs, avRR = c_normIL, sd = avRR/100, ann = FALSE) {
   
+  # Test whether parameters fit together
   lengthVPCS <- numPreRRs+numPostRRs+2
   if(length < numVPCSs*(lengthVPCS+1)) {
     warning("The given length of the dummy data is to short for the amount of VPCSs to be included! The length must be bigger than numVPCSs*(lengthVPCS+1). Returning NULL!")
     return(NULL)
   }
-  
-  lengthChunks <- length/numVPCSs
  
+  # creates basic data
    if(ann) {
     data <- rep("N", length)
   } else {
     data <- createIntervals(length, avRR = avRR, sd = sd)
   }
 
+  # returns data without any VPCs
+  if(numVPCSs < 1) return(data)
+  
+  # cuts data into chunks
+  lengthChunks <- length/numVPCSs
   chunks <- split(data, ceiling(seq_along(data)/lengthChunks))
   
+  # adds VPC to every chunk
   if(ann) {
     chunks <- lapply(chunks, replace, 7, "V")
   } else {

@@ -211,7 +211,6 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param x HRT, A HRT object
 #' @param cropped Boolean, Should the plot be cut to focuse on the HRT parameters?
 #' To show all points use FALSE.
-#' @param add Boolean, Should the given HRT be added to a plot?
 #' @param TT Boolean, Should Turbulence timing be marked?
 #' @param pch Numeric, Plotting character, for other options see graphics::var
 #' @param xlab Character, Label for the x axis
@@ -220,6 +219,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param colTO Character, colour used to highlight TO
 #' @param colTS Character, colour used to highlight TS
 #' @param colTT Character, colour used to highlight TT
+#' @param add Boolean, Should the given HRT be added to a plot?
 #' @param ... Other arguments in tag = value form. See graphics::par for more information.
 #'
 #' @note Please note that the argument xaxt and ylim can't be set,
@@ -227,7 +227,9 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #'
 #' @import graphics
 #' @export
-setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
+setMethod("plot", "HRT", function(x,
+                                  cropped = TRUE,
+                                  TT = FALSE,
                                   pch = 20,
                                   xlab = "# of RR interval",
                                   ylab = "length of RR interval (ms)",
@@ -235,6 +237,7 @@ setMethod("plot", "HRT", function(x, cropped = TRUE, add = FALSE, TT = FALSE,
                                   colTO = "#ec2023",
                                   colTS = "#006AFF",
                                   colTT = "#6800DE",
+                                  add = FALSE,
                                   ...) {
   rrs <- getRRs(x)
   n_preRRs <- length(x@preRRs)

@@ -341,12 +341,36 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 #' Plots RR-intervals saved in the HRT object and marks HRT parameters.
 #'
 #' @param x HRTList
-#' @inheritParams plot,HRT-method
+#' @param cropped Boolean, Should the plot be cut to focuse on the HRT parameters?
+#' To show all points use FALSE.
+#' @param TT Boolean, Should Turbulence timing be marked?
+#' @param pch Numeric, Plotting character, for other options see graphics::var
+#' @param xlab Character, Label for the x axis
+#' @param ylab Character Label for the x axis
+#' @param paramsLegend Boolean, should the parameter values of the HRT be plotted?
+#' @param colTO Character, colour used to highlight TO
+#' @param colTS Character, colour used to highlight TS
+#' @param colTT Character, colour used to highlight TT
 #' @param ... Other arguments in tag = value form
+#' 
+#' @note Please note that the argument xaxt and ylim can't be set,
+#'  since the axis as well as the ranges of the y axis are set by the function.
 #'
 #' @export
-setMethod("plot", "HRTList", function(x, ...) {
-  plot(x@avHRT, ...)
+setMethod("plot", "HRTList", function(x,
+                                      cropped = TRUE,
+                                      TT = FALSE,
+                                      pch = 20,
+                                      xlab = "# of RR interval",
+                                      ylab = "length of RR interval (ms)",
+                                      paramsLegend = TRUE,
+                                      colTO = "#ec2023",
+                                      colTS = "#006AFF",
+                                      colTT = "#6800DE",
+                                      ...) {
+  plot(x@avHRT, cropped = cropped, TT = TT, pch = pch, xlab = xlab, ylab = ylab,
+       paramsLegend = paramsLegend, colTO = colTO, colTS = colTS, colTT = colTT,
+       add = FALSE, ...)
   avPivot <- utils::tail(x@avHRT@preRRs, n = 1)
 
   lapply(x@HRTs, function(y) {
@@ -357,8 +381,9 @@ setMethod("plot", "HRTList", function(x, ...) {
     graphics::lines(seq(1:length(rrs)), rrs, col = "grey")
   })
 
-  plot(x@avHRT, add = TRUE, ...)
-})
+  plot(x@avHRT, cropped = cropped, TT = TT, pch = pch, xlab = xlab, ylab = ylab,
+       paramsLegend = paramsLegend, colTO = colTO, colTS = colTS, colTT = colTT,
+       add = TRUE, ...)})
 
 # -------------------------------------------------------------------------------
 #' Check for HRTList class

@@ -7,7 +7,6 @@
 \S4method{plot}{HRT}(
   x,
   cropped = TRUE,
-  add = FALSE,
   TT = FALSE,
   pch = 20,
   xlab = "# of RR interval",
@@ -16,6 +15,7 @@
   colTO = "#ec2023",
   colTS = "#006AFF",
   colTT = "#6800DE",
+  add = FALSE,
   ...
 )
 }
@@ -24,8 +24,6 @@
 
 \item{cropped}{Boolean, Should the plot be cut to focuse on the HRT parameters?
 To show all points use FALSE.}
-
-\item{add}{Boolean, Should the given HRT be added to a plot?}
 
 \item{TT}{Boolean, Should Turbulence timing be marked?}
 
@@ -42,6 +40,8 @@ To show all points use FALSE.}
 \item{colTS}{Character, colour used to highlight TS}
 
 \item{colTT}{Character, colour used to highlight TT}
+
+\item{add}{Boolean, Should the given HRT be added to a plot?}
 
 \item{...}{Other arguments in tag = value form. See graphics::par for more information.}
 }

@@ -19,7 +19,7 @@ roll(intervals, width, fun, ...)
 list with return values of fun for each window
 }
 \description{
-Applies a given function on a vector by rolling over it with a sliding window 
+Applies a given function on a vector by rolling over it with a sliding window
 mechanism.
 }
 \details{

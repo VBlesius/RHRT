@@ -11,7 +11,7 @@ A vector of characters.
 testdataLong_Ann
 }
 \description{
-Artificial dummy interval data: This dataset contains the annotations 
+Artificial dummy interval data: This dataset contains the annotations
 matching testdataLong.
 }
 \keyword{datasets}

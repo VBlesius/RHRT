@@ -94,6 +94,8 @@ setGeneric("calcHRTParams", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
 })
 #' @rdname calcHRTParams
 setMethod("calcHRTParams", "HRT", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
+  checkValidity(HRTObj)
+
   HRTObj <- calcTO(HRTObj)
   HRTObj <- calcTS(HRTObj)
   HRTObj <- calcTS(HRTObj, normalising = TRUE, IL, normIL)
@@ -113,6 +115,8 @@ setGeneric("calcTO", function(HRTObj) {
 })
 #' @rdname calcTO
 setMethod("calcTO", "HRT", function(HRTObj) {
+  checkValidity(HRTObj)
+
   preRRs <- HRTObj@preRRs
   postRRs <- HRTObj@postRRs
 
@@ -143,6 +147,8 @@ setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL
 })
 #' @rdname calcTS
 setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL) {
+  checkValidity(HRTObj)
+
   postRRs <- HRTObj@postRRs
   if (normalising) postRRs <- postRRs * normIL / IL
 
@@ -288,5 +294,22 @@ setMethod("plot", "HRT", function(x,
   # Turbulence timing
   if (TT) {
     points(TTcorr, rrs[TTcorr], col = colTT, cex = 2, pch = pchParams)
+  }
+})
+
+#-------------------------------------------------------------------------------
+#' Checks whether slots are set
+#'
+#' @param x Object to be checked
+#' @param ... Other parameters
+#'
+#' @rdname checkValidity
+setGeneric("checkValidity", function(x, ...) {
+  standardGeneric("checkValidity")
+})
+#' @rdname checkValidity
+setMethod("checkValidity", "HRT", function(x) {
+  if (anyNA(getRRs(x))) {
+    stop("One or more interval is not set (NA)! Please make sure you have initialized the HRT object correctly!")
   }
 })

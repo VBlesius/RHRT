@@ -391,7 +391,12 @@ setMethod("plot", "HRTList", function(x,
 #' @param x HRTList
 #' @param av Boolean Should avHRT be checked?
 #' @param pos Boolean Should pos be checked?
+#' @param ... Other arguments
 #'
+#' @rdname checkValidity
+setGeneric("checkValidity", function(x, ...) {
+  standardGeneric("checkValidity")
+})
 #' @rdname checkValidity
 setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {
   if (length(x@HRTs) == 0 || (length(x@HRTs) == 1 && is.na(x@HRTs[[1]]@couplRR))) {

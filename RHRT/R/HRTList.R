@@ -96,7 +96,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
   }
   isRisky <- function(val, param) {
     if(param == "TO") return(val > coTO)
-    if(param == "TS") return(val < coTS)
+    if(param == "TS" || param == "nTS") return(val < coTS)
     if(param == "TT") return(val > coTT)
   }
   concludeResults <- function(val, p) {

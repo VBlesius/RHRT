@@ -253,17 +253,17 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   }
 
   # checks the calculation order and sets it to default if necessary
-  if (orTO != 1 && orTO != 2) {
+  if (!is.finite(orTO) || orTO != 1 && orTO != 2) {
     warning(paste("Value", orTO, "for parameter calculation order is unknown, falling back to default."))
     orTO <- 1
   }
-  if (orTS != 1 && orTS != 2) {
+  if (!is.finite(orTS) ||  orTS != 1 && orTS != 2) {
     warning(paste("Value", orTS, "for parameter calculation order is unknown, falling back to default."))
     orTS <- 2
   }
 
   # checks remaining parameters
-  if (any(!is.numeric(c(IL, normIL, coTO, coTS, coTT)))) stop("Values for normalisation or cut-offs are not numeric.")
+  if (any(!is.finite(c(IL, normIL, coTO, coTS, coTT)))) stop("Values for normalisation or cut-offs are not numeric.")
 
   # calculates the mean intervals
   couplRR <- av(sapply(HRTListObj@HRTs, slot, "couplRR"))
@@ -281,8 +281,9 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   TOs <- getHRTParams(HRTListObj, "TO")
   TSs <- getHRTParams(HRTListObj, "TS")
   TTs <- getHRTParams(HRTListObj, "TT")
-  if (!all.equal(IL, HRTListObj@IL) || !all.equal(normIL, c_normIL)) {
     HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
+  # calculates TS again if different IL or normIL are given
+  if (IL != HRTListObj@IL || normIL != c_normIL) {
   }
   nTSs <- getHRTParams(HRTListObj, "nTS")
   nintercepts <- getHRTParams(HRTListObj, "nintercept")

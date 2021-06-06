@@ -10,6 +10,15 @@ test_that("parameter handling: HRTListObj", {
 test_that("parameter handling: av", {
   expect_equal(calcAvHRT(testdataVariant_HRTObj, av = mean)@av, mean)
   expect_equal(calcAvHRT(testdataVariant_HRTObj, av = median)@av, median)
-  expect_warning(calcAvHRT(testdataVariant_HRTObj, av = sum)@av, "for parameter averaging is unknown, falling back to default")
-  expect_warning(calcAvHRT(testdataVariant_HRTObj, av = NA)@av, "for parameter averaging is unknown, falling back to default")
+  expect_warning(calcAvHRT(testdataVariant_HRTObj, av = sum), "for parameter averaging is unknown, falling back to default")
+  expect_warning(calcAvHRT(testdataVariant_HRTObj, av = NA), "for parameter averaging is unknown, falling back to default")
+})
+
+test_that("parameter handling: others", {
+  expect_error(calcAvHRT(testdataVariant_HRTObj, IL = "random"), "Values for normalisation or cut-offs are not numeric")
+  expect_error(calcAvHRT(testdataVariant_HRTObj, IL = NA), "Values for normalisation or cut-offs are not numeric")
+  expect_warning(calcAvHRT(testdataVariant_HRTObj, orTO = 0), "for parameter calculation order is unknown")
+  expect_warning(calcAvHRT(testdataVariant_HRTObj, orTO = NA), "for parameter calculation order is unknown")
+  expect_warning(calcAvHRT(testdataVariant_HRTObj, orTS = 0), "for parameter calculation order is unknown")
+})
 })

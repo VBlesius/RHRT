@@ -406,7 +406,7 @@ setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {
   }
 
   if (pos) {
-    if (is.na(x@pos) || length(x@pos) == 0) {
+    if (any(is.na(x@pos)) || length(x@pos) == 0) {
       stop("There seem to be no HRTs in your HRTList.")
     }
   }

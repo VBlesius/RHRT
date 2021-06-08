@@ -277,13 +277,13 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS
   )
 
-  # calculates parameters for every VPC seperately
+  # calculates parameters for every VPC separately
   TOs <- getHRTParams(HRTListObj, "TO")
   TSs <- getHRTParams(HRTListObj, "TS")
   TTs <- getHRTParams(HRTListObj, "TT")
-    HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, IL, normIL)
   # calculates TS again if different IL or normIL are given
   if (IL != HRTListObj@IL || normIL != c_normIL) {
+    HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, normalising = TRUE, IL = IL, normIL = normIL)
   }
   nTSs <- getHRTParams(HRTListObj, "nTS")
   nintercepts <- getHRTParams(HRTListObj, "nintercept")

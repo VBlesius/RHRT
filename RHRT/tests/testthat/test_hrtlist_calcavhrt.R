@@ -2,6 +2,8 @@ library(RHRT)
 context("calculating avHRT for a HRTList")
 
 load(test_path("testdata", "testdataVariant_HRTObj.rda"))
+load(test_path("testdata", "testdataVariant.rda"))
+
 
 test_that("parameter handling: HRTListObj", {
   expect_error(calcAvHRT(new("HRTList")), "The HRTList does not contain any HRTs")
@@ -21,4 +23,8 @@ test_that("parameter handling: others", {
   expect_warning(calcAvHRT(testdataVariant_HRTObj, orTO = NA), "for parameter calculation order is unknown")
   expect_warning(calcAvHRT(testdataVariant_HRTObj, orTS = 0), "for parameter calculation order is unknown")
 })
+
+test_that("Recalculating TS", {
+  expect_equal(testdataVariant_HRTObj@avHRT, calcAvHRT(testdataVariant_HRTObj))
+  expect_equal(vectorToHRT(testdataVariant, normIL = 1000)@avHRT, calcAvHRT(testdataVariant_HRTObj, normIL = 1000))
 })

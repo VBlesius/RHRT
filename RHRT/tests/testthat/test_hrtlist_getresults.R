@@ -61,7 +61,7 @@ test_that("output of insignificant results", {
   expect_true(is.character(getResults(HRTsNS, type = "parameter")["TO"]))
   expect_true(is.numeric(a <- getResults(HRTsNS, type = "parameter", num = TRUE)["TO"]))
   expect_true(is.na(a))
-  
+
   expect_equal(getResults(HRTsNS, safe = FALSE), "HRT0")
   expect_true(is.numeric(getResults(HRTsNS, type = "parameter", safe = FALSE)))
   expect_equal(getResults(HRTsNS, type = "full"), getResults(HRTsNS, type = "full", safe = FALSE))

@@ -15,7 +15,7 @@
 #' @slot pTT Numeric, p-value of t-test checking the validity of TT
 #' @slot pnTS Numeric, p-value of t-test checking the validity of normalised TS
 #' @param nRMSSD Numeric, RMSSD normalised to HR
-#' 
+#'
 #' @name avHRT
 #'
 #' @importFrom methods setMethod

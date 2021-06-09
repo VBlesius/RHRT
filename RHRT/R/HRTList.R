@@ -257,7 +257,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     warning(paste("Value", orTO, "for parameter calculation order is unknown, falling back to default."))
     orTO <- 1
   }
-  if (!is.finite(orTS) ||  orTS != 1 && orTS != 2) {
+  if (!is.finite(orTS) || orTS != 1 && orTS != 2) {
     warning(paste("Value", orTS, "for parameter calculation order is unknown, falling back to default."))
     orTS <- 2
   }
@@ -275,7 +275,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   avHRT <- methods::new("avHRT",
     couplRR = couplRR, compRR = compRR,
     preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS,
-    nRMSSD =  HRTListObj@RMSSD * normIL / IL
+    nRMSSD = HRTListObj@RMSSD * normIL / IL
   )
 
   # calculates parameters for every VPC separately
@@ -354,7 +354,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 #' @param colTS Character, colour used to highlight TS
 #' @param colTT Character, colour used to highlight TT
 #' @param ... Other arguments in tag = value form
-#' 
+#'
 #' @note Please note that the argument xaxt and ylim can't be set,
 #'  since the axis as well as the ranges of the y axis are set by the function.
 #'
@@ -370,9 +370,11 @@ setMethod("plot", "HRTList", function(x,
                                       colTS = "#006AFF",
                                       colTT = "#6800DE",
                                       ...) {
-  plot(x@avHRT, cropped = cropped, TT = TT, pch = pch, xlab = xlab, ylab = ylab,
-       paramsLegend = paramsLegend, colTO = colTO, colTS = colTS, colTT = colTT,
-       add = FALSE, ...)
+  plot(x@avHRT,
+    cropped = cropped, TT = TT, pch = pch, xlab = xlab, ylab = ylab,
+    paramsLegend = paramsLegend, colTO = colTO, colTS = colTS, colTT = colTT,
+    add = FALSE, ...
+  )
   avPivot <- utils::tail(x@avHRT@preRRs, n = 1)
 
   lapply(x@HRTs, function(y) {
@@ -383,9 +385,12 @@ setMethod("plot", "HRTList", function(x,
     graphics::lines(seq(1:length(rrs)), rrs, col = "grey")
   })
 
-  plot(x@avHRT, cropped = cropped, TT = TT, pch = pch, xlab = xlab, ylab = ylab,
-       paramsLegend = paramsLegend, colTO = colTO, colTS = colTS, colTT = colTT,
-       add = TRUE, ...)})
+  plot(x@avHRT,
+    cropped = cropped, TT = TT, pch = pch, xlab = xlab, ylab = ylab,
+    paramsLegend = paramsLegend, colTO = colTO, colTS = colTS, colTT = colTT,
+    add = TRUE, ...
+  )
+})
 
 # -------------------------------------------------------------------------------
 #' Check for HRTList class

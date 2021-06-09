@@ -23,7 +23,7 @@ given input}
 
 \item{\code{avHRT}}{avHRT object, the average of all HRTs}
 
-\item{\code{nRMSSD}}{Numeric, square root of the mean of the squared successive normalised to HR
+\item{\code{RMSSD}}{Numeric, square root of the mean of the squared successive
 differences between adjacent intervals of the whole measurement}
 }}
 

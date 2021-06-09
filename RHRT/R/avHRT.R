@@ -14,7 +14,8 @@
 #' @slot pTS Numeric, p-value of t-test checking the validity of TS
 #' @slot pTT Numeric, p-value of t-test checking the validity of TT
 #' @slot pnTS Numeric, p-value of t-test checking the validity of normalised TS
-#'
+#' @param nRMSSD Numeric, RMSSD normalised to HR
+#' 
 #' @name avHRT
 #'
 #' @importFrom methods setMethod
@@ -28,7 +29,8 @@ setClass("avHRT",
     pTO = "numeric",
     pTS = "numeric",
     pTT = "numeric",
-    pnTS = "numeric"
+    pnTS = "numeric",
+    nRMSSD = "numeric"
   ),
   validity = function(object) {
     if (
@@ -55,6 +57,7 @@ setClass("avHRT",
 #' @param pTS Numeric, p-value of t-test checking the validity of TS
 #' @param pTT Numeric, p-value of t-test checking the validity of TT
 #' @param pnTS Numeric, p-value of t-test checking the validity of normalised TS
+#' @param nRMSSD Numeric, RMSSD normalised to HR
 #' @inheritParams HRT
 #'
 #' @rdname avHRT
@@ -64,6 +67,7 @@ setMethod(
   "initialize", "avHRT",
   function(.Object, av = mean, orTO = NA_real_, orTS = NA_real_,
            pTO = NA_real_, pTS = NA_real_, pTT = NA_real_, pnTS = NA_real_,
+           nRMSSD = NA_real_,
            couplRR = NA_real_, compRR = NA_real_,
            preRRs = NA_real_, postRRs = NA_real_, ...) {
     .Object@av <- av
@@ -73,6 +77,7 @@ setMethod(
     .Object@pTS <- pTS
     .Object@pTT <- pTT
     .Object@pnTS <- pnTS
+    .Object@nRMSSD <- nRMSSD
 
     .Object <- methods::callNextMethod(.Object, couplRR, compRR, preRRs, postRRs, ...)
 

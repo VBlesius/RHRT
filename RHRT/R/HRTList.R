@@ -10,7 +10,7 @@
 #'     given input
 #' @slot HRTs List, all HRT objects
 #' @slot avHRT avHRT object, the average of all HRTs
-#' @slot nRMSSD Numeric, square root of the mean of the squared successive normalised to HR
+#' @slot RMSSD Numeric, square root of the mean of the squared successive
 #' differences between adjacent intervals of the whole measurement
 #'
 #' @note After using \code{vectorToHRT} all slots in the resulting HRTList
@@ -28,7 +28,7 @@ setClass("HRTList",
     pos = "vector",
     HRTs = "list",
     avHRT = "avHRT",
-    nRMSSD = "numeric"
+    RMSSD = "numeric"
   )
 )
 
@@ -274,7 +274,8 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   # initializes the avHRT object
   avHRT <- methods::new("avHRT",
     couplRR = couplRR, compRR = compRR,
-    preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS
+    preRRs = preRRs, postRRs = postRRs, av = av, orTO = orTO, orTS = orTS,
+    nRMSSD =  HRTListObj@RMSSD * normIL / IL
   )
 
   # calculates parameters for every VPC separately
@@ -310,7 +311,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   hallstromise <- function(ts, avHRT, HRTListObj) {
     k <- length(avHRT@postRRs)
     numVPCs <- length(HRTListObj@pos)
-    TSk <- 0.02475 * (k - 2)^0.9449 * HRTListObj@nRMSSD / sqrt(numVPCs)
+    TSk <- 0.02475 * (k - 2)^0.9449 * avHRT@nRMSSD / sqrt(numVPCs)
     nTS <- avHRT@nTS - TSk
   }
 

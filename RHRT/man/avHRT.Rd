@@ -15,6 +15,7 @@
   pTS = NA_real_,
   pTT = NA_real_,
   pnTS = NA_real_,
+  nRMSSD = NA_real_,
   couplRR = NA_real_,
   compRR = NA_real_,
   preRRs = NA_real_,
@@ -42,6 +43,8 @@ or 2 (averaging of the VPCSs and assessment of parameter)}
 \item{pTT}{Numeric, p-value of t-test checking the validity of TT}
 
 \item{pnTS}{Numeric, p-value of t-test checking the validity of normalised TS}
+
+\item{nRMSSD}{Numeric, RMSSD normalised to HR}
 
 \item{couplRR}{Numeric, Coupling interval}
 

@@ -319,14 +319,14 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   if (orTS == 1) {
     # TS+intercept
     avHRT@TS <- av(TSs)
-    avHRT@intercept <- av(HRTListObj, "intercept")
+    avHRT@intercept <- av(getHRTParams(HRTListObj, "intercept"))
 
     # TT
     avHRT@TT <- av(TTs)
 
     # normalised TS+intercept if normalising parameters are given
     nTS <- av(nTSs)
-    if (normHallstrom) avHRT@nTS <- hallstromise(nTS, HRTListObj)
+    if (normHallstrom) avHRT@nTS <- hallstromise(nTS, avHRT, HRTListObj)
     avHRT@nintercept <- av(nintercepts)
   }
   if (orTS == 2) {

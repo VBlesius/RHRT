@@ -209,7 +209,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' turbulence onset and turbulence slope.
 #'
 #' @param x HRT, A HRT object
-#' @param cropped Boolean, Should the plot be cut to focuse on the HRT parameters?
+#' @param cropped Boolean, Should the plot be cut to focus on the HRT parameters?
 #' To show all points use FALSE.
 #' @param TT Boolean, Should Turbulence timing be marked?
 #' @param pch Numeric, Plotting character, for other options see graphics::var

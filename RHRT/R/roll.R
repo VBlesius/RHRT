@@ -8,7 +8,7 @@
 #' but adjusted for this package to speed it up.
 #'
 #' @param intervals vector
-#' @param width windowsize
+#' @param width window size
 #' @param fun function to be applied
 #' @param ... additional arguments for FUN
 #' @return list with return values of fun for each window

@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The RHRT package helps you assess **Heart Rate Turbulence** (HRT) in RR intervals. calculates **turbulence onset** (TO), **slope** (TS) and **timing** (TT). It can plot the tachograms and give a reliability table. The **ventricular premature beats** (VPCs) with **coupling** (CPI) and **compensatory interval** (CMI) can either be given with annotations or found on the basis of the filter rules provided by Schmidt et al.^[Website about HRT by Schmidt et al.: http://www.h-r-t.com/hrt/en/calc.html]. The type of average and order of calculation for all parameters can be set.
+The RHRT package helps you assess **Heart Rate Turbulence** (HRT) in RR intervals and calculate **turbulence onset** (TO), **slope** (TS) and **timing** (TT). It can plot the tachograms and checks the results for reliability. The **ventricular premature beats** (VPCs) with **coupling** (CPI) and **compensatory interval** (CMI) can either be given with annotations or found on the basis of the filter rules as first described  by [Grimm et al. 2003](https://doi.org/10.1046/j.1542-474X.2003.08206.x). The type of average and order of calculation for all parameters can be set.
 
 --------
 
@@ -144,9 +144,9 @@ The HRTList object sums up all HRTs found in the given dataset. The slots are:
 
 #### Functions
 
-- **`calcAvHRT`** &nbsp;&nbsp; The function calculates the parameters of the averaged HRT. This is called automatically when using `vectorToHRT` with default parameters. If the avHRT should be calculated differently the follwing options are available:
-  - `av`: The function with which averaging should be done: `mean` oder `median`.
-  - `orTO` and `orTS`: sets the order in which TO and TS should be calculated. With `1` the parameter is assessed separately for every HRT and averaged afterwards, with `2` the intervals of all VPCSs are averaged first and the parameter is assessed afterwards. The gefault is `1` for `orTO` and `2` for `orTS`.
+- **`calcAvHRT`** &nbsp;&nbsp; The function calculates the parameters of the averaged HRT. This is called automatically when using `vectorToHRT` with default parameters. If the avHRT should be calculated differently the following options are available:
+  - `av`: The function with which averaging should be done: `mean` or `median`.
+  - `orTO` and `orTS`: sets the order in which TO and TS should be calculated. With `1` the parameter is assessed separately for every HRT and averaged afterwards, with `2` the intervals of all VPCSs are averaged first and the parameter is assessed afterwards. The default is `1` for `orTO` and `2` for `orTS`.
   - `IL`: the average interval length that is needed to calculate nTS. The default value is automatically calculated from the whole cleaned vector (see *VectorToHRT: Cleaning Input* for more information) when calling `vectorToHRT` and saved in the `IL` slot of the HRTList object. 
   - `normIL`: the interval length to which the other parameters should be normalised. The default is 800 ms.
   - `normHallstrom`: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is `TRUE`.
@@ -210,9 +210,9 @@ To ensure snippets free of any bias and containing effective VPCs, the VPCSs are
 
 ### Normalisation of Turbulence Slope
 
-HRT is influenced by the heart rate. While there ist no clear conclusion for TO, TS values clearly positively correlate with the RR interval length (reviewed in [Blesius et al. 2020][NTS1]). Therefore, RHRT calculates `nTS` that is normalised to a fixed interval length (800 ms per default) in addition to the common TS.
+HRT is influenced by the heart rate. While there is no clear conclusion for TO, TS values clearly positively correlate with the RR interval length (reviewed in [Blesius et al. 2020][NTS1]). Therefore, RHRT calculates `nTS` that is normalised to a fixed interval length (800 ms per default) in addition to the common TS.
 
-Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in [Blesius et al. 2020][NTS1]). While physiological reasons were suggested for this phenomenon ([Cygankiewicz et al. 2004][NTS2] and [chen 2009][NTS3]), [Hallstrom et al. 2004][4] reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Secondly, the following formula is used:
+Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in [Blesius et al. 2020][NTS1]). While physiological reasons were suggested for this phenomenon ([Cygankiewicz et al. 2004][NTS2] and [Chen 2009][NTS3]), [Hallstrom et al. 2004][4] reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Secondly, the following formula is used:
 
   nTS = TS - ( 0.02475 * (numPostRRs-2)^0.9449 * (RMSSD / √#VPCSs) )
     

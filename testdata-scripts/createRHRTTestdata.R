@@ -11,20 +11,20 @@ setwd("../RHRT/")
 #-------------------------------------------------------------------------------
 
 testdataVariantNoHRT <- createDummyData(1000, 0)
-save(testdataVariantNoHRT, file = "data/testdataVariantNoHRT.rda")
+save(testdataVariantNoHRT, file = "tests/testthat/testdata/testdataVariantNoHRT.rda")
 testdataVariantNoHRT_HRTObj <- RHRT::vectorToHRT(testdataVariantNoHRT, minHRT = 1)
-save(testdataVariantNoHRT_HRTObj, file = "data/testdataVariantNoHRT_HRTObj.rda")
+save(testdataVariantNoHRT_HRTObj, file = "tests/testthat/testdata/testdataVariantNoHRT_HRTObj.rda")
 
 testdataVariant <- createDummyData(1000, 5)
-save(testdataVariant, file = "data/testdataVariant.rda")
+save(testdataVariant, file = "tests/testthat/testdata/testdataVariant.rda")
 testdataVariant_HRTObj <- RHRT::vectorToHRT(testdataVariant)
-save(testdataVariant_HRTObj, file = "data/testdataVariant_HRTObj.rda")
+save(testdataVariant_HRTObj, file = "tests/testthat/testdata/testdataVariant_HRTObj.rda")
 
 testdataRegular <- createDummyData(200, 1, sd = 0)
 testdataRegular <- rep(testdataRegular, 5)
-save(testdataRegular, file = "data/testdataRegular.rda")
+save(testdataRegular, file = "tests/testthat/testdata/testdataRegular.rda")
 testdataRegular_HRTObj <- RHRT::vectorToHRT(testdataRegular)
-save(testdataRegular_HRTObj, file = "data/testdataRegular_HRTObj.rda")
+save(testdataRegular_HRTObj, file = "tests/testthat/testdata/testdataRegular_HRTObj.rda")
 
 testdataLong <- createDummyData(100000, 15, sd = 20)
 save(testdataLong, file = "data/testdataLong.rda")

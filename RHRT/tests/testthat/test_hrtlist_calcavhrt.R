@@ -22,6 +22,8 @@ test_that("parameter handling: others", {
   expect_warning(calcAvHRT(testdataVariant_HRTObj, orTO = 0), "for parameter calculation order is unknown")
   expect_warning(calcAvHRT(testdataVariant_HRTObj, orTO = NA), "for parameter calculation order is unknown")
   expect_warning(calcAvHRT(testdataVariant_HRTObj, orTS = 0), "for parameter calculation order is unknown")
+  expect_false(isTRUE(all.equal(testdataVariant_HRTObj@avHRT, calcAvHRT(testdataVariant_HRTObj, orTO = 2))))
+  expect_false(isTRUE(all.equal(testdataVariant_HRTObj@avHRT, calcAvHRT(testdataVariant_HRTObj, orTS = 1))))
 })
 
 test_that("Recalculating TS", {

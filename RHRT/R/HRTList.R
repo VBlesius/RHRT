@@ -25,7 +25,7 @@ setClass("HRTList",
   slots = list(
     name = "character",
     IL = "numeric",
-    pos = "vector",
+    pos = "numeric",
     HRTs = "list",
     avHRT = "avHRT",
     RMSSD = "numeric"

@@ -1,6 +1,8 @@
 library(RHRT)
 context("Input validity")
 
+load(test_path("testdata", "testdataVariant.rda"))
+
 test_that("vector", {
   expect_error(vectorToHRT(NULL), "NULL")
   expect_error(vectorToHRT(list()), "NULL")
@@ -34,4 +36,13 @@ test_that("length of data", {
 
 test_that("unit of data", {
   expect_error(vectorToHRT(rep(0.5, 100)), "seconds")
+})
+
+test_that("annotations", {
+  expect_error(vectorToHRT(testdataVariant, annotations = list()), "annotation data does not have the right type")
+  expect_error(vectorToHRT(testdataVariant, annotations = 0), "Given annotation vector is not alphabetical")
+  expect_error(vectorToHRT(testdataVariant, annotations = NA_character_), "Given vector includes NA")
+  expect_error(vectorToHRT(testdataVariant, annotations = rep("a", 5)), "lengths of given annotation and RR vectors differ")
+  expect_warning(a <- vectorToHRT(testdataVariant, annotations = rep("a", 1000)), "given annotation for PVCs could not be found")
+  expect_equal(a, new("HRTList"))
 })

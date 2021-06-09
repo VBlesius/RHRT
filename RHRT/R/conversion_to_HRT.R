@@ -109,11 +109,8 @@ cleanInput <- function(input) {
 #' @inheritParams checkInput
 #'
 checkAnnotations <- function(annotations, input, PVCAnn, label) {
-  if (is.null(annotations)) {
-    stop(c(label, "Given data is NULL! Please make sure your annotations are of type vector and not empty."))
-  }
   if (!is.vector(annotations)) {
-    stop(c(label, "Given annotations do not have the right type! Please make sure your annotations are of type vector."))
+    stop(c(label, "Given annotation data does not have the right type! Please make sure your annotations are of type vector."))
   }
   if (!is.character(annotations)) {
     stop(c(label, "Given annotation vector is not alphabetical!"))

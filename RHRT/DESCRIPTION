@@ -5,7 +5,7 @@ Version: 0.5
 Date: 2021-06-04
 Authors@R: person(role = c("aut", "cre"), given = "Valeria", family = "Blesius", email = "valeria.blesius@mni.thm.de", comment = c(ORCID = "0000-0002-2391-242X"))
 BugReports: https://github.com/VBlesius/RHRT/issues
-Description: Methods to scan RR interval data for Premature Ventricular Complexes (PVCs) and parameterise and plot the resulting Heart Rate Turbulence (HRT). The methodology of HRT analysis is based on the original publication by Schmidt et al. <https://doi.org/10.1016/S0140-6736(98)08428-1> and extended with suggestions from <https://doi.org/10.1088/1361-6579/ab98b3>.
+Description: Methods to scan RR interval data for Premature Ventricular Complexes (PVCs) and parameterise and plot the resulting Heart Rate Turbulence (HRT). The methodology of HRT analysis is based on the original publication by Schmidt et al. <doi:10.1016/S0140-6736(98)08428-1> and extended with suggestions from <doi:10.1088/1361-6579/ab98b3>.
 Depends:
     R (>= 3.5.0)
 License: GPL-2

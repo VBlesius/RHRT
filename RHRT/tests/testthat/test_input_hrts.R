@@ -9,6 +9,8 @@ load(test_path("testdata", "testdataRegular_HRTObj.rda"))
 load(test_path("testdata", "testdataVariant_HRTObj.rda"))
 load(test_path("testdata", "testdataVariantNoHRT_HRTObj.rda"))
 
+load(test_path("testdata", "testdata_Ann.rda"))
+
 test_that("Finding HRTs", {
   expect_equal(vectorToHRT(testdataRegular), testdataRegular_HRTObj)
   expect_equal(vectorToHRT(testdataVariant), testdataVariant_HRTObj)
@@ -18,4 +20,9 @@ test_that("Finding HRTs", {
 
   expect_warning(vectorToHRT(rep(782, 1000)), "No or too few HRTs")
   expect_warning(vectorToHRT(rep(2001, 100)), "No or too few HRTs")
+})
+
+test_that("Finding HRTs via annotator", {
+  expect_equal(vectorToHRT(testdataRegular, annotations = testdata_Ann), testdataRegular_HRTObj)
+  expect_equal(vectorToHRT(testdataRegular, annotations = list(testdata_Ann)), testdataRegular_HRTObj)
 })

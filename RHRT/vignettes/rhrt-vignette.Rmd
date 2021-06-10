@@ -140,7 +140,7 @@ The HRTList object sums up all HRTs found in the given dataset. The slots are:
 - `pos`: the indices of the CPIs as found in the given vector
 - `HRTs`: list of all HRT objects found
 - `avHRT`: an avHRT object averaged from all HRTs
-- `nRMSSD`: the HRV parameter nRMSSD calculated from all intervals in the given cleaned vector (see *VectorToHRT: Cleaning Input* for more information)
+- `RMSSD`: the HRV parameter RMSSD calculated from all intervals in the given cleaned vector (see *VectorToHRT: Cleaning Input* for more information)
 
 #### Functions
 
@@ -162,6 +162,18 @@ The HRTList object sums up all HRTs found in the given dataset. The slots are:
 - **`getHRTParams`** &nbsp;&nbsp; Returns the values of the given slot of all HRT objects in the `HRTList.` This can be used to quickly list all separate HRT parameters of an `HRTList`. Although the function name focuses on the HRT parameters, it can return any other slot of the HRT objects.
 - **`getPositions`** &nbsp;&nbsp; Returns the positions of the couplRRs which is identical to `HRTList@pos`.
 - **`plot`** &nbsp;&nbsp; Analogously to the plot function of the HRT object HRTList objects can be plotted. This function plots the avHRT and adds the VPCSs of all HRTs as grey lines in the background.
+
+### avHRT Object
+
+An avHRT object is stored in an HRTList and inherits from the HRT object. It is averaged from the other HRTs in the HRTList automatically and can be recalculated with calcAvHRT.
+
+#### Slots
+
+In addition to the HRT slots avHRT stores data about its calculation and the parameter validity:
+
+- `av`, `orTO` and `orTS`: for more information see *HRTList: Functions (calcAvHRT)*
+- `pTO`, `pTS`, `pTT` and `pnTS`: p-values from the reliability check, for more information see *Reliability Check*
+- `nRMSSD`: the RMSSD normalised to the a given heart rate, per default to 75 bpm
 
 ### vectorToHRT
 
@@ -212,7 +224,7 @@ To ensure snippets free of any bias and containing effective VPCs, the VPCSs are
 
 HRT is influenced by the heart rate. While there is no clear conclusion for TO, TS values clearly positively correlate with the RR interval length (reviewed in [Blesius et al. 2020][NTS1]). Therefore, RHRT calculates `nTS` that is normalised to a fixed interval length (800 ms per default) in addition to the common TS.
 
-Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in [Blesius et al. 2020][NTS1]). While physiological reasons were suggested for this phenomenon ([Cygankiewicz et al. 2004][NTS2] and [Chen 2009][NTS3]), [Hallstrom et al. 2004][4] reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Secondly, the following formula is used:
+Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in [Blesius et al. 2020][NTS1]). While physiological reasons were suggested for this phenomenon ([Cygankiewicz et al. 2004][NTS2] and [Chen 2009][NTS3]), [Hallstrom et al. 2004][NTS4] reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Secondly, the following formula is used:
 
   nTS = TS - ( 0.02475 * (numPostRRs-2)^0.9449 * (RMSSD / √#VPCSs) )
     

@@ -1,6 +1,8 @@
 library(RHRT)
 context("HRT functions")
 
+load(test_path("testdata", "testdataVariant_HRTObj.rda"))
+
 test_that("validity", {
   expect_error(checkValidity(new("HRT")), "One or more interval is not set")
 })
@@ -15,4 +17,7 @@ hrt@preRRs <- c(-800, 800)
 
 test_that("TO calculation", {
   expect_warning(calcTO(hrt), "Turbulence onset can't be calculated")
+})
+test_that("Plot", {
+  expect_silent(plot(testdataVariant_HRTObj@avHRT, TT = TRUE))
 })

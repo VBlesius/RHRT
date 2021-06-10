@@ -1,5 +1,5 @@
 library(RHRT)
-context("Input validity")
+context("vectorToHRT: checking input validity")
 
 load(test_path("testdata", "testdataVariant.rda"))
 

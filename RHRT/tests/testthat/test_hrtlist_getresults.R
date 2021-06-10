@@ -1,5 +1,5 @@
 library(RHRT)
-context("returning results of the avHRT of a HRTList")
+context("getResults: returning results of an HRTList")
 
 load(test_path("testdata", "testdataVariant_HRTObj.rda"))
 

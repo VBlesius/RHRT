@@ -1,5 +1,5 @@
 library(RHRT)
-context("calculating avHRT for a HRTList")
+context("calcAvHRT: calculating avHRT for an HRTList")
 
 load(test_path("testdata", "testdataVariant_HRTObj.rda"))
 load(test_path("testdata", "testdataVariant.rda"))

@@ -1,5 +1,5 @@
 library(RHRT)
-context("HRTs in input")
+context("vectorToHRT: producing correct output")
 
 load(test_path("testdata", "testdataRegular.rda"))
 load(test_path("testdata", "testdataVariant.rda"))

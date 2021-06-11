@@ -27,7 +27,7 @@ bibliography: RHRT.bib
 [](describing the high-level functionality and purpose of the software for a diverse, non-specialist audience)
 
 Heart Rate Turbulence (HRT) is a naturally occuring phenomenon of the heart that was first described by @schmidt_heart-rate_1999.
-After a premature ventricular beat – an atypical heart beat that originates in the ventricles and occurs with a briefer latency than a regular beat – the heart rate fluctuates.
+After a premature ventricular contraction (VPC) – an atypical heart beat that originates in the ventricles and occurs with a briefer latency than a regular beat – the heart rate fluctuates.
 This fluctuation consists of a fast increase and later decrease in heart rate.
 This variability of interval lengths depends on the condition of the autonomic nervous system:
 While no reaction to the premature ventricular beat and therefore no variation suggests an underlying pathology, a distinctive turbulence is considered healthy.
@@ -75,7 +75,7 @@ getResults(hrtl, type = "class")
 ## have a look at the data and the parameters
 plot(hrtl)
 ```
-![Caption for example figure.\label{fig:plot}](../RHRT/man/figures/README-example-1.png)
+![Plot of an HRTList Object: the plot resembles the standard visualisation of HRT – a tachogram – in which the indices of the intervals are plotted against their lengths. The tachogram and HRT parameters turbulence onset (TO) and tubulence slope (TS) are drawn in black, red and blue, respectively, while the tachograms of all underlying HRTs are drawn in grey in the background. The plot is zoomed in to better show the HRT parameter values, so the intervals before and after the VPC are outside the plot range.\label{fig:plot}](../RHRT/man/figures/README-example-1.png)
 
 # Acknowledgements
 

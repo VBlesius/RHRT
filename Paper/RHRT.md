@@ -36,7 +36,7 @@ Therefore HRT can be used in medicine to determine the risk status of a person e
 ``RHRT`` finds occurences of HRT in heart beat interval data, calculates the most used parameters and plots the results.
 The package works best and fastest when given annotation data, but can also find HRT based on commonly accepted filtering rules [@grimm_heart_2003].
 Most filtering parameters and calculation methods can be set freely to enable research on the methodology itself.
-In addition to parameter calculation ``RHRT`` can classify the data into common risk categories and estimates the reliability of the results based on the number and parameter values of the HRTs.
+In addition to parameter calculation, ``RHRT`` can classify the data into common risk categories and estimate the reliability of the results based on the number and parameter values of the HRTs.
 
 The package can be found on [CRAN] and [GitHub](https://github.com/VBlesius/RHRT).
 
@@ -50,15 +50,32 @@ HRT analysis is already used for risk stratification in the clinical practice, a
 
 # Minimal example
 
-To install ``RHRT``just use
+To install ``RHRT`` use
 
 install.packages("RHRT")
 
-for the version on CRAN or
+for the version on CRAN.
+To install the continuosly developed version on GitHub you can use the devtools package:
 
-devtools::install_github("vblesius/RHRT")
+devtools::install_github("vblesius/RHRT/RHRT")
 
-for the continuosly developed version on GitHub.
+
+
+The most straightforward use of `RHRT` is to scan your interval data for valid HRTs and analyse the results:
+
+``` r
+library(RHRT)
+## scan your interval data and save the results as an HRTList
+hrtl <- vectorToHRT(intervals)
+
+## get the HRT class of your data
+getResults(hrtl, type = "class")
+#> [1] "HRT0"
+
+## have a look at the data and the parameters
+plot(hrtl)
+```
+![Caption for example figure.\label{fig:plot}](../RHRT/man/figures/README-example-1.png)
 
 # Acknowledgements
 

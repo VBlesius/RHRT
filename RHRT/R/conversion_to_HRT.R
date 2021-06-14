@@ -51,12 +51,12 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
     warning(paste("Too few HRTs found in your data:", numFound, "! To calculate HRT anyhow, try again with lower 'minHRT'."))
     tempHRTList <- methods::new("HRTList")
   } else {
-    tempHRTList@name <- inputName
     tempHRTList@IL <- mean(inputCleaned)
     tempHRTList@HRTs <- lapply(tempHRTList@HRTs, calcHRTParams, IL = tempHRTList@IL, normIL)
     tempHRTList@RMSSD <- sqrt(mean(diff(inputCleaned)^2))
     tempHRTList@avHRT <- calcAvHRT(tempHRTList, normHallstrom = normHallstrom, normIL = normIL)
   }
+  tempHRTList@name <- inputName
   return(tempHRTList)
 }
 

@@ -282,12 +282,19 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   TOs <- getHRTParams(HRTListObj, "TO")
   TSs <- getHRTParams(HRTListObj, "TS")
   TTs <- getHRTParams(HRTListObj, "TT")
-  # calculates TS again if different IL or normIL are given
+  # calculates nTS if different IL or normIL are given
   if (IL != HRTListObj@IL || normIL != c_normIL) {
-    HRTListObj@HRTs <- lapply(HRTListObj@HRTs, calcTS, normalising = TRUE, IL = IL, normIL = normIL)
+    hrts <- lapply(HRTListObj@HRTs, calcTS, normalising = TRUE, IL = IL, normIL = normIL)
+    nTSs <- sapply(hrts, slot, "nTS")
+    nintercepts <- sapply(hrts, slot, "nintercept")
+    warning("The IL or normIL given is different to the ones used to calculate 
+            the HRT objects. Therefore, the values of nTS and nintercept of the 
+            HRT objects and avHRT do not match anymore.")
+  } else {
+    nTSs <- getHRTParams(HRTListObj, "nTS")
+    nintercepts <- getHRTParams(HRTListObj, "nintercept")
   }
-  nTSs <- getHRTParams(HRTListObj, "nTS")
-  nintercepts <- getHRTParams(HRTListObj, "nintercept")
+  
 
   notconstant <- function(x) !length(unique(x)) == 1
   # calculates p-values

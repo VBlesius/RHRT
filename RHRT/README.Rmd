@@ -19,7 +19,7 @@ RHRT provides tools for a Heart Rate Turbulence analysis of RR interval data. It
 
 In addition to standard calculation methods the package allows to modify the filter and calculation parameters. It is therefore not only helpful to identify HRT classes of measurements for risk assessment but also for assessment of the methodology itself.
 
-For more information please check the [vignette](vignettes/rhrt-vignette.html) of the package.
+For more information please check the [vignette](vignettes/rhrt-vignette.md) of the package.
 For more information about HRT have a look into the [original publication by Schmidt et al.](https://doi.org/10.1016/S0140-6736(98)08428-1) or our [review](https://doi.org/10.1088/1361-6579/ab98b3) with focus on the methodology.
 
 ## Installation
@@ -50,4 +50,4 @@ getResults(hrtl, type = "class")
 plot(hrtl)
 ```
 
-More example workflows can be found in the [vignette](vignettes/rhrt-vignette.html).
+More example workflows can be found in the [vignette](vignettes/rhrt-vignette.md).

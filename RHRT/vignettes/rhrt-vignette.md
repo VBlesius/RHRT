@@ -1,7 +1,7 @@
 ---
 title: "RHRT: Finding Premature Ventricular Complexes"
 author: "Valeria Blesius"
-date: "`r Sys.Date()`"
+date: "2021-06-14"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
@@ -23,22 +23,18 @@ This chapter sums up the most common functions and parameters needed when using 
 
 First, the **core function** of RHRT is `vectorToHRT` that finds valid VPCs in RR intervals and returns an `HRTList` object (see chapter *HRTList object* for more information):
 
-```{r, echo = FALSE}
-library("RHRT")
-data("testdataLong", package = "RHRT")
-data <- testdataLong
-data("testdataLong_Ann", package = "RHRT")
-ann <- testdataLong_Ann
-```
+
 
 ### Checking data for HRTs
-```{r}
+
+```r
 hrtl <- vectorToHRT(data) # data is a numeric vector of RR intervals in msec
 ```
 
 Every RR interval sequence that matches the needed interval lengths is considered to be a coupling and compensatory interval of a VPC, which can lead to wrong matches. If your data is annotated, you can provide the **annotation data** with the parameters `annotations` and `PVCAnn`.
 
-```{r}
+
+```r
 hrtl <- vectorToHRT(data, annotations = ann, PVCAnn = "V") 
   # ann is a vector of characters with the same length as data
 ```
@@ -50,26 +46,47 @@ Other parameters are:
 * `normHallstrom` defines whether TS should be **normalised** with the method of Hallstrom et al. (see chapter *Normalisation*). 
 
 ### Getting HRT parameters or class
-```{r}
+
+```r
 getResults(hrtl) # get the HRT class of the data
+```
+
+```
+## [1] "HRT0"
 ```
 
 Per default `getResults` checks whether all needed HRT parameters can be calculated reliably. This is done via a t-test per parameter value (for more information see chapter *Reliability Check*). If any of the parameter values is **not reliable** `getResults` returns NR (not reliable). 
 
-```{r}
+
+```r
 getResults(hrtl, safe = FALSE) # get the HRT class without safety check
+```
+
+```
+## [1] "HRT0"
 ```
 
 In addition to the classification system HRT0-2 RHRT implements **HRTA-C** that is based on the three parameters TO, TS and TT. 
 
-```{r}
+
+```r
 getResults(hrtl, safe = FALSE, TT = TRUE) # include TT
+```
+
+```
+## [1] "HRTA"
 ```
 
 With the parameter `type` you can choose between getting only the HRT **class**, all **parameter values** or the parameter values with the corresponding **p-values** (types "class", "parameter" or "full", respectively).
 
-```{r}
+
+```r
 getResults(hrtl, type = "parameter", TT = TRUE) # get the averaged HRT parameters
+```
+
+```
+##        TO        TS        TT 
+## -9.522023 31.294898  3.000000
 ```
 
 Other parameters are:
@@ -80,15 +97,21 @@ Other parameters are:
 
 ### Plotting
 
-```{r, fig.width=7, fig.height=4}
+
+```r
 plot(hrtl, TT = TRUE) # plots the averaged VPCS and all underlying VPCSs in background
 ```
 
+![](rhrt-vignette_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
 Per default the VPCS is **zoomed** in. If you want to also see the CPI and CMI use `cropped = FALSE`.
 
-```{r, fig.width=7, fig.height=4}
+
+```r
 plot(hrtl, cropped = FALSE) # shows also coupling and compensatory interval
 ```
+
+![](rhrt-vignette_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 --------
 
@@ -262,29 +285,70 @@ The order in which the HRT parameters are calculated has an impact on the result
 
 The main focus of the package is to determine the HRT parameters or class of a person by a long-term ECG measurement. Load the data as a numeric vector and use `vectorToHRT` to find HRTs, then `getResults` and `plot` to check the results:
 
-```{r, fig.width=7, fig.height=4}
+
+```r
 hrtl <- vectorToHRT(testdataLong) # create the HRTList
 getResults(hrtl) # get the averaged HRT parameters
+```
+
+```
+## [1] "HRT0"
+```
+
+```r
 plot(hrtl) # plot the HRTs and check the variability
 ```
 
+![](rhrt-vignette_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
 The results do not pass the reliability check so we get "NR" as HRT class. The plot shows that firstly TO is near to zero and secondly there is a high variability in the VPCSs. We can go deeper into the data by checking the exact parameters (including TT as an additional hint to the person's status) and zooming out of the plot:
 
-```{r, fig.width=7, fig.height=4}
+
+```r
 round(
   getResults(hrtl, "full", TT = TRUE),
 digits = 2) # get the parameters and p-values of the variability check
+```
+
+```
+##    TO    TS    TT   pTO   pTS   pTT 
+## -9.52 31.29  3.00  0.00  0.00  0.00
+```
+
+```r
 plot(hrtl, cropped = FALSE) # plot the full VPCSs
 ```
 
+![](rhrt-vignette_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+
 As expected TO is not reliable with a p-value over 0.05. The VPCSs still seem to fluctuate a lot with the first two postRRs that determine TO varying above and below the ones of the avHRT. We can can get a picture on all TO values by using `getHRTParams`:
 
-```{r}
+
+```r
 tos <- getHRTParams(hrtl, "TO")
 tos
+```
+
+```
+##  [1]  -7.097592  -8.420534 -12.299247 -12.392999  -9.942578 -10.821156
+##  [7]  -8.397493 -11.654006  -8.220155  -6.530343  -5.135286 -10.244191
+## [13] -10.078399  -8.829286 -12.767082
+```
+
+```r
 summary(tos)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## -12.767 -11.238  -9.943  -9.522  -8.309  -5.135
+```
+
+```r
 boxplot(tos)
 ```
+
+![](rhrt-vignette_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 These results can help to come to a well-founded decision on whether to classify the patient as HRT0/HRTA and trust the TO value or rather classify them conservatively as HRT1/HRTB. 
 
@@ -292,9 +356,29 @@ These results can help to come to a well-founded decision on whether to classify
 
 This is an example how the package can be used to analyse the HRT methodology. Due to data size we use a set of HRTs of one person rather than a set of averaged HRTs. For example, we can compare the difference in `TS` values when using different `numPostRRs`.
 
-```{r, fig.width=4, fig.height=4}
+
+```r
 hrtl10 <- getHRTParams(vectorToHRT(testdataLong, numPostRRs = 10), "TS")
 hrtl20 <- getHRTParams(vectorToHRT(testdataLong, numPostRRs = 20), "TS")
 boxplot(hrtl10, hrtl20, names = c("TSRR = 10", "TSRR = 20"))
+```
+
+![](rhrt-vignette_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+```r
 t.test(hrtl10, hrtl20)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  hrtl10 and hrtl20
+## t = 0, df = 28, p-value = 1
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2.651862  2.651862
+## sample estimates:
+## mean of x mean of y 
+##  34.07982  34.07982
 ```

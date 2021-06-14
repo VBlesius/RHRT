@@ -12,7 +12,7 @@
 
 <meta name="author" content="Valeria Blesius" />
 
-<meta name="date" content="2021-06-10" />
+<meta name="date" content="2021-06-14" />
 
 <title>RHRT: Finding Premature Ventricular Complexes</title>
 
@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">RHRT: Finding Premature Ventricular Complexes</h1>
 <h4 class="author">Valeria Blesius</h4>
-<h4 class="date">2021-06-10</h4>
+<h4 class="date">2021-06-14</h4>
 
 
 
@@ -253,7 +253,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>pos</code>: the indices of the CPIs as found in the given vector</li>
 <li><code>HRTs</code>: list of all HRT objects found</li>
 <li><code>avHRT</code>: an avHRT object averaged from all HRTs</li>
-<li><code>nRMSSD</code>: the HRV parameter nRMSSD calculated from all intervals in the given cleaned vector (see <em>VectorToHRT: Cleaning Input</em> for more information)</li>
+<li><code>RMSSD</code>: the HRV parameter RMSSD calculated from all intervals in the given cleaned vector (see <em>VectorToHRT: Cleaning Input</em> for more information)</li>
 </ul>
 </div>
 <div id="functions-1" class="section level4">
@@ -281,6 +281,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong><code>getHRTParams</code></strong>    Returns the values of the given slot of all HRT objects in the <code>HRTList.</code> This can be used to quickly list all separate HRT parameters of an <code>HRTList</code>. Although the function name focuses on the HRT parameters, it can return any other slot of the HRT objects.</li>
 <li><strong><code>getPositions</code></strong>    Returns the positions of the couplRRs which is identical to <code>HRTList@pos</code>.</li>
 <li><strong><code>plot</code></strong>    Analogously to the plot function of the HRT object HRTList objects can be plotted. This function plots the avHRT and adds the VPCSs of all HRTs as grey lines in the background.</li>
+</ul>
+</div>
+</div>
+<div id="avhrt-object" class="section level3">
+<h3>avHRT Object</h3>
+<p>An avHRT object is stored in an HRTList and inherits from the HRT object. It is averaged from the other HRTs in the HRTList automatically and can be recalculated with calcAvHRT.</p>
+<div id="slots-2" class="section level4">
+<h4>Slots</h4>
+<p>In addition to the HRT slots avHRT stores data about its calculation and the parameter validity:</p>
+<ul>
+<li><code>av</code>, <code>orTO</code> and <code>orTS</code>: for more information see <em>HRTList: Functions (calcAvHRT)</em></li>
+<li><code>pTO</code>, <code>pTS</code>, <code>pTT</code> and <code>pnTS</code>: p-values from the reliability check, for more information see <em>Reliability Check</em></li>
+<li><code>nRMSSD</code>: the RMSSD normalised to the a given heart rate, per default to 75 bpm</li>
 </ul>
 </div>
 </div>

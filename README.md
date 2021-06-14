@@ -7,3 +7,5 @@ It is sorted into:
 * the files of the [RHRT package](/RHRT)
 * scripts used to create dummy RR interval data in [testdata-scripts](/testdata-scripts)
 * all files needed for the [publication](/Paper) in JOSS
+
+All contents of the repository are licensed under the [GNU GPL v2](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html).

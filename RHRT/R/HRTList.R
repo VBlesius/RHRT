@@ -32,6 +32,36 @@ setClass("HRTList",
   )
 )
 
+#-------------------------------------------------------------------------------
+#' @param .Object (Character) The name of the class
+#' @param name (Character) Name of the vector if given
+#' @param IL (Numeric) Arithmetic mean of the overall interval length of the vector
+#' @param pos (Numeric vector) Positions of premature ventricular complexes in
+#'     given input
+#' @param HRTs (List) All HRT objects
+#' @param avHRT (avHRT object) The average of all HRTs
+#' @param RMSSD (Numeric) Square root of the mean of the squared successive
+#' differences between adjacent intervals of the whole measurement
+#'
+#' @rdname HRTList
+#' @importFrom methods initialize
+#' @importFrom methods new
+#' @export
+setMethod(
+  "initialize", "HRTList",
+  function(.Object, name = NA_character_, IL = NA_real_, pos = NA_real_,
+           HRTs = list(), avHRT = new("avHRT"), RMSSD = NA_real_) {
+    .Object@name <- name
+    .Object@IL <- IL
+    .Object@pos <- pos
+    .Object@HRTs <- HRTs
+    .Object@avHRT <- avHRT
+    .Object@RMSSD <- RMSSD
+
+    return(.Object)
+  }
+)
+
 # -------------------------------------------------------------------------------
 #' Get positions of PVCs
 #'

@@ -47,6 +47,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
   numFound <- length(tempHRTList@HRTs)
   if(numFound == 0) {
     warning("No HRTs found in your data!")
+    tempHRTList <- methods::new("HRTList")
   } else if (numFound < minHRT) {
     warning(paste("Too few HRTs found in your data:", numFound, "! To calculate HRT anyhow, try again with lower 'minHRT'."))
     tempHRTList <- methods::new("HRTList")

@@ -46,3 +46,8 @@ test_that("annotations", {
   expect_warning(a <- vectorToHRT(testdataVariant, annotations = rep("a", 1000)), "given annotation for PVCs could not be found")
   expect_equal(a, new("HRTList"))
 })
+
+test_that("other parameters", {
+  expect_error(vectorToHRT(testdataVariant, numPreRRs = 0), "parameter numPreRRs has to be at least 2")
+  expect_error(vectorToHRT(testdataVariant, numPostRRs = 0), "parameter numPostRRs has to be at least 5")
+})

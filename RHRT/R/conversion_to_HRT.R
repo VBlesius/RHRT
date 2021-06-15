@@ -23,6 +23,10 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
                         numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs,
                         inputName = as.character(NA),
                         minHRT = 5, cleaning = TRUE) {
+  # checking and setting num parameters
+  if(numPreRRs < 2) stop("The parameter numPreRRs has to be at least 2, because two intervals are needed before the coupling interval to calculate TO.")
+  if(numPostRRs < 5) stop("The parameter numPostRRs has to be at least 5, because five intervals are needed after the compensatory interval to calculate TS.")
+  
   numPreRRs <- numPreRRs + 1
   numPostRRs <- numPostRRs + 1
   numSnippet <- numPreRRs + numPostRRs + 2
@@ -42,6 +46,8 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
     checkAnnotations(annotations, input, PVCAnn, label)
   }
 
+  
+  
   inputCleaned <- if (cleaning) cleanInput(input) else input
   tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSnippet)
   numFound <- length(tempHRTList@HRTs)

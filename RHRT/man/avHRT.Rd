@@ -19,43 +19,39 @@
   couplRR = NA_real_,
   compRR = NA_real_,
   preRRs = NA_real_,
-  postRRs = NA_real_,
-  ...
+  postRRs = NA_real_
 )
 }
 \arguments{
 \item{.Object}{The name of the class}
 
-\item{av}{Function, Type of averaging, either mean or median}
+\item{av}{(Function) Type of averaging, either mean or median}
 
-\item{orTO}{Numeric, Order in which TO was calculated,
+\item{orTO}{(Numeric) Order in which TO was calculated,
 either 1 (assessment of parameter and averaging)
 or 2 (averaging of the VPCSs and assessment of parameter)}
 
-\item{orTS}{Numeric, Order in which TS was calculated,
+\item{orTS}{(Numeric) Order in which TS was calculated,
 either 1 (assessment of parameter and averaging)
 or 2 (averaging of the VPCSs and assessment of parameter)}
 
-\item{pTO}{Numeric, p-value of t-test checking the validity of TO}
+\item{pTO}{(Numeric) p-value of t-test checking the validity of TO}
 
-\item{pTS}{Numeric, p-value of t-test checking the validity of TS}
+\item{pTS}{(Numeric) p-value of t-test checking the validity of TS}
 
-\item{pTT}{Numeric, p-value of t-test checking the validity of TT}
+\item{pTT}{(Numeric) p-value of t-test checking the validity of TT}
 
-\item{pnTS}{Numeric, p-value of t-test checking the validity of normalised TS}
+\item{pnTS}{(Numeric) p-value of t-test checking the validity of normalised TS}
 
-\item{nRMSSD}{Numeric, RMSSD normalised to HR}
+\item{nRMSSD}{(Numeric) RMSSD normalised to HR}
 
-\item{couplRR}{Numeric, Coupling interval}
+\item{couplRR}{(Numeric) Coupling interval}
 
-\item{compRR}{Numeric, Compensatory interval}
+\item{compRR}{(Numeric) Compensatory interval}
 
-\item{preRRs}{Numeric vector, Preceding intervals}
+\item{preRRs}{(Numeric vector) Preceding intervals}
 
-\item{postRRs}{Numeric vector, Following intervals}
-
-\item{...}{Other values to be saved in the slots of the HRT object
-given in tag = value form}
+\item{postRRs}{(Numeric vector) Following intervals}
 }
 \description{
 This class extends the HRT class. An avHRT is the average of an HRTList and
@@ -64,22 +60,22 @@ saves the way in which it was calculated.
 \section{Slots}{
 
 \describe{
-\item{\code{av}}{Function, Type of averaging, either mean or median}
+\item{\code{av}}{(Function) Type of averaging, either mean or median}
 
-\item{\code{orTO}}{Numeric, Order in which TO was calculated,
+\item{\code{orTO}}{(Numeric) Order in which TO was calculated,
 either 1 (assessment of parameter and averaging)
 or 2 (averaging of the VPCSs and assessment of parameter)}
 
-\item{\code{orTS}}{Numeric, Order in which TS was calculated,
+\item{\code{orTS}}{(Numeric) Order in which TS was calculated,
 either 1 (assessment of parameter and averaging)
 or 2 (averaging of the VPCSs and assessment of parameter)}
 
-\item{\code{pTO}}{Numeric, p-value of t-test checking the validity of TO}
+\item{\code{pTO}}{(Numeric) p-value of t-test checking the validity of TO}
 
-\item{\code{pTS}}{Numeric, p-value of t-test checking the validity of TS}
+\item{\code{pTS}}{(Numeric) p-value of t-test checking the validity of TS}
 
-\item{\code{pTT}}{Numeric, p-value of t-test checking the validity of TT}
+\item{\code{pTT}}{(Numeric) p-value of t-test checking the validity of TT}
 
-\item{\code{pnTS}}{Numeric, p-value of t-test checking the validity of normalised TS}
+\item{\code{pnTS}}{(Numeric) p-value of t-test checking the validity of normalised TS}
 }}
 

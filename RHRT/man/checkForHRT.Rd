@@ -7,11 +7,11 @@
 checkForHRT(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs)
 }
 \arguments{
-\item{intervals}{Numeric vector}
+\item{intervals}{(Numeric vector) RR intervals in ms}
 
-\item{numPreRRs}{Numeric}
+\item{numPreRRs}{(Numeric) Number of RRs before the coupling interval that are used for filtering}
 
-\item{numPostRRs}{Numeric}
+\item{numPostRRs}{(Numeric) Number of RRs after the compensatory interval that are used for filtering}
 }
 \value{
 HRT A single HRT object

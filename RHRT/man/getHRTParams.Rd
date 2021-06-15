@@ -12,7 +12,7 @@ getHRTParams(HRTListObj, sl)
 \arguments{
 \item{HRTListObj}{HRTList object}
 
-\item{sl}{Character, choose a slot saved by an HRT object}
+\item{sl}{(Character) Value of a slot saved by an HRT object}
 }
 \value{
 Vector

@@ -9,7 +9,7 @@ roll(intervals, width, fun, ...)
 \arguments{
 \item{intervals}{vector}
 
-\item{width}{windowsize}
+\item{width}{window size}
 
 \item{fun}{function to be applied}
 

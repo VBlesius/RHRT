@@ -11,23 +11,19 @@
   couplRR = NA_real_,
   compRR = NA_real_,
   preRRs = NA_real_,
-  postRRs = NA_real_,
-  ...
+  postRRs = NA_real_
 )
 }
 \arguments{
-\item{.Object}{The name of the class}
+\item{.Object}{(Character) The name of the class}
 
-\item{couplRR}{Numeric, Coupling interval}
+\item{couplRR}{(Numeric) Coupling interval}
 
-\item{compRR}{Numeric, Compensatory interval}
+\item{compRR}{(Numeric) Compensatory interval}
 
-\item{preRRs}{Numeric vector, Preceding intervals}
+\item{preRRs}{(Numeric vector) Preceding intervals}
 
-\item{postRRs}{Numeric vector, Following intervals}
-
-\item{...}{Other values to be saved in the slots of the HRT object
-given in tag = value form}
+\item{postRRs}{(Numeric vector) Following intervals}
 }
 \description{
 This class specifies an object to save the lengths of intervals surrounding a
@@ -39,24 +35,24 @@ TS is saved after common calculation and after normalising.
 \section{Slots}{
 
 \describe{
-\item{\code{couplRR}}{Numeric, Coupling interval}
+\item{\code{couplRR}}{(Numeric) Coupling interval}
 
-\item{\code{compRR}}{Numeric, Compensatory interval}
+\item{\code{compRR}}{(Numeric) Compensatory interval}
 
-\item{\code{preRRs}}{Numeric vector, Preceding intervals}
+\item{\code{preRRs}}{(Numeric vector) Preceding intervals}
 
-\item{\code{postRRs}}{Numeric vector, Following intervals}
+\item{\code{postRRs}}{(Numeric vector) Following intervals}
 
-\item{\code{TO}}{Numeric, Turbulence onset}
+\item{\code{TO}}{(Numeric) Turbulence onset}
 
-\item{\code{TS}}{Numeric, Turbulence slope}
+\item{\code{TS}}{(Numeric) Turbulence slope}
 
-\item{\code{TT}}{Numeric, Turbulence timing}
+\item{\code{TT}}{(Numeric) Turbulence timing}
 
-\item{\code{intercept}}{Numeric, Intercept of regression line of TS}
+\item{\code{intercept}}{(Numeric) Intercept of regression line of TS}
 
-\item{\code{nTS}}{Numeric, Normalised Turbulence slope}
+\item{\code{nTS}}{(Numeric) Normalised Turbulence slope}
 
-\item{\code{nintercept}}{Numeric, Intercept of regression line of nTS}
+\item{\code{nintercept}}{(Numeric) Intercept of regression line of nTS}
 }}
 

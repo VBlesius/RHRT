@@ -10,7 +10,7 @@ getRRs(HRTObj)
 \S4method{getRRs}{HRT}(HRTObj)
 }
 \arguments{
-\item{HRTObj}{HRT object}
+\item{HRTObj}{HRT}
 }
 \description{
 Returns the VPCS intervals in right order

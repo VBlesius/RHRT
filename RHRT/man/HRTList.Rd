@@ -3,7 +3,36 @@
 \docType{class}
 \name{HRTList}
 \alias{HRTList}
+\alias{initialize,HRTList-method}
 \title{S4 class to represent a list of HRT objects}
+\usage{
+\S4method{initialize}{HRTList}(
+  .Object,
+  name = NA_character_,
+  IL = NA_real_,
+  pos = NA_real_,
+  HRTs = list(),
+  avHRT = new("avHRT"),
+  RMSSD = NA_real_
+)
+}
+\arguments{
+\item{.Object}{(Character) The name of the class}
+
+\item{name}{(Character) Name of the vector if given}
+
+\item{IL}{(Numeric) Arithmetic mean of the overall interval length of the vector}
+
+\item{pos}{(Numeric vector) Positions of premature ventricular complexes in
+given input}
+
+\item{HRTs}{(List) All HRT objects}
+
+\item{avHRT}{(avHRT object) The average of all HRTs}
+
+\item{RMSSD}{(Numeric) Square root of the mean of the squared successive
+differences between adjacent intervals of the whole measurement}
+}
 \description{
 This class specifies an object to save all HRT objects of a given vector. It
 also saves an averaged HRT for calculation of the averaged HRT parameters and
@@ -12,18 +41,18 @@ plotting of all HRTs in a single plot.
 \section{Slots}{
 
 \describe{
-\item{\code{name}}{Character, Name of the vector if given}
+\item{\code{name}}{(Character) Name of the vector if given}
 
-\item{\code{IL}}{Numeric, Arithmetic mean of the overall interval length of the vector}
+\item{\code{IL}}{(Numeric) Arithmetic mean of the overall interval length of the vector}
 
-\item{\code{pos}}{Numeric vector, Positions of premature ventricular complexes in
+\item{\code{pos}}{(Numeric vector) Positions of premature ventricular complexes in
 given input}
 
-\item{\code{HRTs}}{List, all HRT objects}
+\item{\code{HRTs}}{(List) All HRT objects}
 
-\item{\code{avHRT}}{avHRT object, the average of all HRTs}
+\item{\code{avHRT}}{(avHRT object) The average of all HRTs}
 
-\item{\code{RMSSD}}{Numeric, square root of the mean of the squared successive
+\item{\code{RMSSD}}{(Numeric) Square root of the mean of the squared successive
 differences between adjacent intervals of the whole measurement}
 }}
 

@@ -5,15 +5,15 @@
 #' The HRT criteria used were published by Schmidt et al.
 #' (more information can be found in the vignette.)
 #'
-#' @param input Numeric vector
-#' @param annotations Alphabetical vector
-#' @param PVCAnn Character
-#' @param normHallstrom Boolean, should the normalisation of Hallstrom be used?
-#' @param numPreRRs Numeric
-#' @param numPostRRs Numeric
-#' @param inputName String, name of the data
-#' @param minHRT Numeric, minimal number of HRTs that are needed to create a HRTList object
-#' @param cleaning Boolean, Should the input be roughly cleaned from artefacts before calculating IL and RMSSD?
+#' @param input (Numeric vector) RR intervals in ms
+#' @param annotations (Character vector) Annotations matching input
+#' @param PVCAnn (Character) Character that marks a VPC in the annotations
+#' @param normHallstrom (Boolean) Should the normalisation of Hallstrom be used?
+#' @param numPreRRs (Numeric) Number of RRs before the coupling interval that are used for filtering
+#' @param numPostRRs (Numeric) Number of RRs after the compensatory interval that are used for filtering
+#' @param inputName (String) Name of the data
+#' @param minHRT (Numeric) Minimal number of HRTs that are needed to create an HRTList object
+#' @param cleaning (Boolean) Should the input be roughly cleaned from artefacts before calculating IL and RMSSD?
 #' @inheritParams calcHRTParams
 #' @return HRTList HRTList object
 #'
@@ -70,8 +70,8 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
 # -------------------------------------------------------------------------------
 #' Checks data input for compatibility
 #'
-#' @param numSnippet Numeric, number of RRs in the the HRT snippet
-#' @param label Name of the data given and formatted for output
+#' @param numSnippet (Numeric) number of RRs in the the HRT snippet
+#' @param label (Character) Name of the data given and formatted for output
 #' @inheritParams vectorToHRT
 #'
 checkInput <- function(input, numSnippet, label) {
@@ -142,8 +142,8 @@ checkAnnotations <- function(annotations, input, PVCAnn, label) {
 #'
 #' Scans for HRTs in the given vector and returns an HRTList object.
 #'
-#' @param intervals Numeric vector
-#' @param numSnippet Numeric, number of RRs in the HRT snippet
+#' @param intervals (Numeric vector) RR intervals in ms
+#' @param numSnippet (Numeric) Number of RRs in the HRT snippet
 #' @inheritParams vectorToHRT
 #' @return HRTListObj
 #'

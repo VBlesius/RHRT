@@ -10,7 +10,7 @@ calcTO(HRTObj)
 \S4method{calcTO}{HRT}(HRTObj)
 }
 \arguments{
-\item{HRTObj}{HRT, The HRT object, for which TO should be calculated}
+\item{HRTObj}{(HRT) The HRT object, for which TO should be calculated}
 }
 \description{
 Calculates the TO parameters and saves it in the corresponding slot

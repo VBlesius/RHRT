@@ -7,13 +7,13 @@
 checkAnnotations(annotations, input, PVCAnn, label)
 }
 \arguments{
-\item{annotations}{Alphabetical vector}
+\item{annotations}{(Character vector) Annotations matching input}
 
-\item{input}{Numeric vector}
+\item{input}{(Numeric vector) RR intervals in ms}
 
-\item{PVCAnn}{Character}
+\item{PVCAnn}{(Character) Character that marks a VPC in the annotations}
 
-\item{label}{Name of the data given and formatted for output}
+\item{label}{(Character) Name of the data given and formatted for output}
 }
 \description{
 Checks annotations for compatibility

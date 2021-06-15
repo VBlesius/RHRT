@@ -3,18 +3,18 @@
 #' This class extends the HRT class. An avHRT is the average of an HRTList and
 #' saves the way in which it was calculated.
 #'
-#' @slot av Function, Type of averaging, either mean or median
-#' @slot orTO Numeric, Order in which TO was calculated,
+#' @slot av (Function) Type of averaging, either mean or median
+#' @slot orTO (Numeric) Order in which TO was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @slot orTS Numeric, Order in which TS was calculated,
+#' @slot orTS (Numeric) Order in which TS was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @slot pTO Numeric, p-value of t-test checking the validity of TO
-#' @slot pTS Numeric, p-value of t-test checking the validity of TS
-#' @slot pTT Numeric, p-value of t-test checking the validity of TT
-#' @slot pnTS Numeric, p-value of t-test checking the validity of normalised TS
-#' @param nRMSSD Numeric, RMSSD normalised to HR
+#' @slot pTO (Numeric) p-value of t-test checking the validity of TO
+#' @slot pTS (Numeric) p-value of t-test checking the validity of TS
+#' @slot pTT (Numeric) p-value of t-test checking the validity of TT
+#' @slot pnTS (Numeric) p-value of t-test checking the validity of normalised TS
+#' @param nRMSSD (Numeric) RMSSD normalised to HR
 #'
 #' @name avHRT
 #'
@@ -46,18 +46,18 @@ setClass("avHRT",
 
 #-------------------------------------------------------------------------------
 #' @param .Object The name of the class
-#' @param av Function, Type of averaging, either mean or median
-#' @param orTO Numeric, Order in which TO was calculated,
+#' @param av (Function) Type of averaging, either mean or median
+#' @param orTO (Numeric) Order in which TO was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @param orTS Numeric, Order in which TS was calculated,
+#' @param orTS (Numeric) Order in which TS was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @param pTO Numeric, p-value of t-test checking the validity of TO
-#' @param pTS Numeric, p-value of t-test checking the validity of TS
-#' @param pTT Numeric, p-value of t-test checking the validity of TT
-#' @param pnTS Numeric, p-value of t-test checking the validity of normalised TS
-#' @param nRMSSD Numeric, RMSSD normalised to HR
+#' @param pTO (Numeric) p-value of t-test checking the validity of TO
+#' @param pTS (Numeric) p-value of t-test checking the validity of TS
+#' @param pTT (Numeric) p-value of t-test checking the validity of TT
+#' @param pnTS (Numeric) p-value of t-test checking the validity of normalised TS
+#' @param nRMSSD (Numeric) RMSSD normalised to HR
 #' @inheritParams HRT
 #'
 #' @rdname avHRT

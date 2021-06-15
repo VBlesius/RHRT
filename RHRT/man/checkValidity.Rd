@@ -17,9 +17,9 @@ checkValidity(x, ...)
 
 \item{...}{Other parameters}
 
-\item{av}{Boolean Should avHRT be checked?}
+\item{av}{(Boolean) Should avHRT be checked?}
 
-\item{pos}{Boolean Should pos be checked?}
+\item{pos}{(Boolean) Should pos be checked?}
 }
 \description{
 Checks whether slots are set

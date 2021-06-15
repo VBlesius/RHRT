@@ -34,23 +34,23 @@ getResults(
 \arguments{
 \item{HRTListObj}{HRTList object}
 
-\item{type}{String, determining the amount of output: 'class' gives the HRT class, 'parameter' the parameter values and 'full' additionally the p-values describing parameter reliability}
+\item{type}{(String) Determining the amount of output: 'class' gives the HRT class, 'parameter' the parameter values and 'full' additionally the p-values describing parameter reliability}
 
-\item{TT}{Boolean, Should TT be given?}
+\item{TT}{(Boolean) Should TT be given?}
 
-\item{nTS}{Should the normalised TS (nTS) be given or used for the determination of the HRT class?}
+\item{nTS}{(Boolean) Should the normalised TS (nTS) be given or used for the determination of the HRT class?}
 
-\item{safe}{Boolean, Should all values be given regardless of reliability checks? Note, that 'safe' is ignored when the type is 'full'.}
+\item{safe}{(Boolean) Should all values be given regardless of reliability checks? Note, that 'safe' is ignored when the type is 'full'.}
 
-\item{pmax}{Numeric, the significance level}
+\item{pmax}{(Numeric) The significance level}
 
-\item{num}{Boolean Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.}
+\item{num}{(Boolean) Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.}
 
-\item{coTO}{Numeric, cut-off value for TO}
+\item{coTO}{(Numeric) Cut-off value for TO}
 
-\item{coTS}{Numeric, cut-off value for TS and nTS}
+\item{coTS}{(Numeric) Cut-off value for TS and nTS}
 
-\item{coTT}{Numeric, cut-off value for TT}
+\item{coTT}{(Numeric) Cut-off value for TT}
 }
 \value{
 Named vector, character or numeric

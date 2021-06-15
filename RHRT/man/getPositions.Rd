@@ -10,7 +10,7 @@ getPositions(HRTListObj)
 \S4method{getPositions}{HRTList}(HRTListObj)
 }
 \arguments{
-\item{HRTListObj}{HRTList object}
+\item{HRTListObj}{(HRTList object)}
 }
 \description{
 Returns the positions of all ventricular premature complexes (VPCs) and

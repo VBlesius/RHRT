@@ -10,12 +10,12 @@ calcHRTParams(HRTObj, IL = c_normIL, normIL = c_normIL)
 \S4method{calcHRTParams}{HRT}(HRTObj, IL = c_normIL, normIL = c_normIL)
 }
 \arguments{
-\item{HRTObj}{HRT, The HRT object of which the parameters should be calculated}
+\item{HRTObj}{(HRT) The HRT object of which the parameters should be calculated}
 
-\item{IL}{Numeric, The overall arithmetic mean of the interval length of the
+\item{IL}{(Numeric) The overall arithmetic mean of the interval length of the
 measurement to normalise TS}
 
-\item{normIL}{Numeric, The interval length to which TS should be normalised}
+\item{normIL}{(Numeric) The interval length to which TS should be normalised}
 }
 \description{
 Calculates all HRT parameters needed for an HRT object

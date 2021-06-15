@@ -18,25 +18,25 @@ vectorToHRT(
 )
 }
 \arguments{
-\item{input}{Numeric vector}
+\item{input}{(Numeric vector) RR intervals in ms}
 
-\item{annotations}{Alphabetical vector}
+\item{annotations}{(Character vector) Annotations matching input}
 
-\item{PVCAnn}{Character}
+\item{PVCAnn}{(Character) Character that marks a VPC in the annotations}
 
-\item{normIL}{Numeric, The interval length to which TS should be normalised}
+\item{normIL}{(Numeric) The interval length to which TS should be normalised}
 
-\item{normHallstrom}{Boolean, should the normalisation of Hallstrom be used?}
+\item{normHallstrom}{(Boolean) Should the normalisation of Hallstrom be used?}
 
-\item{numPreRRs}{Numeric}
+\item{numPreRRs}{(Numeric) Number of RRs before the coupling interval that are used for filtering}
 
-\item{numPostRRs}{Numeric}
+\item{numPostRRs}{(Numeric) Number of RRs after the compensatory interval that are used for filtering}
 
-\item{inputName}{String, name of the data}
+\item{inputName}{(String) Name of the data}
 
-\item{minHRT}{Numeric, minimal number of HRTs that are needed to create a HRTList object}
+\item{minHRT}{(Numeric) Minimal number of HRTs that are needed to create an HRTList object}
 
-\item{cleaning}{Boolean, Should the input be roughly cleaned from artefacts before calculating IL and RMSSD?}
+\item{cleaning}{(Boolean) Should the input be roughly cleaned from artefacts before calculating IL and RMSSD?}
 }
 \value{
 HRTList HRTList object

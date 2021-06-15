@@ -10,14 +10,14 @@ calcTS(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL)
 \S4method{calcTS}{HRT}(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL)
 }
 \arguments{
-\item{HRTObj}{HRT, The HRT object, for which TS should be calculated}
+\item{HRTObj}{(HRT) The HRT object, for which TS should be calculated}
 
-\item{normalising}{Boolean, Should the normalised TS be calculated?}
+\item{normalising}{(Boolean) Should the normalised TS be calculated?}
 
-\item{IL}{Numeric, The overall arithmetic mean of the interval length of the
+\item{IL}{(Numeric) The overall arithmetic mean of the interval length of the
 measurement to normalise TS}
 
-\item{normIL}{Numeric, The interval length to which TS should be normalised}
+\item{normIL}{(Numeric) The interval length to which TS should be normalised}
 }
 \description{
 Calculates all TS parameters (TS itself, its index TT (turbulence timing)

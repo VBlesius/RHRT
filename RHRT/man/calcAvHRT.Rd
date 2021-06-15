@@ -34,28 +34,28 @@ calcAvHRT(
 \arguments{
 \item{HRTListObj}{HRTList object}
 
-\item{av}{Function, Type of averaging the VPCSs, either mean or median}
+\item{av}{(Function) Type of averaging the VPCSs, either mean or median}
 
-\item{orTO}{Numeric, Order in which TO was calculated,
+\item{orTO}{(Numeric) Order in which TO was calculated,
 either 1 (assessment of parameter and averaging)
 or 2 (averaging of the VPCSs and assessment of parameter)}
 
-\item{orTS}{Numeric, Order in which TS was calculated,
+\item{orTS}{(Numeric) Order in which TS was calculated,
 either 1 (assessment of parameter and averaging)
 or 2 (averaging of the VPCSs and assessment of parameter)}
 
-\item{IL}{Numeric, The overall arithmetic mean of the interval length of the
+\item{IL}{(Numeric) The overall arithmetic mean of the interval length of the
 measurement to normalise TS}
 
-\item{normIL}{Numeric, The interval length to which TS should be normalised}
+\item{normIL}{(Numeric) The interval length to which TS should be normalised}
 
-\item{normHallstrom}{Boolean, should the normalisation of Hallstrom be used?}
+\item{normHallstrom}{(Boolean) Should the normalisation of Hallstrom be used?}
 
-\item{coTO}{Numeric, cut-off value for TO}
+\item{coTO}{(Numeric) Cut-off value for TO}
 
-\item{coTS}{Numeric, cut-off value for TS and nTS}
+\item{coTS}{(Numeric) Cut-off value for TS and nTS}
 
-\item{coTT}{Numeric, cut-off value for TT}
+\item{coTT}{(Numeric) Cut-off value for TT}
 }
 \value{
 avHRTObj

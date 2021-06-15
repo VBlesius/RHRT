@@ -7,7 +7,7 @@
 cleanInput(input)
 }
 \arguments{
-\item{input}{Numeric vector}
+\item{input}{(Numeric vector) RR intervals in ms}
 }
 \description{
 Cleans data input for further checks or calculation

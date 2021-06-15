@@ -14,17 +14,17 @@ getHRTs(
 )
 }
 \arguments{
-\item{intervals}{Numeric vector}
+\item{intervals}{(Numeric vector) RR intervals in ms}
 
-\item{annotations}{Alphabetical vector}
+\item{annotations}{(Character vector) Annotations matching input}
 
-\item{PVCAnn}{Character}
+\item{PVCAnn}{(Character) Character that marks a VPC in the annotations}
 
-\item{numPreRRs}{Numeric}
+\item{numPreRRs}{(Numeric) Number of RRs before the coupling interval that are used for filtering}
 
-\item{numPostRRs}{Numeric}
+\item{numPostRRs}{(Numeric) Number of RRs after the compensatory interval that are used for filtering}
 
-\item{numSnippet}{Numeric, number of RRs in the HRT snippet}
+\item{numSnippet}{(Numeric) Number of RRs in the HRT snippet}
 }
 \value{
 HRTListObj

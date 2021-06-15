@@ -21,24 +21,24 @@
 \arguments{
 \item{x}{HRTList}
 
-\item{cropped}{Boolean, Should the plot be cut to focuse on the HRT parameters?
+\item{cropped}{(Boolean) Should the plot be cut to focus on the HRT parameters?
 To show all points use FALSE.}
 
-\item{TT}{Boolean, Should Turbulence timing be marked?}
+\item{TT}{(Boolean) Should Turbulence timing be marked?}
 
-\item{pch}{Numeric, Plotting character, for other options see graphics::var}
+\item{pch}{(Numeric) Plotting character, for other options see graphics::var}
 
-\item{xlab}{Character, Label for the x axis}
+\item{xlab}{(Character) Label for the x axis}
 
-\item{ylab}{Character Label for the x axis}
+\item{ylab}{(Character) Label for the x axis}
 
-\item{paramsLegend}{Boolean, should the parameter values of the HRT be plotted?}
+\item{paramsLegend}{(Boolean) Should the parameter values of the HRT be plotted?}
 
-\item{colTO}{Character, colour used to highlight TO}
+\item{colTO}{(Character) Colour used to highlight TO}
 
-\item{colTS}{Character, colour used to highlight TS}
+\item{colTS}{(Character) Colour used to highlight TS}
 
-\item{colTT}{Character, colour used to highlight TT}
+\item{colTT}{(Character) Colour used to highlight TT}
 
 \item{...}{Other arguments in tag = value form}
 }

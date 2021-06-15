@@ -4,13 +4,13 @@
 #' also saves an averaged HRT for calculation of the averaged HRT parameters and
 #' plotting of all HRTs in a single plot.
 #'
-#' @slot name Character, Name of the vector if given
-#' @slot IL Numeric, Arithmetic mean of the overall interval length of the vector
-#' @slot pos Numeric vector, Positions of premature ventricular complexes in
+#' @slot name (Character) Name of the vector if given
+#' @slot IL (Numeric) Arithmetic mean of the overall interval length of the vector
+#' @slot pos (Numeric vector) Positions of premature ventricular complexes in
 #'     given input
-#' @slot HRTs List, all HRT objects
-#' @slot avHRT avHRT object, the average of all HRTs
-#' @slot RMSSD Numeric, square root of the mean of the squared successive
+#' @slot HRTs (List) All HRT objects
+#' @slot avHRT (avHRT object) The average of all HRTs
+#' @slot RMSSD (Numeric) Square root of the mean of the squared successive
 #' differences between adjacent intervals of the whole measurement
 #'
 #' @note After using \code{vectorToHRT} all slots in the resulting HRTList
@@ -69,7 +69,7 @@ setMethod(
 #' accordingly the coupling intervals that were found in the given vector
 #' when the HRTList was created.
 #'
-#' @param HRTListObj HRTList object
+#' @param HRTListObj (HRTList object) 
 #'
 #' @rdname getPositions
 setGeneric("getPositions", function(HRTListObj) {
@@ -91,12 +91,12 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' estimating the maximal slope.
 #'
 #' @param HRTListObj HRTList object
-#' @param type String, determining the amount of output: 'class' gives the HRT class, 'parameter' the parameter values and 'full' additionally the p-values describing parameter reliability
-#' @param TT Boolean, Should TT be given?
-#' @param nTS Should the normalised TS (nTS) be given or used for the determination of the HRT class?
-#' @param safe Boolean, Should all values be given regardless of reliability checks? Note, that 'safe' is ignored when the type is 'full'.
-#' @param pmax Numeric, the significance level
-#' @param num Boolean Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.
+#' @param type (String) Determining the amount of output: 'class' gives the HRT class, 'parameter' the parameter values and 'full' additionally the p-values describing parameter reliability
+#' @param TT (Boolean) Should TT be given?
+#' @param nTS (Boolean) Should the normalised TS (nTS) be given or used for the determination of the HRT class?
+#' @param safe (Boolean) Should all values be given regardless of reliability checks? Note, that 'safe' is ignored when the type is 'full'.
+#' @param pmax (Numeric) The significance level
+#' @param num (Boolean) Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.
 #' @inheritParams calcAvHRT
 #' @return Named vector, character or numeric
 #'
@@ -214,7 +214,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 #' and returns them in a list
 #'
 #' @param HRTListObj HRTList object
-#' @param sl Character, choose a slot saved by an HRT object
+#' @param sl (Character) Value of a slot saved by an HRT object
 #' @return Vector
 #'
 #' @rdname getHRTParams
@@ -246,18 +246,18 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' Pages 1353-1365')
 #'
 #' @param HRTListObj HRTList object
-#' @param av Function, Type of averaging the VPCSs, either mean or median
-#' @param orTO Numeric, Order in which TO was calculated,
+#' @param av (Function) Type of averaging the VPCSs, either mean or median
+#' @param orTO (Numeric) Order in which TO was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @param orTS Numeric, Order in which TS was calculated,
+#' @param orTS (Numeric) Order in which TS was calculated,
 #' either 1 (assessment of parameter and averaging)
 #' or 2 (averaging of the VPCSs and assessment of parameter)
 #' @inheritParams calcHRTParams
-#' @param normHallstrom Boolean, should the normalisation of Hallstrom be used?
-#' @param coTO Numeric, cut-off value for TO
-#' @param coTS Numeric, cut-off value for TS and nTS
-#' @param coTT Numeric, cut-off value for TT
+#' @param normHallstrom (Boolean) Should the normalisation of Hallstrom be used?
+#' @param coTO (Numeric) Cut-off value for TO
+#' @param coTS (Numeric) Cut-off value for TS and nTS
+#' @param coTT (Numeric) Cut-off value for TT
 #' @return avHRTObj
 #'
 #' @importFrom methods slot
@@ -380,16 +380,16 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
 #' Plots RR-intervals saved in the HRT object and marks HRT parameters.
 #'
 #' @param x HRTList
-#' @param cropped Boolean, Should the plot be cut to focus on the HRT parameters?
+#' @param cropped (Boolean) Should the plot be cut to focus on the HRT parameters?
 #' To show all points use FALSE.
-#' @param TT Boolean, Should Turbulence timing be marked?
-#' @param pch Numeric, Plotting character, for other options see graphics::var
-#' @param xlab Character, Label for the x axis
-#' @param ylab Character Label for the x axis
-#' @param paramsLegend Boolean, should the parameter values of the HRT be plotted?
-#' @param colTO Character, colour used to highlight TO
-#' @param colTS Character, colour used to highlight TS
-#' @param colTT Character, colour used to highlight TT
+#' @param TT (Boolean) Should Turbulence timing be marked?
+#' @param pch (Numeric) Plotting character, for other options see graphics::var
+#' @param xlab (Character) Label for the x axis
+#' @param ylab (Character) Label for the x axis
+#' @param paramsLegend (Boolean) Should the parameter values of the HRT be plotted?
+#' @param colTO (Character) Colour used to highlight TO
+#' @param colTS (Character) Colour used to highlight TS
+#' @param colTT (Character) Colour used to highlight TT
 #' @param ... Other arguments in tag = value form
 #'
 #' @note Please note that the argument xaxt and ylim can't be set,
@@ -433,8 +433,8 @@ setMethod("plot", "HRTList", function(x,
 #' Check for HRTList class
 #'
 #' @param x HRTList
-#' @param av Boolean Should avHRT be checked?
-#' @param pos Boolean Should pos be checked?
+#' @param av (Boolean) Should avHRT be checked?
+#' @param pos (Boolean) Should pos be checked?
 #'
 #' @rdname checkValidity
 setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {

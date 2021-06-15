@@ -6,16 +6,16 @@
 #' ab-line used for the plot.
 #' TS is saved after common calculation and after normalising.
 #'
-#' @slot couplRR Numeric, Coupling interval
-#' @slot compRR Numeric, Compensatory interval
-#' @slot preRRs Numeric vector, Preceding intervals
-#' @slot postRRs Numeric vector, Following intervals
-#' @slot TO Numeric, Turbulence onset
-#' @slot TS Numeric, Turbulence slope
-#' @slot TT Numeric, Turbulence timing
-#' @slot intercept Numeric, Intercept of regression line of TS
-#' @slot nTS Numeric, Normalised Turbulence slope
-#' @slot nintercept Numeric, Intercept of regression line of nTS
+#' @slot couplRR (Numeric) Coupling interval
+#' @slot compRR (Numeric) Compensatory interval
+#' @slot preRRs (Numeric vector) Preceding intervals
+#' @slot postRRs (Numeric vector) Following intervals
+#' @slot TO (Numeric) Turbulence onset
+#' @slot TS (Numeric) Turbulence slope
+#' @slot TT (Numeric) Turbulence timing
+#' @slot intercept (Numeric) Intercept of regression line of TS
+#' @slot nTS (Numeric) Normalised Turbulence slope
+#' @slot nintercept (Numeric) Intercept of regression line of nTS
 
 #'
 #' @name HRT
@@ -45,13 +45,11 @@ setClass("HRT",
 )
 
 #-------------------------------------------------------------------------------
-#' @param .Object The name of the class
-#' @param couplRR Numeric, Coupling interval
-#' @param compRR Numeric, Compensatory interval
-#' @param preRRs Numeric vector, Preceding intervals
-#' @param postRRs Numeric vector, Following intervals
-#' @param ... Other values to be saved in the slots of the HRT object
-#' given in tag = value form
+#' @param .Object (Character) The name of the class
+#' @param couplRR (Numeric) Coupling interval
+#' @param compRR (Numeric) Compensatory interval
+#' @param preRRs (Numeric vector) Preceding intervals
+#' @param postRRs (Numeric vector) Following intervals
 #'
 #' @rdname HRT
 #' @importFrom methods initialize
@@ -83,10 +81,10 @@ setMethod(
 #'
 #' This method is a wrapper for the methods calcTO and calcTS.
 #'
-#' @param HRTObj HRT, The HRT object of which the parameters should be calculated
-#' @param IL Numeric, The overall arithmetic mean of the interval length of the
+#' @param HRTObj (HRT) The HRT object of which the parameters should be calculated
+#' @param IL (Numeric) The overall arithmetic mean of the interval length of the
 #' measurement to normalise TS
-#' @param normIL Numeric, The interval length to which TS should be normalised
+#' @param normIL (Numeric) The interval length to which TS should be normalised
 #'
 #' @rdname calcHRTParams
 setGeneric("calcHRTParams", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
@@ -107,7 +105,7 @@ setMethod("calcHRTParams", "HRT", function(HRTObj, IL = c_normIL, normIL = c_nor
 #' Calculate TO parameters
 #'
 #' Calculates the TO parameters and saves it in the corresponding slot
-#' @param HRTObj HRT, The HRT object, for which TO should be calculated
+#' @param HRTObj (HRT) The HRT object, for which TO should be calculated
 #'
 #' @rdname calcTO
 setGeneric("calcTO", function(HRTObj) {
@@ -137,8 +135,8 @@ setMethod("calcTO", "HRT", function(HRTObj) {
 #' and the intercept for the plot) and saves them in the corresponding slots.
 #' Can also calculate normalised TS and intercept.
 #'
-#' @param HRTObj HRT, The HRT object, for which TS should be calculated
-#' @param normalising Boolean, Should the normalised TS be calculated?
+#' @param HRTObj (HRT) The HRT object, for which TS should be calculated
+#' @param normalising (Boolean) Should the normalised TS be calculated?
 #' @inheritParams calcHRTParams
 #'
 #' @rdname calcTS
@@ -185,7 +183,7 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
 #-------------------------------------------------------------------------------
 #' Returns the VPCS intervals in right order
 #'
-#' @param HRTObj HRT object
+#' @param HRTObj HRT
 #'
 #' @rdname getRRs
 setGeneric("getRRs", function(HRTObj) {
@@ -208,18 +206,18 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' Plots RR-intervals saved in the HRT object and marks
 #' turbulence onset and turbulence slope.
 #'
-#' @param x HRT, A HRT object
-#' @param cropped Boolean, Should the plot be cut to focus on the HRT parameters?
+#' @param x (HRT) A HRT object
+#' @param cropped (Boolean) Should the plot be cut to focus on the HRT parameters?
 #' To show all points use FALSE.
-#' @param TT Boolean, Should Turbulence timing be marked?
-#' @param pch Numeric, Plotting character, for other options see graphics::var
-#' @param xlab Character, Label for the x axis
-#' @param ylab Character Label for the x axis
-#' @param paramsLegend Boolean, should the parameter values of the HRT be plotted?
-#' @param colTO Character, colour used to highlight TO
-#' @param colTS Character, colour used to highlight TS
-#' @param colTT Character, colour used to highlight TT
-#' @param add Boolean, Should the given HRT be added to a plot?
+#' @param TT (Boolean) Should Turbulence timing be marked?
+#' @param pch (Numeric) Plotting character, for other options see graphics::var
+#' @param xlab (Character) Label for the x axis
+#' @param ylab (Character) Label for the x axis
+#' @param paramsLegend (Boolean) Should the parameter values of the HRT be plotted?
+#' @param colTO (Character) Colour used to highlight TO
+#' @param colTS (Character) Colour used to highlight TS
+#' @param colTT (Character) Colour used to highlight TT
+#' @param add (Boolean) Should the given HRT be added to a plot?
 #' @param ... Other arguments in tag = value form. See graphics::par for more information.
 #'
 #' @note Please note that the argument xaxt and ylim can't be set,
@@ -300,7 +298,7 @@ setMethod("plot", "HRT", function(x,
 #-------------------------------------------------------------------------------
 #' Checks whether slots are set
 #'
-#' @param x Object to be checked
+#' @param x (HRT) Object to be checked
 #' @param ... Other parameters
 #'
 #' @rdname checkValidity

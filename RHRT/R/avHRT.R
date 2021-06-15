@@ -69,7 +69,7 @@ setMethod(
            pTO = NA_real_, pTS = NA_real_, pTT = NA_real_, pnTS = NA_real_,
            nRMSSD = NA_real_,
            couplRR = NA_real_, compRR = NA_real_,
-           preRRs = NA_real_, postRRs = NA_real_, ...) {
+           preRRs = NA_real_, postRRs = NA_real_) {
     .Object@av <- av
     .Object@orTO <- orTO
     .Object@orTS <- orTS
@@ -79,7 +79,7 @@ setMethod(
     .Object@pnTS <- pnTS
     .Object@nRMSSD <- nRMSSD
 
-    .Object <- methods::callNextMethod(.Object, couplRR, compRR, preRRs, postRRs, ...)
+    .Object <- methods::callNextMethod(.Object, couplRR, compRR, preRRs, postRRs)
 
     return(.Object)
   }

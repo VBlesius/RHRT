@@ -59,7 +59,7 @@ setClass("HRT",
 setMethod(
   "initialize", "HRT",
   function(.Object, couplRR = NA_real_, compRR = NA_real_,
-           preRRs = NA_real_, postRRs = NA_real_, ...) {
+           preRRs = NA_real_, postRRs = NA_real_) {
     .Object@couplRR <- couplRR
     .Object@compRR <- compRR
     .Object@preRRs <- preRRs

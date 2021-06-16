@@ -10,12 +10,12 @@ with the correct annotation. VPC snippets are filtered for validity and
 HRT parameters calculated.
 
 In addition to standard calculation methods the package allows to modify
-the filter and calculation methods. It is therefore not only helpful to
-identify HRT classes of measurements for risk assessment but also for
+the filter and calculation parameters. It is therefore not only helpful
+to identify HRT classes of measurements for risk assessment but also for
 assessment of the methodology itself.
 
 For more information please check the
-[vignette](vignettes/rhrt-vignette.html) of the package. For more
+[vignette](vignettes/rhrt-vignette.md) of the package. For more
 information about HRT have a look into the [original publication by
 Schmidt et al.](https://doi.org/10.1016/S0140-6736(98)08428-1) or our
 [review](https://doi.org/10.1088/1361-6579/ab98b3) with focus on the
@@ -33,14 +33,14 @@ install.packages("RHRT")
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
+install.packages("devtools") # if not already done
 devtools::install_github("VBlesius/RHRT/RHRT")
 ```
 
 ## Example
 
 The general workflow of RHRT is to scan your interval data for HRT and
-check the results via HRT class and plot.:
+check the results via HRT class and plot:
 
 ``` r
 library(RHRT)
@@ -55,5 +55,5 @@ plot(hrtl)
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
-More example wirkflows can be found in the
-[vignette](vignettes/rhrt-vignette.html).
+More example workflows can be found in the
+[vignette](vignettes/rhrt-vignette.md).

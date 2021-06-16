@@ -1,7 +1,7 @@
 ---
 title: "RHRT: Finding Premature Ventricular Complexes"
 author: "Valeria Blesius"
-date: "2021-06-14"
+date: "2021-06-16"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
@@ -171,7 +171,7 @@ The HRTList object sums up all HRTs found in the given dataset. The slots are:
 
 - **`calcAvHRT`** &nbsp;&nbsp; The function calculates the parameters of the averaged HRT. This is called automatically when using `vectorToHRT` with default parameters. If the avHRT should be calculated differently the following options are available:
   - `av`: The function with which averaging should be done: `mean` or `median`.
-  - `orTO` and `orTS`: sets the order in which TO and TS should be calculated. With `1` the parameter is assessed separately for every HRT and averaged afterwards, with `2` the intervals of all VPCSs are averaged first and the parameter is assessed afterwards. The default is `1` for `orTO` and `2` for `orTS`.
+  - `orTO` and `orTS`: sets the order in which TO and TS should be calculated. With `avAfter` the parameter is assessed separately for every HRT and averaged afterwards, with `avBefore` the intervals of all VPCSs are averaged first and the parameter is assessed afterwards. The default is `avAfter` for `orTO` and `avBefore` for `orTS`.
   - `IL`: the average interval length that is needed to calculate nTS. The default value is automatically calculated from the whole cleaned vector (see *VectorToHRT: Cleaning Input* for more information) when calling `vectorToHRT` and saved in the `IL` slot of the HRTList object. 
   - `normIL`: the interval length to which the other parameters should be normalised. The default is 800 ms.
   - `normHallstrom`: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is `TRUE`.
@@ -204,7 +204,8 @@ In addition to the HRT slots avHRT stores data about its calculation and the par
 
 This is the core function of the package. It finds VPCs, checks the respective VPCS for validity and saves the results in an HRTList object. Its parameters are
 
-- `annotations`: If no annotations are given `vectorToHRT` searches for matching patterns of interval lengths in the given vector regardless of any other information in respect to the type of beats. Therefore the function could also save HRTs based on atrial premature complexes or other arrhythmia if the surrounding intervals match the filter rules (for more information see *Methods & Background: Filter Rules*). If annotations are given the function only checks the intervals marked to stem from ventricular beats. This leads to more accurate results and speeds up the runtime considerably.  
+- `input`: RR interval data that should be searched for HRT. Data formatted as timestamps should be converted before using `vectorToHRT`.
+- `annotations`: If no annotations are given `vectorToHRT` searches for matching patterns of interval lengths in the given vector regardless of any other information in respect to the type of beats. Therefore, the function could also save HRTs based on atrial premature complexes or other arrhythmia if the surrounding intervals match the filter rules (for more information see *Methods & Background: Filter Rules*). If annotations are given the function only checks the intervals marked to stem from ventricular beats. This leads to more accurate results and speeds up the runtime considerably. The annotations should match the beats *at the end* of the intervals. 
 - `PVCAnn`: A character or string with which the VPCs are marked in the annotation vector. The default is "V".
 - `normIL`: The interval length to which the other parameters should be normalised. The default is 800 ms.
 - `normHallstrom`: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is `TRUE`.

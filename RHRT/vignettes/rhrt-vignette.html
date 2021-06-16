@@ -12,7 +12,7 @@
 
 <meta name="author" content="Valeria Blesius" />
 
-<meta name="date" content="2021-06-14" />
+<meta name="date" content="2021-06-16" />
 
 <title>RHRT: Finding Premature Ventricular Complexes</title>
 
@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">RHRT: Finding Premature Ventricular Complexes</h1>
 <h4 class="author">Valeria Blesius</h4>
-<h4 class="date">2021-06-14</h4>
+<h4 class="date">2021-06-16</h4>
 
 
 
@@ -262,7 +262,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong><code>calcAvHRT</code></strong>    The function calculates the parameters of the averaged HRT. This is called automatically when using <code>vectorToHRT</code> with default parameters. If the avHRT should be calculated differently the following options are available:
 <ul>
 <li><code>av</code>: The function with which averaging should be done: <code>mean</code> or <code>median</code>.</li>
-<li><code>orTO</code> and <code>orTS</code>: sets the order in which TO and TS should be calculated. With <code>1</code> the parameter is assessed separately for every HRT and averaged afterwards, with <code>2</code> the intervals of all VPCSs are averaged first and the parameter is assessed afterwards. The default is <code>1</code> for <code>orTO</code> and <code>2</code> for <code>orTS</code>.</li>
+<li><code>orTO</code> and <code>orTS</code>: sets the order in which TO and TS should be calculated. With <code>avAfter</code> the parameter is assessed separately for every HRT and averaged afterwards, with <code>avBefore</code> the intervals of all VPCSs are averaged first and the parameter is assessed afterwards. The default is <code>avAfter</code> for <code>orTO</code> and <code>avBefore</code> for <code>orTS</code>.</li>
 <li><code>IL</code>: the average interval length that is needed to calculate nTS. The default value is automatically calculated from the whole cleaned vector (see <em>VectorToHRT: Cleaning Input</em> for more information) when calling <code>vectorToHRT</code> and saved in the <code>IL</code> slot of the HRTList object.</li>
 <li><code>normIL</code>: the interval length to which the other parameters should be normalised. The default is 800 ms.</li>
 <li><code>normHallstrom</code>: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is <code>TRUE</code>.</li>
@@ -301,8 +301,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>vectorToHRT</h3>
 <p>This is the core function of the package. It finds VPCs, checks the respective VPCS for validity and saves the results in an HRTList object. Its parameters are</p>
 <ul>
-<li><code>annotations</code>: If no annotations are given <code>vectorToHRT</code> searches for matching patterns of interval lengths in the given vector regardless of any other information in respect to the type of beats. Therefore the function could also save HRTs based on atrial premature complexes or other arrhythmia if the surrounding intervals match the filter rules (for more information see <em>Methods &amp; Background: Filter Rules</em>). If annotations are given the function only checks the intervals marked to stem from ventricular beats. This leads to more accurate results and speeds up the runtime considerably.<br />
-</li>
+<li><code>input</code>: RR interval data that should be searched for HRT. Data formatted as timestamps should be converted before using <code>vectorToHRT</code>.</li>
+<li><code>annotations</code>: If no annotations are given <code>vectorToHRT</code> searches for matching patterns of interval lengths in the given vector regardless of any other information in respect to the type of beats. Therefore, the function could also save HRTs based on atrial premature complexes or other arrhythmia if the surrounding intervals match the filter rules (for more information see <em>Methods &amp; Background: Filter Rules</em>). If annotations are given the function only checks the intervals marked to stem from ventricular beats. This leads to more accurate results and speeds up the runtime considerably. The annotations should match the beats <em>at the end</em> of the intervals.</li>
 <li><code>PVCAnn</code>: A character or string with which the VPCs are marked in the annotation vector. The default is “V”.</li>
 <li><code>normIL</code>: The interval length to which the other parameters should be normalised. The default is 800 ms.</li>
 <li><code>normHallstrom</code>: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is <code>TRUE</code>.</li>

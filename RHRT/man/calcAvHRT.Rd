@@ -8,8 +8,8 @@
 calcAvHRT(
   HRTListObj,
   av = mean,
-  orTO = 1,
-  orTS = 2,
+  orTO = "avAfter",
+  orTS = "avBefore",
   IL = HRTListObj@IL,
   normIL = c_normIL,
   normHallstrom = TRUE,
@@ -21,8 +21,8 @@ calcAvHRT(
 \S4method{calcAvHRT}{HRTList}(
   HRTListObj,
   av = mean,
-  orTO = 1,
-  orTS = 2,
+  orTO = "avAfter",
+  orTS = "avBefore",
   IL = HRTListObj@IL,
   normIL = c_normIL,
   normHallstrom = TRUE,
@@ -36,13 +36,13 @@ calcAvHRT(
 
 \item{av}{(Function) Type of averaging the VPCSs, either mean or median}
 
-\item{orTO}{(Numeric) Order in which TO was calculated,
-either 1 (assessment of parameter and averaging)
-or 2 (averaging of the VPCSs and assessment of parameter)}
+\item{orTO}{(Character) Order in which TO was calculated,
+either "avAfter" (assessment of parameter and averaging)
+or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 
-\item{orTS}{(Numeric) Order in which TS was calculated,
-either 1 (assessment of parameter and averaging)
-or 2 (averaging of the VPCSs and assessment of parameter)}
+\item{orTS}{(Character) Order in which TS was calculated,
+either avAfter (assessment of parameter and averaging)
+or avBefore (averaging of the VPCSs and assessment of parameter)}
 
 \item{IL}{(Numeric) The overall arithmetic mean of the interval length of the
 measurement to normalise TS}

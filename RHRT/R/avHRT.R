@@ -4,12 +4,12 @@
 #' saves the way in which it was calculated.
 #'
 #' @slot av (Function) Type of averaging, either mean or median
-#' @slot orTO (Numeric) Order in which TO was calculated,
-#' either 1 (assessment of parameter and averaging)
-#' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @slot orTS (Numeric) Order in which TS was calculated,
-#' either 1 (assessment of parameter and averaging)
-#' or 2 (averaging of the VPCSs and assessment of parameter)
+#' @slot orTO (Character) Order in which TO was calculated,
+#' either "avAfter" (assessment of parameter and averaging)
+#' or "avBefore" (averaging of the VPCSs and assessment of parameter)
+#' @slot orTS (Character) Order in which TS was calculated,
+#' either "avAfter" (assessment of parameter and averaging)
+#' or "avBefore" (averaging of the VPCSs and assessment of parameter)
 #' @slot pTO (Numeric) p-value of t-test checking the validity of TO
 #' @slot pTS (Numeric) p-value of t-test checking the validity of TS
 #' @slot pTT (Numeric) p-value of t-test checking the validity of TT
@@ -24,8 +24,8 @@ setClass("avHRT",
   contains = "HRT",
   slots = list(
     av = "function",
-    orTO = "numeric",
-    orTS = "numeric",
+    orTO = "character",
+    orTS = "character",
     pTO = "numeric",
     pTS = "numeric",
     pTT = "numeric",
@@ -47,12 +47,12 @@ setClass("avHRT",
 #-------------------------------------------------------------------------------
 #' @param .Object The name of the class
 #' @param av (Function) Type of averaging, either mean or median
-#' @param orTO (Numeric) Order in which TO was calculated,
-#' either 1 (assessment of parameter and averaging)
-#' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @param orTS (Numeric) Order in which TS was calculated,
-#' either 1 (assessment of parameter and averaging)
-#' or 2 (averaging of the VPCSs and assessment of parameter)
+#' @param orTO (Character) Order in which TO was calculated,
+#' either "avAfter" (assessment of parameter and averaging)
+#' or "avBefore" (averaging of the VPCSs and assessment of parameter)
+#' @param orTS (Character) Order in which TS was calculated,
+#' either "avAfter" (assessment of parameter and averaging)
+#' or "avBefore" (averaging of the VPCSs and assessment of parameter)
 #' @param pTO (Numeric) p-value of t-test checking the validity of TO
 #' @param pTS (Numeric) p-value of t-test checking the validity of TS
 #' @param pTT (Numeric) p-value of t-test checking the validity of TT
@@ -65,7 +65,7 @@ setClass("avHRT",
 #' @export
 setMethod(
   "initialize", "avHRT",
-  function(.Object, av = mean, orTO = NA_real_, orTS = NA_real_,
+  function(.Object, av = mean, orTO = "avAfter", orTS = "avBefore",
            pTO = NA_real_, pTS = NA_real_, pTT = NA_real_, pnTS = NA_real_,
            nRMSSD = NA_real_,
            couplRR = NA_real_, compRR = NA_real_,

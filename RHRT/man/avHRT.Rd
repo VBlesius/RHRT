@@ -9,8 +9,8 @@
 \S4method{initialize}{avHRT}(
   .Object,
   av = mean,
-  orTO = NA_real_,
-  orTS = NA_real_,
+  orTO = "avAfter",
+  orTS = "avBefore",
   pTO = NA_real_,
   pTS = NA_real_,
   pTT = NA_real_,
@@ -27,13 +27,13 @@
 
 \item{av}{(Function) Type of averaging, either mean or median}
 
-\item{orTO}{(Numeric) Order in which TO was calculated,
-either 1 (assessment of parameter and averaging)
-or 2 (averaging of the VPCSs and assessment of parameter)}
+\item{orTO}{(Character) Order in which TO was calculated,
+either "avAfter" (assessment of parameter and averaging)
+or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 
-\item{orTS}{(Numeric) Order in which TS was calculated,
-either 1 (assessment of parameter and averaging)
-or 2 (averaging of the VPCSs and assessment of parameter)}
+\item{orTS}{(Character) Order in which TS was calculated,
+either "avAfter" (assessment of parameter and averaging)
+or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 
 \item{pTO}{(Numeric) p-value of t-test checking the validity of TO}
 
@@ -62,13 +62,13 @@ saves the way in which it was calculated.
 \describe{
 \item{\code{av}}{(Function) Type of averaging, either mean or median}
 
-\item{\code{orTO}}{(Numeric) Order in which TO was calculated,
-either 1 (assessment of parameter and averaging)
-or 2 (averaging of the VPCSs and assessment of parameter)}
+\item{\code{orTO}}{(Character) Order in which TO was calculated,
+either "avAfter" (assessment of parameter and averaging)
+or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 
-\item{\code{orTS}}{(Numeric) Order in which TS was calculated,
-either 1 (assessment of parameter and averaging)
-or 2 (averaging of the VPCSs and assessment of parameter)}
+\item{\code{orTS}}{(Character) Order in which TS was calculated,
+either "avAfter" (assessment of parameter and averaging)
+or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 
 \item{\code{pTO}}{(Numeric) p-value of t-test checking the validity of TO}
 

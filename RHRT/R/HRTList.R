@@ -247,12 +247,12 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #'
 #' @param HRTListObj HRTList object
 #' @param av (Function) Type of averaging the VPCSs, either mean or median
-#' @param orTO (Numeric) Order in which TO was calculated,
-#' either 1 (assessment of parameter and averaging)
-#' or 2 (averaging of the VPCSs and assessment of parameter)
-#' @param orTS (Numeric) Order in which TS was calculated,
-#' either 1 (assessment of parameter and averaging)
-#' or 2 (averaging of the VPCSs and assessment of parameter)
+#' @param orTO (Character) Order in which TO was calculated,
+#' either "avAfter" (assessment of parameter and averaging)
+#' or "avBefore" (averaging of the VPCSs and assessment of parameter)
+#' @param orTS (Character) Order in which TS was calculated,
+#' either "avAfter" (assessment of parameter and averaging)
+#' or "avBefore" (averaging of the VPCSs and assessment of parameter)
 #' @inheritParams calcHRTParams
 #' @param normHallstrom (Boolean) Should the normalisation of Hallstrom be used?
 #' @param coTO (Numeric) Cut-off value for TO
@@ -263,12 +263,12 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' @importFrom methods slot
 #' @importFrom stats t.test
 #' @rdname calcAvHRT
-setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
+setGeneric("calcAvHRT", function(HRTListObj, av = mean, orTO = "avAfter", orTS = "avBefore", IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
   standardGeneric("calcAvHRT")
 })
 #' @rdname calcAvHRT
 #' @export
-setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS = 2, IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
+setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfter", orTS = "avBefore", IL = HRTListObj@IL, normIL = c_normIL, normHallstrom = TRUE, coTO = COTO, coTS = COTS, coTT = COTT) {
   checkValidity(HRTListObj)
 
   # sets the type of averaging
@@ -283,13 +283,13 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   }
 
   # checks the calculation order and sets it to default if necessary
-  if (!is.finite(orTO) || orTO != 1 && orTO != 2) {
-    warning(paste("Value", orTO, "for parameter calculation order is unknown, falling back to default."))
-    orTO <- 1
+  if (is.na(orTO) || orTO != "avAfter" && orTO != "avBefore") {
+    warning(paste("Value", orTO, "for parameter calculation order is unknown, falling back to default. Please use 'avAfter' or 'avBefore'."))
+    orTO <- "avAfter"
   }
-  if (!is.finite(orTS) || orTS != 1 && orTS != 2) {
-    warning(paste("Value", orTS, "for parameter calculation order is unknown, falling back to default."))
-    orTS <- 2
+  if (is.na(orTS) || orTS != "avAfter" && orTS != "avBefore") {
+    warning(paste("Value", orTS, "for parameter calculation order is unknown, falling back to default. Please use 'avAfter' or 'avBefore'."))
+    orTS <- "avBefore"
   }
 
   # checks remaining parameters
@@ -334,10 +334,10 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   if (notconstant(nTSs)) avHRT@pnTS <- t.test(nTSs, alternative = "greater", mu = coTS)$p.value
 
   # calculates TO, first in default order, secondly from an averaged tachogram
-  if (orTO == 1) {
+  if (orTO == "avAfter") {
     avHRT@TO <- av(TOs)
   }
-  if (orTO == 2) {
+  if (orTO == "avBefore") {
     avHRT <- calcTO(avHRT)
   }
 
@@ -353,7 +353,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
   }
 
   # sets averaged parameters
-  if (orTS == 1) {
+  if (orTS == "avAfter") {
     # TS+intercept
     avHRT@TS <- av(TSs)
     avHRT@intercept <- av(getHRTParams(HRTListObj, "intercept"))
@@ -366,7 +366,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = 1, orTS
     if (normHallstrom) avHRT@nTS <- hallstromise(nTS, avHRT, HRTListObj)
     avHRT@nintercept <- av(nintercepts)
   }
-  if (orTS == 2) {
+  if (orTS == "avBefore") {
     avHRT <- calcTS(avHRT)
     avHRT <- calcTS(avHRT, normalising = TRUE, IL, normIL)
     if (normHallstrom) avHRT@nTS <- hallstromise(avHRT@nTS, avHRT, HRTListObj)

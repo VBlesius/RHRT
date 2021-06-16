@@ -19,11 +19,11 @@ test_that("parameter handling: av", {
 test_that("parameter handling: others", {
   expect_error(calcAvHRT(testdataVariant_HRTObj, IL = "random"), "Values for normalisation or cut-offs are not numeric")
   expect_error(calcAvHRT(testdataVariant_HRTObj, IL = NA), "Values for normalisation or cut-offs are not numeric")
-  expect_warning(calcAvHRT(testdataVariant_HRTObj, orTO = 0), "for parameter calculation order is unknown")
+  expect_warning(calcAvHRT(testdataVariant_HRTObj, orTO = "random"), "for parameter calculation order is unknown")
   expect_warning(calcAvHRT(testdataVariant_HRTObj, orTO = NA), "for parameter calculation order is unknown")
-  expect_warning(calcAvHRT(testdataVariant_HRTObj, orTS = 0), "for parameter calculation order is unknown")
-  expect_false(isTRUE(all.equal(testdataVariant_HRTObj@avHRT, calcAvHRT(testdataVariant_HRTObj, orTO = 2))))
-  expect_false(isTRUE(all.equal(testdataVariant_HRTObj@avHRT, calcAvHRT(testdataVariant_HRTObj, orTS = 1))))
+  expect_warning(calcAvHRT(testdataVariant_HRTObj, orTS = "random"), "for parameter calculation order is unknown")
+  expect_false(isTRUE(all.equal(testdataVariant_HRTObj@avHRT, calcAvHRT(testdataVariant_HRTObj, orTO = "avBefore"))))
+  expect_false(isTRUE(all.equal(testdataVariant_HRTObj@avHRT, calcAvHRT(testdataVariant_HRTObj, orTS = "avAfter"))))
 })
 
 test_that("Recalculating TS", {

@@ -23,6 +23,8 @@ test_that("Finding HRTs", {
 
   expect_warning(vectorToHRT(rep(782, 100)), "No HRTs")
   expect_warning(vectorToHRT(rep(2001, 100)), "No HRTs")
+  
+  expect_warning(vectorToHRT(seq(1,100)), "Your data looks like timestamps")
 })
 
 test_that("Finding HRTs via annotator", {

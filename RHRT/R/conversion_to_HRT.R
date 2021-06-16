@@ -46,8 +46,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
     checkAnnotations(annotations, input, PVCAnn, label)
   }
 
-  
-  
+  # finds VPCS, calculates HRT and creates a HRTList
   inputCleaned <- if (cleaning) cleanInput(input) else input
   tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSnippet)
   numFound <- length(tempHRTList@HRTs)
@@ -98,6 +97,9 @@ checkInput <- function(input, numSnippet, label) {
       label, "Your vector is too short! Please consider the number of intervals has to be at least ",
       numSnippet, "."
     ))
+  }
+  if (all(input == sort(input))) {
+    warning("Your data looks like timestamps. Please set the parameter 'timestamps' accordingly or vectorToHRT can't find VPCSs.")
   }
 }
 

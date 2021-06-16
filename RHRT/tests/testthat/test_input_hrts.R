@@ -3,6 +3,7 @@ context("vectorToHRT: producing correct output")
 
 load(test_path("testdata", "testdataRegular.rda"))
 load(test_path("testdata", "testdataVariant.rda"))
+load(test_path("testdata", "testdataTimestamps.rda"))
 load(test_path("testdata", "testdataVariantNoHRT.rda"))
 
 load(test_path("testdata", "testdataRegular_HRTObj.rda"))
@@ -23,6 +24,10 @@ test_that("Finding HRTs", {
 
   expect_warning(vectorToHRT(rep(782, 100)), "No HRTs")
   expect_warning(vectorToHRT(rep(2001, 100)), "No HRTs")
+  
+  expect_warning(vectorToHRT(seq(1,100)), "Your data looks like timestamps")
+  expect_warning(vectorToHRT(testdataTimestamps), "Your data looks like timestamps")
+  expect_equal(vectorToHRT(testdataVariant), vectorToHRT(testdataTimestamps, timestamps = TRUE))
 })
 
 test_that("Finding HRTs via annotator", {

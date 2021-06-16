@@ -30,3 +30,6 @@ testdataLong <- createDummyData(100000, 15, sd = 20)
 save(testdataLong, file = "data/testdataLong.rda")
 testdataLong_Ann <- createDummyData(100000, 15, ann = TRUE)
 save(testdataLong_Ann, file = "data/testdataLong_Ann.rda")
+
+testdataTimestamps <- cumsum(testdataVariant)
+save(testdataTimestamps, file = "tests/testthat/testdata/testdataTimestamps.rda")

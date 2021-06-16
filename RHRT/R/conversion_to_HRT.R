@@ -7,6 +7,7 @@
 #'
 #' @param input (Numeric vector) RR intervals in ms
 #' @param annotations (Character vector) Annotations matching input
+#' @param timestamps (Boolean) Is the input formatted as timestamps?
 #' @param PVCAnn (Character) Character that marks a VPC in the annotations
 #' @param normHallstrom (Boolean) Should the normalisation of Hallstrom be used?
 #' @param numPreRRs (Numeric) Number of RRs before the coupling interval that are used for filtering
@@ -18,7 +19,7 @@
 #' @return HRTList HRTList object
 #'
 #' @export
-vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
+vectorToHRT <- function(input, annotations = NULL, timestamps = FALSE, PVCAnn = "V",
                         normIL = c_normIL, normHallstrom = TRUE,
                         numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs,
                         inputName = as.character(NA),
@@ -37,7 +38,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
   if (is.list(input)) {
     input <- unlist(input)
   }
-  checkInput(input, numSnippet, label)
+  checkInput(input, numSnippet, label, timestamps)
 
   if (!is.null(annotations)) {
     if (is.list(annotations)) {
@@ -46,7 +47,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
     checkAnnotations(annotations, input, PVCAnn, label)
   }
 
-  
+  checkIntervals(input, label)
   
   inputCleaned <- if (cleaning) cleanInput(input) else input
   tempHRTList <- getHRTs(input, annotations, PVCAnn, numPreRRs, numPostRRs, numSnippet)
@@ -74,7 +75,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
 #' @param label (Character) Name of the data given and formatted for output
 #' @inheritParams vectorToHRT
 #'
-checkInput <- function(input, numSnippet, label) {
+checkInput <- function(input, numSnippet, label, timestamps) {
   if (is.null(input)) {
     stop(c(label, "Given data is NULL! Please make sure your input is of type vector and not empty."))
   }
@@ -87,17 +88,26 @@ checkInput <- function(input, numSnippet, label) {
   if (NA %in% input) {
     stop(c(label, "Given vector includes NA! Please make sure to remove them before using vectorToHRT!"))
   }
-  if (any(sapply(input, `<=`, 0))) {
-    warning(c(label, "Given vector includes zero or negative values! Is your data incorrect?"))
-  }
-  if (mean(input) < 1) {
-    stop(c(label, "Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again."))
-  }
   if (length(input) < numSnippet) {
     stop(c(
       label, "Your vector is too short! Please consider the number of intervals has to be at least ",
       numSnippet, "."
     ))
+  }
+}
+
+# -------------------------------------------------------------------------------
+#' Checks interval data for validity
+#'
+#' @param label (Character) Name of the data given and formatted for output
+#' @inheritParams vectorToHRT
+#'
+checkIntervals <- function(input, label) {
+  if (any(sapply(input, `<=`, 0))) {
+    warning(c(label, "RR intervals include zero or negative values! Is your data incorrect?"))
+  }
+  if (mean(input) < 1) {
+    stop(c(label, "Did you consider the unit of your data has to be milliseconds? Please adapt your data and try again."))
   }
 }
 

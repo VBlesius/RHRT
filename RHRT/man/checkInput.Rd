@@ -4,7 +4,7 @@
 \alias{checkInput}
 \title{Checks data input for compatibility}
 \usage{
-checkInput(input, numSnippet, label)
+checkInput(input, numSnippet, label, timestamps)
 }
 \arguments{
 \item{input}{(Numeric vector) RR intervals in ms}
@@ -12,6 +12,8 @@ checkInput(input, numSnippet, label)
 \item{numSnippet}{(Numeric) number of RRs in the the HRT snippet}
 
 \item{label}{(Character) Name of the data given and formatted for output}
+
+\item{timestamps}{(Boolean) Is the input formatted as timestamps?}
 }
 \description{
 Checks data input for compatibility

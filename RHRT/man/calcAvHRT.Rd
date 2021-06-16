@@ -41,8 +41,8 @@ either "avAfter" (assessment of parameter and averaging)
 or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 
 \item{orTS}{(Character) Order in which TS was calculated,
-either avAfter (assessment of parameter and averaging)
-or avBefore (averaging of the VPCSs and assessment of parameter)}
+either "avAfter" (assessment of parameter and averaging)
+or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 
 \item{IL}{(Numeric) The overall arithmetic mean of the interval length of the
 measurement to normalise TS}

@@ -7,6 +7,7 @@
 vectorToHRT(
   input,
   annotations = NULL,
+  timestamps = FALSE,
   PVCAnn = "V",
   normIL = c_normIL,
   normHallstrom = TRUE,
@@ -21,6 +22,8 @@ vectorToHRT(
 \item{input}{(Numeric vector) RR intervals in ms}
 
 \item{annotations}{(Character vector) Annotations matching input}
+
+\item{timestamps}{(Boolean) Is the input formatted as timestamps?}
 
 \item{PVCAnn}{(Character) Character that marks a VPC in the annotations}
 

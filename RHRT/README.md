@@ -55,5 +55,22 @@ plot(hrtl)
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
+## Data
+
+Data to test the package can be found on
+[Physionet](https://physionet.org/). Via the WFDB Toolkit ECG data can
+be downloaded and/or converted, for example:
+
+``` bash
+ann2rr -r chf2db/chf201 -a ecg -i s3 -w > ~/some/path/chf201.csv
+```
+
+Then load the data and use RHRT to find VPCSs:
+
+``` r
+chf201 <- read.table("~/some/path/chf201.csv")
+hrtl <- RHRT::vectorToHRT(chf201[[1]]*1000, ann = chf201[[2]])
+```
+
 More example workflows can be found in the
 [vignette](vignettes/rhrt-vignette.md).

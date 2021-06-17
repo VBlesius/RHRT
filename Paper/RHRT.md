@@ -31,12 +31,12 @@ After a premature ventricular contraction (VPC) – an atypical heart beat that 
 This fluctuation consists of a fast increase and later decrease in heart rate.
 This variability of interval lengths depends on the condition of the autonomic nervous system:
 While no reaction to the premature ventricular beat and therefore no variation suggests an underlying pathology, a distinctive turbulence is considered healthy.
-Therefore HRT can be used in medicine to determine the risk status of a person especially with certain diseases or conditions, e.g. after a myocardial infarction.
+Therefore HRT can be used in medicine to determine the risk status of a person especially with certain diseases or conditions, e.g. after a myocardial infarction. [reviewed in @bauer_heart_2008]
 
-``RHRT`` finds occurences of HRT in heart beat interval data, calculates the most used parameters and plots the results.
-The package works best and fastest when given annotation data, but can also find HRT based on commonly accepted filtering rules [@grimm_heart_2003].
+``RHRT`` finds occurences of HRT in heart beat interval data, calculates the most used parameters (Turbulence Onset (TO), Turbulence Slope (TS), Turbulence Timing (TT) and normalised urbulence Slope (nTS)) and plots the results.
+The package works best and fastest when given annotation data, but can also find HRT based on commonly accepted filtering rules that were first published in @grimm_heart_2003.
 Most filtering parameters and calculation methods can be set freely to enable research on the methodology itself.
-In addition to parameter calculation, ``RHRT`` can classify the data into common risk categories and estimate the reliability of the results based on the number and parameter values of the HRTs.
+In addition to parameter calculation, ``RHRT`` can classify the data into common risk categories (HRT0-2 and HRTA-C) and estimate the reliability of the results based on the number and parameter values of the HRTs.
 
 The package can be found on [CRAN] and [GitHub](https://github.com/VBlesius/RHRT).
 
@@ -44,9 +44,9 @@ The package can be found on [CRAN] and [GitHub](https://github.com/VBlesius/RHRT
 
 [](clearly illustrates the research purpose of the software)
 
-HRT is a feasible method to estimate the health risk of a person since it reflects the status of the autonomic nervous system.
+Since it reflects the status of the autonomic nervous system HRT is a feasible method to estimate the health risk of a person [@lombardi_origin_2011].
 HRT analysis is already used for risk stratification in the clinical practice, although the optimal methodology for HRT assessment has still not been systematically set [@blesius_hrt_2020].
-``RHRT`` is the first R package for HRT analysis and aims to enable further research about HRT.
+``RHRT`` is the first R package for HRT analysis and aims to enable further research about the usefulness of HRT and its methodology.
 
 # Minimal example
 
@@ -57,7 +57,7 @@ install.packages("RHRT")
 for the version on CRAN.
 To install the continuosly developed version on GitHub you can use the devtools package:
 
-devtools::install_github("vblesius/RHRT/RHRT")
+devtools::install_github("VBlesius/RHRT/RHRT")
 
 
 
@@ -75,9 +75,11 @@ getResults(hrtl, type = "class")
 ## have a look at the data and the parameters
 plot(hrtl)
 ```
-![Plot of an HRTList Object: the plot resembles the standard visualisation of HRT – a tachogram – in which the indices of the intervals are plotted against their lengths. The tachogram and HRT parameters turbulence onset (TO) and tubulence slope (TS) are drawn in black, red and blue, respectively, while the tachograms of all underlying HRTs are drawn in grey in the background. The plot is zoomed in to better show the HRT parameter values, so the intervals before and after the VPC are outside the plot range.\label{fig:plot}](../RHRT/man/figures/README-example-1.png)
+![Plot of an HRTList Object: the plot resembles the standard visualisation of HRT – a tachogram – in which the indices of the intervals are plotted against their lengths. The tachogram and HRT parameters TO and TS are drawn in black, red and blue, respectively, while the tachograms of all underlying HRTs are drawn in grey in the background. The plot is zoomed in to better show the HRT parameter values, so the intervals before and after the VPC are outside the plot range. RR interval: interval between two heartbeats measured between the R-peaks in the ECG, couplRR: coupling interval (interval between last sinus induced contraction and VPC), compRR: compensatory interval (interval between VPC and following sinus induced contraction), TO: Turbulence Onset, TS: Turbulence Slope. \label{fig:plot}](../RHRT/man/figures/README-example-1.png)
+
+More examples and a detailed description of the objects and functions can be found in the [vignette](https://github.com/VBlesius/RHRT/blob/main/RHRT/vignettes/rhrt-vignette.md) of the package.
 
 # Acknowledgements
-
+I am sincerely grateful to [Christopher Schölzel](https://orcid.org/0000-0001-8627-0594) for testing the package and providing excellent input through the course of its development.
 
 # References

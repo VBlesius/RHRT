@@ -8,13 +8,16 @@ tags:
   - arrhythmia
   - ventricular premature beats
 authors:
-  - name: Valeria Blesius
+  - name: Valeria Blesius^[corresponding author]
     orcid: 0000-0002-2391-242X
+    affiliation: "1"
+  - name: Andreas Dominik^[co-author]
+    orcid: 0000-0002-9368-0812
     affiliation: "1"
 affiliations:
  - name: THM University of Applied Sciences, Giessen, Germany
    index: 1
-date: 27 May 2021
+date: 17 June 2021
 bibliography: RHRT.bib
 
 ---
@@ -80,6 +83,6 @@ plot(hrtl)
 More examples and a detailed description of the objects and functions can be found in the [vignette](https://github.com/VBlesius/RHRT/blob/main/RHRT/vignettes/rhrt-vignette.md) of the package.
 
 # Acknowledgements
-I am sincerely grateful to [Christopher Schölzel](https://orcid.org/0000-0001-8627-0594) for testing the package and providing excellent input through the course of its development.
+We are sincerely grateful to [Christopher Schölzel](https://orcid.org/0000-0001-8627-0594) for testing the package and providing excellent input through the course of its development.
 
 # References

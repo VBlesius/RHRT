@@ -69,7 +69,7 @@ setMethod(
 #' accordingly the coupling intervals that were found in the given vector
 #' when the HRTList was created.
 #'
-#' @param HRTListObj (HRTList object) 
+#' @param HRTListObj (HRTList object)
 #'
 #' @rdname getPositions
 setGeneric("getPositions", function(HRTListObj) {
@@ -317,14 +317,14 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfte
     hrts <- lapply(HRTListObj@HRTs, calcTS, normalising = TRUE, IL = IL, normIL = normIL)
     nTSs <- sapply(hrts, slot, "nTS")
     nintercepts <- sapply(hrts, slot, "nintercept")
-    warning("The IL or normIL given is different to the ones used to calculate 
-            the HRT objects. Therefore, the values of nTS and nintercept of the 
+    warning("The IL or normIL given is different to the ones used to calculate
+            the HRT objects. Therefore, the values of nTS and nintercept of the
             HRT objects and avHRT do not match anymore.")
   } else {
     nTSs <- getHRTParams(HRTListObj, "nTS")
     nintercepts <- getHRTParams(HRTListObj, "nintercept")
   }
-  
+
 
   notconstant <- function(x) !length(unique(x)) == 1
   # calculates p-values

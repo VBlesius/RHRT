@@ -17,14 +17,14 @@ test_that("Finding HRTs", {
 
   expect_warning(a <- vectorToHRT(testdataVariantNoHRT), "No HRTs")
   expect_equal(a, testdataVariantNoHRT_HRTObj)
-  
+
   expect_warning(a <- vectorToHRT(testdataVariant, minHRT = 10), "Too few HRTs")
   expect_equal(a, testdataVariantNoHRT_HRTObj)
 
   expect_warning(vectorToHRT(rep(782, 100)), "No HRTs")
   expect_warning(vectorToHRT(rep(2001, 100)), "No HRTs")
-  
-  expect_warning(vectorToHRT(seq(1,100)), "Your data looks like timestamps")
+
+  expect_warning(vectorToHRT(seq(1, 100)), "Your data looks like timestamps")
 })
 
 test_that("Finding HRTs via annotator", {

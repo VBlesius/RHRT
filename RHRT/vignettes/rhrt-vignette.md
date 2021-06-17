@@ -1,7 +1,7 @@
 ---
 title: "RHRT: Finding Premature Ventricular Complexes"
 author: "Valeria Blesius"
-date: "2021-06-16"
+date: "2021-06-17"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
@@ -21,22 +21,33 @@ The RHRT package helps you assess **Heart Rate Turbulence** (HRT) in RR interval
 
 This chapter sums up the most common functions and parameters needed when using RHRT.
 
-First, the **core function** of RHRT is `vectorToHRT` that finds valid VPCs in RR intervals and returns an `HRTList` object (see chapter *HRTList object* for more information):
+### Loading package and data
 
-
-
-### Checking data for HRTs
 
 ```r
-hrtl <- vectorToHRT(data) # data is a numeric vector of RR intervals in msec
+library("RHRT")
+# testdataLong is a numeric vector of RR intervals in msec
+data("testdataLong", package = "RHRT")
+ints <- testdataLong
+# testdataLong_Ann is a character vector of annotations corresponding to testdataLong
+data("testdataLong_Ann", package = "RHRT")
+ann <- testdataLong_Ann
+```
+
+### Checking interval data for HRTs
+
+The **core function** of RHRT is `vectorToHRT` that finds valid VPCs in RR intervals and returns an `HRTList` object (see chapter *HRTList object* for more information):
+
+
+```r
+hrtl <- vectorToHRT(ints) 
 ```
 
 Every RR interval sequence that matches the needed interval lengths is considered to be a coupling and compensatory interval of a VPC, which can lead to wrong matches. If your data is annotated, you can provide the **annotation data** with the parameters `annotations` and `PVCAnn`.
 
 
 ```r
-hrtl <- vectorToHRT(data, annotations = ann, PVCAnn = "V") 
-  # ann is a vector of characters with the same length as data
+hrtl <- vectorToHRT(ints, annotations = ann, PVCAnn = "V")
 ```
 
 Other parameters are:

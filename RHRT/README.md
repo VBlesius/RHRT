@@ -14,8 +14,7 @@ the filter and calculation parameters. It is therefore not only helpful
 to identify HRT classes of measurements for risk assessment but also for
 assessment of the methodology itself.
 
-For more information please check the
-[vignette](vignettes/rhrt-vignette.md) of the package. For more
+For more information please check the vignette of the package. For more
 information about HRT have a look into the [original publication by
 Schmidt et al.](https://doi.org/10.1016/S0140-6736(98)08428-1) or our
 [review](https://doi.org/10.1088/1361-6579/ab98b3) with focus on the
@@ -58,8 +57,9 @@ plot(hrtl)
 ## Data
 
 Data to test the package can be found on
-[Physionet](https://physionet.org/). Via the WFDB Toolkit ECG data can
-be downloaded and/or converted, for example:
+[Physionet](https://physionet.org/). Via the [WFDB
+Toolkit](https://physionet.org/content/wfdb/10.6.2/) ECG data can be
+downloaded and/or converted, for example:
 
 ``` bash
 ann2rr -r chf2db/chf201 -a ecg -i s3 -w > ~/some/path/chf201.csv
@@ -72,5 +72,4 @@ chf201 <- read.table("~/some/path/chf201.csv")
 hrtl <- RHRT::vectorToHRT(chf201[[1]]*1000, ann = chf201[[2]])
 ```
 
-More example workflows can be found in the
-[vignette](vignettes/rhrt-vignette.md).
+More example workflows can be found in the vignette.

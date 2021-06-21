@@ -19,6 +19,9 @@ measurement to normalise TS}
 
 \item{normIL}{(Numeric) The interval length to which TS should be normalised}
 }
+\value{
+(HRT) An HRT object with (re)calculated TS+intercept or nTS+nintercept
+}
 \description{
 Calculates all TS parameters (TS itself, its index TT (turbulence timing)
 and the intercept for the plot) and saves them in the corresponding slots.

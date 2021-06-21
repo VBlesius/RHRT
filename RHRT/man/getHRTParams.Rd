@@ -15,7 +15,7 @@ getHRTParams(HRTListObj, sl)
 \item{sl}{(Character) Value of a slot saved by an HRT object}
 }
 \value{
-Vector
+(numeric vector) Vector of the numerics stored in the given slot
 }
 \description{
 Extracts all values of the given slot in each HRT of the HRTList

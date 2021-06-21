@@ -43,6 +43,8 @@ setClass("HRTList",
 #' @param RMSSD (Numeric) Square root of the mean of the squared successive
 #' differences between adjacent intervals of the whole measurement
 #'
+#' @return (HRTList) A new HRTList object
+#'
 #' @rdname HRTList
 #' @importFrom methods initialize
 #' @importFrom methods new
@@ -70,6 +72,8 @@ setMethod(
 #' when the HRTList was created.
 #'
 #' @param HRTListObj (HRTList object)
+#' 
+#' @return No return value, possibly throws errors/warnings
 #'
 #' @rdname getPositions
 setGeneric("getPositions", function(HRTListObj) {
@@ -98,7 +102,7 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' @param pmax (Numeric) The significance level
 #' @param num (Boolean) Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.
 #' @inheritParams calcAvHRT
-#' @return Named vector, character or numeric
+#' @return (Named vector, character or numeric) Either HRT classes, HRT parameter values and/or p-values
 #'
 #' @rdname getResults
 setGeneric("getResults", function(HRTListObj, type = "class", TT = FALSE, nTS = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
@@ -215,7 +219,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 #'
 #' @param HRTListObj HRTList object
 #' @param sl (Character) Value of a slot saved by an HRT object
-#' @return Vector
+#' @return (numeric vector) Vector of the numerics stored in the given slot
 #'
 #' @rdname getHRTParams
 setGeneric("getHRTParams", function(HRTListObj, sl) {
@@ -258,7 +262,7 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' @param coTO (Numeric) Cut-off value for TO
 #' @param coTS (Numeric) Cut-off value for TS and nTS
 #' @param coTT (Numeric) Cut-off value for TT
-#' @return avHRTObj
+#' @return (avHRT) The avHRT object of the given HRTList
 #'
 #' @importFrom methods slot
 #' @importFrom stats t.test
@@ -391,6 +395,8 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfte
 #' @param colTS (Character) Colour used to highlight TS
 #' @param colTT (Character) Colour used to highlight TT
 #' @param ... Other arguments in tag = value form
+#' 
+#' @return No return value
 #'
 #' @note Please note that the argument xaxt and ylim can't be set,
 #'  since the axis as well as the ranges of the y axis are set by the function.
@@ -435,6 +441,7 @@ setMethod("plot", "HRTList", function(x,
 #' @param x HRTList
 #' @param av (Boolean) Should avHRT be checked?
 #' @param pos (Boolean) Should pos be checked?
+#' @return No return value, possibly throws errors
 #'
 #' @rdname checkValidity
 setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {

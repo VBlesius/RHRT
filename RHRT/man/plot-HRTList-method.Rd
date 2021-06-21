@@ -42,6 +42,9 @@ To show all points use FALSE.}
 
 \item{...}{Other arguments in tag = value form}
 }
+\value{
+No return value
+}
 \description{
 Plots RR-intervals saved in the HRT object and marks HRT parameters.
 }

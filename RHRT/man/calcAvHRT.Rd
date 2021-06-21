@@ -58,7 +58,7 @@ measurement to normalise TS}
 \item{coTT}{(Numeric) Cut-off value for TT}
 }
 \value{
-avHRTObj
+(avHRT) The avHRT object of the given HRTList
 }
 \description{
 For each index the average of the intervals across all HRTs in the HRTList

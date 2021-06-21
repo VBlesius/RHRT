@@ -39,7 +39,7 @@ vectorToHRT(
 \item{cleaning}{(Boolean) Should the input be roughly cleaned from artefacts before calculating IL and RMSSD?}
 }
 \value{
-HRTList HRTList object
+(HRTList) An HRTList object
 }
 \description{
 Scans for heart rate turbulence in a vector of RR-intervals and returns an

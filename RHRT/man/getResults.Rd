@@ -53,7 +53,7 @@ getResults(
 \item{coTT}{(Numeric) Cut-off value for TT}
 }
 \value{
-Named vector, character or numeric
+(Named vector, character or numeric) Either HRT classes, HRT parameter values and/or p-values
 }
 \description{
 Returns the HRT parameters of the HRTList. Turbulence onset is calculated for

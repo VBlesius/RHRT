@@ -45,6 +45,9 @@ To show all points use FALSE.}
 
 \item{...}{Other arguments in tag = value form. See graphics::par for more information.}
 }
+\value{
+No return value
+}
 \description{
 Plots RR-intervals saved in the HRT object and marks
 turbulence onset and turbulence slope.

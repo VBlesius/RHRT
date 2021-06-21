@@ -15,7 +15,7 @@
 #' @param minHRT (Numeric) Minimal number of HRTs that are needed to create an HRTList object
 #' @param cleaning (Boolean) Should the input be roughly cleaned from artefacts before calculating IL and RMSSD?
 #' @inheritParams calcHRTParams
-#' @return HRTList HRTList object
+#' @return (HRTList) An HRTList object
 #'
 #' @export
 vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
@@ -72,6 +72,7 @@ vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",
 #' @param numSnippet (Numeric) number of RRs in the the HRT snippet
 #' @param label (Character) Name of the data given and formatted for output
 #' @inheritParams vectorToHRT
+#' @return No return value, possibly throws errors/warnings
 #'
 checkInput <- function(input, numSnippet, label) {
   if (is.null(input)) {
@@ -107,6 +108,7 @@ checkInput <- function(input, numSnippet, label) {
 #' Cleans data input for further checks or calculation
 #'
 #' @inheritParams checkInput
+#' @return (numeric vector) Input vector without possible bias
 #'
 cleanInput <- function(input) {
   inputNew <- input[input > 300 & input < 2000]
@@ -120,6 +122,7 @@ cleanInput <- function(input) {
 #'
 #' @inheritParams vectorToHRT
 #' @inheritParams checkInput
+#' @return No return value, possibly throws errors/warnings
 #'
 checkAnnotations <- function(annotations, input, PVCAnn, label) {
   if (!is.vector(annotations)) {
@@ -147,7 +150,7 @@ checkAnnotations <- function(annotations, input, PVCAnn, label) {
 #' @param intervals (Numeric vector) RR intervals in ms
 #' @param numSnippet (Numeric) Number of RRs in the HRT snippet
 #' @inheritParams vectorToHRT
-#' @return HRTListObj
+#' @return (HRTList) HRTList with only pos and HRTs set
 #'
 getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs, numSnippet) {
   hrts <-
@@ -177,7 +180,7 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_n
 #' Checks RR-intervals for HRT criteria and returns an HRT object
 #'
 #' @inheritParams getHRTs
-#' @return HRT A single HRT object
+#' @return (HRT) A single HRT object
 #'
 checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
   # Defines coupling, compensatory, preceding and following intervals and sums up regular intervals

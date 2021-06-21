@@ -15,6 +15,9 @@ checkAnnotations(annotations, input, PVCAnn, label)
 
 \item{label}{(Character) Name of the data given and formatted for output}
 }
+\value{
+No return value, possibly throws errors/warnings
+}
 \description{
 Checks annotations for compatibility
 }

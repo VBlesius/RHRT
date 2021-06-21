@@ -13,6 +13,9 @@ checkInput(input, numSnippet, label)
 
 \item{label}{(Character) Name of the data given and formatted for output}
 }
+\value{
+No return value, possibly throws errors/warnings
+}
 \description{
 Checks data input for compatibility
 }

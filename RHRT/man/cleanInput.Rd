@@ -9,6 +9,9 @@ cleanInput(input)
 \arguments{
 \item{input}{(Numeric vector) RR intervals in ms}
 }
+\value{
+(numeric vector) Input vector without possible bias
+}
 \description{
 Cleans data input for further checks or calculation
 }

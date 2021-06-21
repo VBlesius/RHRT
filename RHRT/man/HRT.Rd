@@ -25,6 +25,9 @@
 
 \item{postRRs}{(Numeric vector) Following intervals}
 }
+\value{
+(HRT) A new HRT object
+}
 \description{
 This class specifies an object to save the lengths of intervals surrounding a
 premature ventricular beat. It saves the HRT parameters turbulence onset (TO),

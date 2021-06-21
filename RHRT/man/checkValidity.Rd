@@ -21,6 +21,11 @@ checkValidity(x, ...)
 
 \item{pos}{(Boolean) Should pos be checked?}
 }
+\value{
+No return value, possibly throws errors/warnings
+
+No return value, possibly throws errors
+}
 \description{
 Checks whether slots are set
 

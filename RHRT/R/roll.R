@@ -11,7 +11,7 @@
 #' @param width window size
 #' @param fun function to be applied
 #' @param ... additional arguments for FUN
-#' @return list with return values of fun for each window
+#' @return (list) List with return values of fun for each window
 roll <- function(intervals, width, fun, ...) {
   width <- width - 1
   l <- length(intervals)

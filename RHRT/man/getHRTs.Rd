@@ -27,7 +27,7 @@ getHRTs(
 \item{numSnippet}{(Numeric) Number of RRs in the HRT snippet}
 }
 \value{
-HRTListObj
+(HRTList) HRTList with only pos and HRTs set
 }
 \description{
 Scans for HRTs in the given vector and returns an HRTList object.

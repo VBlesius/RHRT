@@ -16,7 +16,7 @@ roll(intervals, width, fun, ...)
 \item{...}{additional arguments for FUN}
 }
 \value{
-list with return values of fun for each window
+(list) List with return values of fun for each window
 }
 \description{
 Applies a given function on a vector by rolling over it with a sliding window

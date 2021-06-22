@@ -12,6 +12,9 @@ getPositions(HRTListObj)
 \arguments{
 \item{HRTListObj}{(HRTList object)}
 }
+\value{
+No return value, possibly throws errors/warnings
+}
 \description{
 Returns the positions of all ventricular premature complexes (VPCs) and
 accordingly the coupling intervals that were found in the given vector

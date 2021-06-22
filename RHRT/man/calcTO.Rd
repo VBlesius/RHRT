@@ -12,6 +12,9 @@ calcTO(HRTObj)
 \arguments{
 \item{HRTObj}{(HRT) The HRT object, for which TO should be calculated}
 }
+\value{
+(HRT) An HRT object with (re)calculated TO
+}
 \description{
 Calculates the TO parameters and saves it in the corresponding slot
 }

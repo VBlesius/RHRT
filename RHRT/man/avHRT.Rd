@@ -53,6 +53,9 @@ or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 
 \item{postRRs}{(Numeric vector) Following intervals}
 }
+\value{
+(avHRT) A new avHRT object
+}
 \description{
 This class extends the HRT class. An avHRT is the average of an HRTList and
 saves the way in which it was calculated.

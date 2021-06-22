@@ -31,7 +31,7 @@ To show all points use FALSE.}
 
 \item{xlab}{(Character) Label for the x axis}
 
-\item{ylab}{(Character) Label for the x axis}
+\item{ylab}{(Character) Label for the y axis}
 
 \item{paramsLegend}{(Boolean) Should the parameter values of the HRT be plotted?}
 
@@ -45,11 +45,29 @@ To show all points use FALSE.}
 
 \item{...}{Other arguments in tag = value form. See graphics::par for more information.}
 }
+\value{
+No return value
+}
 \description{
 Plots RR-intervals saved in the HRT object and marks
 turbulence onset and turbulence slope.
 }
 \note{
-Please note that the argument xaxt and ylim can't be set,
- since the axis as well as the ranges of the y axis are set by the function.
+Please note that some graphics parameters (par) cannot be modified,
+ since they are needed to be set inside the function.
+}
+\examples{
+# You need an HRT object
+hrt <- vectorToHRT(testdataLong, testdataLong_Ann)@HRTs[[1]]
+
+# Plot your HRT and zoom out
+plot(hrt, cropped = FALSE)
+
+# Include TT and customise it
+plot(hrt, TT = TRUE, colTT = "green", pch = 7)
+
+# Use standard graphics parameters
+## Note: Some parameters are used inside the function and cannot be set
+plot(hrt, TT = TRUE, main = "Example plot", bty = "n", cex.lab = 1.2)
+
 }

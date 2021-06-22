@@ -2,7 +2,7 @@
 % Please edit documentation in R/HRTList.R
 \name{plot,HRTList-method}
 \alias{plot,HRTList-method}
-\title{Plot an HRT object}
+\title{Plot an HRTList object}
 \usage{
 \S4method{plot}{HRTList}(
   x,
@@ -30,7 +30,7 @@ To show all points use FALSE.}
 
 \item{xlab}{(Character) Label for the x axis}
 
-\item{ylab}{(Character) Label for the x axis}
+\item{ylab}{(Character) Label for the y axis}
 
 \item{paramsLegend}{(Boolean) Should the parameter values of the HRT be plotted?}
 
@@ -42,10 +42,29 @@ To show all points use FALSE.}
 
 \item{...}{Other arguments in tag = value form}
 }
+\value{
+No return value
+}
 \description{
-Plots RR-intervals saved in the HRT object and marks HRT parameters.
+Plots RR-intervals saved in the HRT objects, especially the avHRT object,
+and marks the HRT parameters.
 }
 \note{
-Please note that the argument xaxt and ylim can't be set,
- since the axis as well as the ranges of the y axis are set by the function.
+Please note that some graphics parameters (par) cannot be modified,
+ since they are needed to be set inside the function.
+}
+\examples{
+# You need an HRTList
+hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+
+# Plot your HRTList and zoom out
+plot(hrtl, cropped = FALSE)
+
+# Include TT and customise it
+plot(hrtl, TT = TRUE, colTT = "green", pch = 7)
+
+# Use standard graphics parameters
+## Note: Some parameters are used inside the function and cannot be set
+plot(hrtl, TT = TRUE, main = "Example plot", bty = "n", cex.lab = 1.2)
+
 }

@@ -43,6 +43,8 @@ setClass("HRTList",
 #' @param RMSSD (Numeric) Square root of the mean of the squared successive
 #' differences between adjacent intervals of the whole measurement
 #'
+#' @return (HRTList) A new HRTList object
+#'
 #' @rdname HRTList
 #' @importFrom methods initialize
 #' @importFrom methods new
@@ -70,7 +72,9 @@ setMethod(
 #' when the HRTList was created.
 #'
 #' @param HRTListObj (HRTList object)
-#'
+#' 
+#' @return No return value, possibly throws errors/warnings
+#' 
 #' @rdname getPositions
 setGeneric("getPositions", function(HRTListObj) {
   standardGeneric("getPositions")
@@ -98,7 +102,18 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' @param pmax (Numeric) The significance level
 #' @param num (Boolean) Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.
 #' @inheritParams calcAvHRT
-#' @return Named vector, character or numeric
+#' @return (Named vector, character or numeric) Either HRT classes, HRT parameter values and/or p-values
+#'
+#' @examples
+#' # You need an HRTList
+#' hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+#' 
+#' # Get the HRT classes of your HRTList
+#' getResults(hrtl)
+#' getResults(hrtl, TT = TRUE)
+#' 
+#' # Get the HRT parameter values of your HRTList
+#' getResults(hrtl, type = "parameter", TT = TRUE)
 #'
 #' @rdname getResults
 setGeneric("getResults", function(HRTListObj, type = "class", TT = FALSE, nTS = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
@@ -215,8 +230,21 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 #'
 #' @param HRTListObj HRTList object
 #' @param sl (Character) Value of a slot saved by an HRT object
-#' @return Vector
+#' @return (numeric vector or list) Vector or list of the numerics stored in the given slot
 #'
+#' @examples
+#' # You need an HRTList
+#' hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+#' 
+#' # Get all TOs of the HRTs in your HRTList
+#' getHRTParams(hrtl, "TO")
+#' 
+#' # You can access all slots in the HRTs
+#' getHRTParams(hrtl, "intercept")
+#' 
+#' # If you access slots that include more than one numeric, the function returns a list
+#' getHRTParams(hrtl, "preRRs")
+#' 
 #' @rdname getHRTParams
 setGeneric("getHRTParams", function(HRTListObj, sl) {
   standardGeneric("getHRTParams")
@@ -226,7 +254,11 @@ setGeneric("getHRTParams", function(HRTListObj, sl) {
 setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
   checkValidity(HRTListObj)
   Params <- lapply(HRTListObj@HRTs, methods::slot, sl)
-  return(unlist(Params))
+  if(length(Params[[1]]) == 1) {
+    return(unlist(Params))
+  } else {
+    return(Params)
+  }
 })
 
 
@@ -258,7 +290,21 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' @param coTO (Numeric) Cut-off value for TO
 #' @param coTS (Numeric) Cut-off value for TS and nTS
 #' @param coTT (Numeric) Cut-off value for TT
-#' @return avHRTObj
+#' @return (avHRT) The avHRT object of the given HRTList
+#'
+#' @examples
+#' # You need an HRTList
+#' hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+#' 
+#' # Recalculate the avHRT with different normalisation
+#' calcAvHRT(hrtl, normIL = 1000, normHallstrom = FALSE)
+#' 
+#' # Recalculate the avHRT based on a different calculation order
+#' calcAvHRT(hrtl, orTO = "avBefore", orTS = "avAfter")
+#' 
+#' # Set custom parameter cut-offs for the reliability check
+#' ## You should keep in mind to give the same cut-offs when calling getResults()
+#' calcAvHRT(hrtl, coTO = 0.022, coTS = 1.42, coTT = 12)
 #'
 #' @importFrom methods slot
 #' @importFrom stats t.test
@@ -375,9 +421,10 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfte
 })
 
 # -------------------------------------------------------------------------------
-#' Plot an HRT object
+#' Plot an HRTList object
 #'
-#' Plots RR-intervals saved in the HRT object and marks HRT parameters.
+#' Plots RR-intervals saved in the HRT objects, especially the avHRT object,
+#' and marks the HRT parameters.
 #'
 #' @param x HRTList
 #' @param cropped (Boolean) Should the plot be cut to focus on the HRT parameters?
@@ -385,15 +432,31 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfte
 #' @param TT (Boolean) Should Turbulence timing be marked?
 #' @param pch (Numeric) Plotting character, for other options see graphics::var
 #' @param xlab (Character) Label for the x axis
-#' @param ylab (Character) Label for the x axis
+#' @param ylab (Character) Label for the y axis
 #' @param paramsLegend (Boolean) Should the parameter values of the HRT be plotted?
 #' @param colTO (Character) Colour used to highlight TO
 #' @param colTS (Character) Colour used to highlight TS
 #' @param colTT (Character) Colour used to highlight TT
 #' @param ... Other arguments in tag = value form
-#'
-#' @note Please note that the argument xaxt and ylim can't be set,
-#'  since the axis as well as the ranges of the y axis are set by the function.
+#' 
+#' @return No return value
+#' 
+#' @examples
+#' # You need an HRTList
+#' hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+#' 
+#' # Plot your HRTList and zoom out
+#' plot(hrtl, cropped = FALSE)
+#' 
+#' # Include TT and customise it
+#' plot(hrtl, TT = TRUE, colTT = "green", pch = 7)
+#' 
+#' # Use standard graphics parameters
+#' ## Note: Some parameters are used inside the function and cannot be set
+#' plot(hrtl, TT = TRUE, main = "Example plot", bty = "n", cex.lab = 1.2)
+#' 
+#' @note Please note that some graphics parameters (par) cannot be modified,
+#'  since they are needed to be set inside the function.
 #'
 #' @export
 setMethod("plot", "HRTList", function(x,
@@ -435,6 +498,7 @@ setMethod("plot", "HRTList", function(x,
 #' @param x HRTList
 #' @param av (Boolean) Should avHRT be checked?
 #' @param pos (Boolean) Should pos be checked?
+#' @return No return value, possibly throws errors
 #'
 #' @rdname checkValidity
 setMethod("checkValidity", "HRTList", function(x, av = FALSE, pos = FALSE) {

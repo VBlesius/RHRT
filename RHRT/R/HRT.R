@@ -16,7 +16,6 @@
 #' @slot intercept (Numeric) Intercept of regression line of TS
 #' @slot nTS (Numeric) Normalised Turbulence slope
 #' @slot nintercept (Numeric) Intercept of regression line of nTS
-
 #'
 #' @name HRT
 #'
@@ -53,6 +52,8 @@ setClass("HRT",
 #'
 #' @rdname HRT
 #' @importFrom methods initialize
+#' @return (HRT) A new HRT object
+#' 
 #' @export
 setMethod(
   "initialize", "HRT",
@@ -85,6 +86,8 @@ setMethod(
 #' @param IL (Numeric) The overall arithmetic mean of the interval length of the
 #' measurement to normalise TS
 #' @param normIL (Numeric) The interval length to which TS should be normalised
+#' 
+#' @return (HRT) An HRT object with (re)calculated HRT parameters
 #'
 #' @rdname calcHRTParams
 setGeneric("calcHRTParams", function(HRTObj, IL = c_normIL, normIL = c_normIL) {
@@ -106,7 +109,9 @@ setMethod("calcHRTParams", "HRT", function(HRTObj, IL = c_normIL, normIL = c_nor
 #'
 #' Calculates the TO parameters and saves it in the corresponding slot
 #' @param HRTObj (HRT) The HRT object, for which TO should be calculated
-#'
+#' 
+#' @return (HRT) An HRT object with (re)calculated TO
+#' 
 #' @rdname calcTO
 setGeneric("calcTO", function(HRTObj) {
   standardGeneric("calcTO")
@@ -138,6 +143,8 @@ setMethod("calcTO", "HRT", function(HRTObj) {
 #' @param HRTObj (HRT) The HRT object, for which TS should be calculated
 #' @param normalising (Boolean) Should the normalised TS be calculated?
 #' @inheritParams calcHRTParams
+#' 
+#' @return (HRT) An HRT object with (re)calculated TS+intercept or nTS+nintercept
 #'
 #' @rdname calcTS
 setGeneric("calcTS", function(HRTObj, normalising = FALSE, IL = c_normIL, normIL = c_normIL) {
@@ -184,6 +191,8 @@ setMethod("calcTS", "HRT", function(HRTObj, normalising = FALSE, IL = c_normIL, 
 #' Returns the VPCS intervals in right order
 #'
 #' @param HRTObj HRT
+#' 
+#' @return (numeric vector) All VPCS intervals
 #'
 #' @rdname getRRs
 setGeneric("getRRs", function(HRTObj) {
@@ -212,7 +221,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param TT (Boolean) Should Turbulence timing be marked?
 #' @param pch (Numeric) Plotting character, for other options see graphics::var
 #' @param xlab (Character) Label for the x axis
-#' @param ylab (Character) Label for the x axis
+#' @param ylab (Character) Label for the y axis
 #' @param paramsLegend (Boolean) Should the parameter values of the HRT be plotted?
 #' @param colTO (Character) Colour used to highlight TO
 #' @param colTS (Character) Colour used to highlight TS
@@ -220,8 +229,24 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param add (Boolean) Should the given HRT be added to a plot?
 #' @param ... Other arguments in tag = value form. See graphics::par for more information.
 #'
-#' @note Please note that the argument xaxt and ylim can't be set,
-#'  since the axis as well as the ranges of the y axis are set by the function.
+#' @return No return value
+#' 
+#' @examples
+#' # You need an HRT object
+#' hrt <- vectorToHRT(testdataLong, testdataLong_Ann)@HRTs[[1]]
+#' 
+#' # Plot your HRT and zoom out
+#' plot(hrt, cropped = FALSE)
+#' 
+#' # Include TT and customise it
+#' plot(hrt, TT = TRUE, colTT = "green", pch = 7)
+#' 
+#' # Use standard graphics parameters
+#' ## Note: Some parameters are used inside the function and cannot be set
+#' plot(hrt, TT = TRUE, main = "Example plot", bty = "n", cex.lab = 1.2)
+#' 
+#' @note Please note that some graphics parameters (par) cannot be modified,
+#'  since they are needed to be set inside the function.
 #'
 #' @import graphics
 #' @export
@@ -300,6 +325,8 @@ setMethod("plot", "HRT", function(x,
 #'
 #' @param x (HRT) Object to be checked
 #' @param ... Other parameters
+#' 
+#' @return No return value, possibly throws errors/warnings
 #'
 #' @rdname checkValidity
 setGeneric("checkValidity", function(x, ...) {

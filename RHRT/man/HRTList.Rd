@@ -33,6 +33,9 @@ given input}
 \item{RMSSD}{(Numeric) Square root of the mean of the squared successive
 differences between adjacent intervals of the whole measurement}
 }
+\value{
+(HRTList) A new HRTList object
+}
 \description{
 This class specifies an object to save all HRT objects of a given vector. It
 also saves an averaged HRT for calculation of the averaged HRT parameters and

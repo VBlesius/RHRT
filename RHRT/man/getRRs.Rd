@@ -12,6 +12,9 @@ getRRs(HRTObj)
 \arguments{
 \item{HRTObj}{HRT}
 }
+\value{
+(numeric vector) All VPCS intervals
+}
 \description{
 Returns the VPCS intervals in right order
 }

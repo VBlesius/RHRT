@@ -53,11 +53,23 @@ getResults(
 \item{coTT}{(Numeric) Cut-off value for TT}
 }
 \value{
-Named vector, character or numeric
+(Named vector, character or numeric) Either HRT classes, HRT parameter values and/or p-values
 }
 \description{
 Returns the HRT parameters of the HRTList. Turbulence onset is calculated for
 each HRT object and then averaged, turbulence slope is calculated via
 averaging the intervals of all HRT objects to one HRT object and then
 estimating the maximal slope.
+}
+\examples{
+# You need an HRTList
+hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+
+# Get the HRT classes of your HRTList
+getResults(hrtl)
+getResults(hrtl, TT = TRUE)
+
+# Get the HRT parameter values of your HRTList
+getResults(hrtl, type = "parameter", TT = TRUE)
+
 }

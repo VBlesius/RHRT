@@ -59,6 +59,8 @@ setClass("avHRT",
 #' @param pnTS (Numeric) p-value of t-test checking the validity of normalised TS
 #' @param nRMSSD (Numeric) RMSSD normalised to HR
 #' @inheritParams HRT
+#' 
+#' @return (avHRT) A new avHRT object
 #'
 #' @rdname avHRT
 #' @importFrom methods initialize

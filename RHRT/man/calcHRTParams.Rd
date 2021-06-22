@@ -17,6 +17,9 @@ measurement to normalise TS}
 
 \item{normIL}{(Numeric) The interval length to which TS should be normalised}
 }
+\value{
+(HRT) An HRT object with (re)calculated HRT parameters
+}
 \description{
 Calculates all HRT parameters needed for an HRT object
 and saves them in the corresponding slots.

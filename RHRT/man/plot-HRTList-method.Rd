@@ -2,7 +2,7 @@
 % Please edit documentation in R/HRTList.R
 \name{plot,HRTList-method}
 \alias{plot,HRTList-method}
-\title{Plot an HRT object}
+\title{Plot an HRTList object}
 \usage{
 \S4method{plot}{HRTList}(
   x,
@@ -30,7 +30,7 @@ To show all points use FALSE.}
 
 \item{xlab}{(Character) Label for the x axis}
 
-\item{ylab}{(Character) Label for the x axis}
+\item{ylab}{(Character) Label for the y axis}
 
 \item{paramsLegend}{(Boolean) Should the parameter values of the HRT be plotted?}
 
@@ -46,7 +46,8 @@ To show all points use FALSE.}
 No return value
 }
 \description{
-Plots RR-intervals saved in the HRT object and marks HRT parameters.
+Plots RR-intervals saved in the HRT objects, especially the avHRT object,
+and marks the HRT parameters.
 }
 \note{
 Please note that some graphics parameters (par) cannot be modified,

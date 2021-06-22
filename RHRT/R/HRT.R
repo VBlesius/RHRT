@@ -221,7 +221,7 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param TT (Boolean) Should Turbulence timing be marked?
 #' @param pch (Numeric) Plotting character, for other options see graphics::var
 #' @param xlab (Character) Label for the x axis
-#' @param ylab (Character) Label for the x axis
+#' @param ylab (Character) Label for the y axis
 #' @param paramsLegend (Boolean) Should the parameter values of the HRT be plotted?
 #' @param colTO (Character) Colour used to highlight TO
 #' @param colTS (Character) Colour used to highlight TS

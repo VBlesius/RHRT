@@ -417,9 +417,10 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfte
 })
 
 # -------------------------------------------------------------------------------
-#' Plot an HRT object
+#' Plot an HRTList object
 #'
-#' Plots RR-intervals saved in the HRT object and marks HRT parameters.
+#' Plots RR-intervals saved in the HRT objects, especially the avHRT object,
+#' and marks the HRT parameters.
 #'
 #' @param x HRTList
 #' @param cropped (Boolean) Should the plot be cut to focus on the HRT parameters?
@@ -427,7 +428,7 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfte
 #' @param TT (Boolean) Should Turbulence timing be marked?
 #' @param pch (Numeric) Plotting character, for other options see graphics::var
 #' @param xlab (Character) Label for the x axis
-#' @param ylab (Character) Label for the x axis
+#' @param ylab (Character) Label for the y axis
 #' @param paramsLegend (Boolean) Should the parameter values of the HRT be plotted?
 #' @param colTO (Character) Colour used to highlight TO
 #' @param colTS (Character) Colour used to highlight TS

@@ -31,7 +31,7 @@ To show all points use FALSE.}
 
 \item{xlab}{(Character) Label for the x axis}
 
-\item{ylab}{(Character) Label for the x axis}
+\item{ylab}{(Character) Label for the y axis}
 
 \item{paramsLegend}{(Boolean) Should the parameter values of the HRT be plotted?}
 

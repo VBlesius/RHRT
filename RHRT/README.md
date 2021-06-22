@@ -58,8 +58,9 @@ plot(hrtl)
 ## Data
 
 Data to test the package can be found on
-[Physionet](https://physionet.org/). Via the WFDB Toolkit ECG data can
-be downloaded and/or converted, for example:
+[Physionet](https://physionet.org/). Via the [WFDB
+Toolkit](https://physionet.org/content/wfdb/10.6.2/) ECG data can be
+downloaded and/or converted, for example:
 
 ``` bash
 ann2rr -r chf2db/chf201 -a ecg -i s3 -w > ~/some/path/chf201.csv

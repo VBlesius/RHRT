@@ -49,6 +49,21 @@ No return value
 Plots RR-intervals saved in the HRT object and marks HRT parameters.
 }
 \note{
-Please note that the argument xaxt and ylim can't be set,
- since the axis as well as the ranges of the y axis are set by the function.
+Please note that some graphics parameters (par) cannot be modified,
+ since they are needed to be set inside the function.
+}
+\examples{
+# You need an HRTList
+hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+
+# Plot your HRTList and zoom out
+plot(hrtl, cropped = FALSE)
+
+# Include TT and customise it
+plot(hrtl, TT = TRUE, colTT = "green", pch = 7)
+
+# Use standard graphics parameters
+## Note: Some parameters are used inside the function and cannot be set
+plot(hrtl, TT = TRUE, main = "Example plot", bty = "n", cex.lab = 1.2)
+
 }

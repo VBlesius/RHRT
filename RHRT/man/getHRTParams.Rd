@@ -21,3 +21,17 @@ getHRTParams(HRTListObj, sl)
 Extracts all values of the given slot in each HRT of the HRTList
 and returns them in a list
 }
+\examples{
+# You need an HRTList
+hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+
+# Get all TOs of the HRTs in your HRTList
+getHRTParams(hrtl, "TO")
+
+# You can access all slots in the HRTs
+getHRTParams(hrtl, "intercept")
+
+# If you access slots that include more than one numeric, the function returns a list
+getHRTParams(hrtl, "preRRs")
+
+}

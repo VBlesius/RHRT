@@ -16,6 +16,16 @@
 #' @param cleaning (Boolean) Should the input be roughly cleaned from artefacts before calculating IL and RMSSD?
 #' @inheritParams calcHRTParams
 #' @return (HRTList) An HRTList object
+#' 
+#' @examples
+#' # Find HRTs with a broader range of sinus beats before and after the VPCs
+#' vectorToHRT(testdataLong, inputName = "Dummy Measurement", numPreRRs = 10, numPostRRs = 20)
+#' 
+#' # Use annotations to give the VPC indices
+#' vectorToHRT(testdataLong, annotations = testdataLong_Ann, PVCAnn = "V")
+#' 
+#' # Adjust the normalisation parameters
+#' vectorToHRT(testdataLong, normHallstrom = FALSE, normIL = 900)
 #'
 #' @export
 vectorToHRT <- function(input, annotations = NULL, PVCAnn = "V",

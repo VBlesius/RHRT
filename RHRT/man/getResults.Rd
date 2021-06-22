@@ -61,3 +61,15 @@ each HRT object and then averaged, turbulence slope is calculated via
 averaging the intervals of all HRT objects to one HRT object and then
 estimating the maximal slope.
 }
+\examples{
+# You need an HRTList
+hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+
+# Get the HRT classes of your HRTList
+getResults(hrtl)
+getResults(hrtl, TT = TRUE)
+
+# Get the HRT parameter values of your HRTList
+getResults(hrtl, type = "parameter", TT = TRUE)
+
+}

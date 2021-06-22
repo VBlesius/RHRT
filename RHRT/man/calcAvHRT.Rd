@@ -73,3 +73,18 @@ Physiological Interpretation, and Clinical Use, Axel Bauer et al.,
 Journal of the American College of Cardiology, Volume 52, Issue 17,
 Pages 1353-1365')
 }
+\examples{
+# You need an HRTList
+hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+
+# Recalculate the avHRT with different normalisation
+calcAvHRT(hrtl, normIL = 1000, normHallstrom = FALSE)
+
+# Recalculate the avHRT based on a different calculation order
+calcAvHRT(hrtl, orTO = "avBefore", orTS = "avAfter")
+
+# Set custom parameter cut-offs for the reliability check
+## You should keep in mind to give the same cut-offs when calling getResults()
+calcAvHRT(hrtl, coTO = 0.022, coTS = 1.42, coTT = 12)
+
+}

@@ -74,7 +74,7 @@ setMethod(
 #' @param HRTListObj (HRTList object)
 #' 
 #' @return No return value, possibly throws errors/warnings
-#'
+#' 
 #' @rdname getPositions
 setGeneric("getPositions", function(HRTListObj) {
   standardGeneric("getPositions")
@@ -103,6 +103,17 @@ setMethod("getPositions", "HRTList", function(HRTListObj) {
 #' @param num (Boolean) Should the results be numeric? This forces the results to stay numeric, but sets not reliable values as NA, if 'safe' is TRUE. Forced numeric values cannot be combined with type 'class'.
 #' @inheritParams calcAvHRT
 #' @return (Named vector, character or numeric) Either HRT classes, HRT parameter values and/or p-values
+#'
+#' @examples
+#' # You need an HRTList
+#' hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+#' 
+#' # Get the HRT classes of your HRTList
+#' getResults(hrtl)
+#' getResults(hrtl, TT = TRUE)
+#' 
+#' # Get the HRT parameter values of your HRTList
+#' getResults(hrtl, type = "parameter", TT = TRUE)
 #'
 #' @rdname getResults
 setGeneric("getResults", function(HRTListObj, type = "class", TT = FALSE, nTS = FALSE, safe = TRUE, pmax = 0.05, num = FALSE, coTO = COTO, coTS = COTS, coTT = COTT) {
@@ -221,6 +232,19 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 #' @param sl (Character) Value of a slot saved by an HRT object
 #' @return (numeric vector) Vector of the numerics stored in the given slot
 #'
+#' @examples
+#' # You need an HRTList
+#' hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+#' 
+#' # Get all TOs of the HRTs in your HRTList
+#' getHRTParams(hrtl, "TO")
+#' 
+#' # You can access all slots in the HRTs
+#' getHRTParams(hrtl, "intercept")
+#' 
+#' # If you access slots that include more than one numeric, the function returns a list
+#' getHRTParams(hrtl, "preRRs")
+#' 
 #' @rdname getHRTParams
 setGeneric("getHRTParams", function(HRTListObj, sl) {
   standardGeneric("getHRTParams")
@@ -263,6 +287,20 @@ setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
 #' @param coTS (Numeric) Cut-off value for TS and nTS
 #' @param coTT (Numeric) Cut-off value for TT
 #' @return (avHRT) The avHRT object of the given HRTList
+#'
+#' @examples
+#' # You need an HRTList
+#' hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+#' 
+#' # Recalculate the avHRT with different normalisation
+#' calcAvHRT(hrtl, normIL = 1000, normHallstrom = FALSE)
+#' 
+#' # Recalculate the avHRT based on a different calculation order
+#' calcAvHRT(hrtl, orTO = "avBefore", orTS = "avAfter")
+#' 
+#' # Set custom parameter cut-offs for the reliability check
+#' ## You should keep in mind to give the same cut-offs when calling getResults()
+#' calcAvHRT(hrtl, coTO = 0.022, coTS = 1.42, coTT = 12)
 #'
 #' @importFrom methods slot
 #' @importFrom stats t.test
@@ -397,9 +435,23 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfte
 #' @param ... Other arguments in tag = value form
 #' 
 #' @return No return value
-#'
-#' @note Please note that the argument xaxt and ylim can't be set,
-#'  since the axis as well as the ranges of the y axis are set by the function.
+#' 
+#' @examples
+#' # You need an HRTList
+#' hrtl <- vectorToHRT(testdataLong, testdataLong_Ann)
+#' 
+#' # Plot your HRTList and zoom out
+#' plot(hrtl, cropped = FALSE)
+#' 
+#' # Include TT and customise it
+#' plot(hrtl, TT = TRUE, colTT = "green", pch = 7)
+#' 
+#' # Use standard graphics parameters
+#' ## Note: Some parameters are used inside the function and cannot be set
+#' plot(hrtl, TT = TRUE, main = "Example plot", bty = "n", cex.lab = 1.2)
+#' 
+#' @note Please note that some graphics parameters (par) cannot be modified,
+#'  since they are needed to be set inside the function.
 #'
 #' @export
 setMethod("plot", "HRTList", function(x,

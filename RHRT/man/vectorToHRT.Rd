@@ -47,3 +47,14 @@ HRTList object including all found HRT objects.
 The HRT criteria used were published by Schmidt et al.
 (more information can be found in the vignette.)
 }
+\examples{
+# Find HRTs with a broader range of sinus beats before and after the VPCs
+vectorToHRT(testdataLong, inputName = "Dummy Measurement", numPreRRs = 10, numPostRRs = 20)
+
+# Use annotations to give the VPC indices
+vectorToHRT(testdataLong, annotations = testdataLong_Ann, PVCAnn = "V")
+
+# Adjust the normalisation parameters
+vectorToHRT(testdataLong, normHallstrom = FALSE, normIL = 900)
+
+}

@@ -230,9 +230,23 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param ... Other arguments in tag = value form. See graphics::par for more information.
 #'
 #' @return No return value
-#'
-#' @note Please note that the argument xaxt and ylim can't be set,
-#'  since the axis as well as the ranges of the y axis are set by the function.
+#' 
+#' @examples
+#' # You need an HRT object
+#' hrt <- vectorToHRT(testdataLong, testdataLong_Ann)@HRTs[[1]]
+#' 
+#' # Plot your HRT and zoom out
+#' plot(hrt, cropped = FALSE)
+#' 
+#' # Include TT and customise it
+#' plot(hrt, TT = TRUE, colTT = "green", pch = 7)
+#' 
+#' # Use standard graphics parameters
+#' ## Note: Some parameters are used inside the function and cannot be set
+#' plot(hrt, TT = TRUE, main = "Example plot", bty = "n", cex.lab = 1.2)
+#' 
+#' @note Please note that some graphics parameters (par) cannot be modified,
+#'  since they are needed to be set inside the function.
 #'
 #' @import graphics
 #' @export

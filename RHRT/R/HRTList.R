@@ -230,7 +230,7 @@ setMethod("getResults", "HRTList", function(HRTListObj, type = "class", TT = FAL
 #'
 #' @param HRTListObj HRTList object
 #' @param sl (Character) Value of a slot saved by an HRT object
-#' @return (numeric vector) Vector of the numerics stored in the given slot
+#' @return (numeric vector or list) Vector or list of the numerics stored in the given slot
 #'
 #' @examples
 #' # You need an HRTList
@@ -254,7 +254,11 @@ setGeneric("getHRTParams", function(HRTListObj, sl) {
 setMethod("getHRTParams", "HRTList", function(HRTListObj, sl) {
   checkValidity(HRTListObj)
   Params <- lapply(HRTListObj@HRTs, methods::slot, sl)
-  return(unlist(Params))
+  if(length(Params[[1]]) == 1) {
+    return(unlist(Params))
+  } else {
+    return(Params)
+  }
 })
 
 

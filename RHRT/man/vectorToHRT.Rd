@@ -48,13 +48,14 @@ The HRT criteria used were published by Schmidt et al.
 (more information can be found in the vignette.)
 }
 \examples{
-# Find HRTs with a broader range of sinus beats before and after the VPCs
-vectorToHRT(testdataLong, inputName = "Dummy Measurement", numPreRRs = 10, numPostRRs = 20)
-
-# Use annotations to give the VPC indices
+# You can use annotations to give the VPC indices
+# Without annotation data RHRT will find VPCs based on common filtering criteria
 vectorToHRT(testdataLong, annotations = testdataLong_Ann, PVCAnn = "V")
 
+# Find HRTs with a broader range of sinus beats before and after the VPCs
+vectorToHRT(testdataLong, inputName = "Dummy Measurement", numPreRRs = 10, numPostRRs = 20)
+ 
 # Adjust the normalisation parameters
-vectorToHRT(testdataLong, normHallstrom = FALSE, normIL = 900)
+vectorToHRT(testdataLong, testdataLong_Ann, normHallstrom = FALSE, normIL = 900)
 
 }

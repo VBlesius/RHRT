@@ -12,7 +12,7 @@
 
 <meta name="author" content="Valeria Blesius" />
 
-<meta name="date" content="2021-06-17" />
+<meta name="date" content="2021-06-25" />
 
 <title>RHRT: Finding Premature Ventricular Complexes</title>
 
@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">RHRT: Finding Premature Ventricular Complexes</h1>
 <h4 class="author">Valeria Blesius</h4>
-<h4 class="date">2021-06-17</h4>
+<h4 class="date">2021-06-25</h4>
 
 
 
@@ -355,7 +355,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="normalisation-of-turbulence-slope" class="section level3">
 <h3>Normalisation of Turbulence Slope</h3>
 <p>HRT is influenced by the heart rate. While there is no clear conclusion for TO, TS values clearly positively correlate with the RR interval length (reviewed in <a href="https://doi.org/10.1088/1361-6579/ab98b3" title="Blesius et al., HRT assessment reviewed: a systematic review of heart rate turbulence methodology, 2020, Physiol. Meas. 41 08TR01">Blesius et al. 2020</a>). Therefore, RHRT calculates <code>nTS</code> that is normalised to a fixed interval length (800 ms per default) in addition to the common TS.</p>
-<p>Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in <a href="https://doi.org/10.1088/1361-6579/ab98b3" title="Blesius et al., HRT assessment reviewed: a systematic review of heart rate turbulence methodology, 2020, Physiol. Meas. 41 08TR01">Blesius et al. 2020</a>). While physiological reasons were suggested for this phenomenon (<a href="https://doi.org/10.1046/j.1540-8167.2004.03613.x" title="Cygankiewicz et al., Relationship between heart rate turbulence and heart rate, heart rate variability, and number of ventricular premature beats in coronary patients, 2004, J. Cardiovasc. Electrophysiol. 15 731–7">Cygankiewicz et al. 2004</a> and <a href="https://doi.org/10.1111/j.1542-474X.2009.00322.x" title="Chen, Impact of preceding ventricular premature beats on heart rate turbulence, 2009, Ann. Noninvas. Electro. 14 333–9">Chen 2009</a>), <a href="https://doi.org/10.1109/TBME.2004.828049" title="Hallstrom et al., Structural relationships between measures based on heart beat intervals: potential for improved risk assessment, 2004, IEEE. Trans. Biomed. Eng. 51 1414–20">Hallstrom et al. 2004</a> reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Secondly, the following formula is used:</p>
+<p>Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in <a href="https://doi.org/10.1088/1361-6579/ab98b3" title="Blesius et al., HRT assessment reviewed: a systematic review of heart rate turbulence methodology, 2020, Physiol. Meas. 41 08TR01">Blesius et al. 2020</a>). While physiological reasons were suggested for this phenomenon (<a href="https://doi.org/10.1046/j.1540-8167.2004.03613.x" title="Cygankiewicz et al., Relationship between heart rate turbulence and heart rate, heart rate variability, and number of ventricular premature beats in coronary patients, 2004, J. Cardiovasc. Electrophysiol. 15 731–7">Cygankiewicz et al. 2004</a> and <a href="https://doi.org/10.1111/j.1542-474X.2009.00322.x" title="Chen, Impact of preceding ventricular premature beats on heart rate turbulence, 2009, Ann. Noninvas. Electro. 14 333–9">Chen 2009</a>), <a href="https://doi.org/10.1109/TBME.2004.828049" title="Hallstrom et al., Structural relationships between measures based on heart beat intervals: potential for improved risk assessment, 2004, IEEE. Trans. Biomed. Eng. 51 1414–20">Hallstrom et al. 2004</a> reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Here, it makes no mathematical difference whether TS is normalised or the intervals themselves before assessing TS. Secondly, the following formula is used:</p>
 <p>nTS = TS - ( 0.02475 * (numPostRRs-2)^0.9449 * (RMSSD / √#VPCSs) )</p>
 <p>RHRT uses this normalisation per default. This can be changed with the boolean parameter <code>normHallstrom</code> in <code>vectorToHRT</code> and <code>calcAvHRT</code>.</p>
 </div>

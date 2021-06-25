@@ -231,7 +231,7 @@ To ensure snippets free of any bias and containing effective VPCs, the VPCSs are
 
 HRT is influenced by the heart rate. While there is no clear conclusion for TO, TS values clearly positively correlate with the RR interval length (reviewed in [Blesius et al. 2020][NTS1]). Therefore, RHRT calculates `nTS` that is normalised to a fixed interval length (800 ms per default) in addition to the common TS.
 
-Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in [Blesius et al. 2020][NTS1]). While physiological reasons were suggested for this phenomenon ([Cygankiewicz et al. 2004][NTS2] and [Chen 2009][NTS3]), [Hallstrom et al. 2004][NTS4] reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Secondly, the following formula is used:
+Beside the heart rate, TS is biased by the number of HRTs used to calculate it (reviewed in [Blesius et al. 2020][NTS1]). While physiological reasons were suggested for this phenomenon ([Cygankiewicz et al. 2004][NTS2] and [Chen 2009][NTS3]), [Hallstrom et al. 2004][NTS4] reasoned it to be a mathematically induced relation based on the number of VPCSs as well as the number of postRRs to determine TS. They proposed a method to normalise TS in which, firstly, TS is normalised to a HR of 75 bpm (which is 800 ms interval length). Here, it makes no mathematical difference whether TS is normalised or the intervals themselves before assessing TS. Secondly, the following formula is used:
 
   nTS = TS - ( 0.02475 * (numPostRRs-2)^0.9449 * (RMSSD / √#VPCSs) )
     

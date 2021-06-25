@@ -97,7 +97,7 @@ getResults(hrtl, type = "parameter", TT = TRUE) # get the averaged HRT parameter
 
 ```
 ##        TO        TS        TT 
-## -9.522023 31.294898  3.000000
+## -10.57551  37.61417   3.00000
 ```
 
 Other parameters are:
@@ -265,7 +265,7 @@ Beside the heart rate, TS is biased by the number of HRTs used to calculate it (
 
   nTS = TS - ( 0.02475 * (numPostRRs-2)^0.9449 * (RMSSD / √#VPCSs) )
     
-RHRT uses this normalisation per default. This can be changed with the boolean parameter `normHallstrom` in `vectorToHRT` and `calcAvHRT`. 
+RHRT uses this normalisation per default. This can be changed with the boolean parameter `normHallstrom` in `vectorToHRT` and `calcAvHRT`.
 
 [NTS1]: https://doi.org/10.1088/1361-6579/ab98b3 "Blesius et al., HRT assessment reviewed: a systematic review of heart rate turbulence methodology, 2020, Physiol. Meas. 41 08TR01"
 [NTS2]: https://doi.org/10.1046/j.1540-8167.2004.03613.x "Cygankiewicz et al., Relationship between heart rate turbulence and heart rate, heart rate variability, and number of ventricular premature beats in coronary patients, 2004, J. Cardiovasc. Electrophysiol. 15 731–7"
@@ -323,8 +323,8 @@ digits = 2) # get the parameters and p-values of the variability check
 ```
 
 ```
-##    TO    TS    TT   pTO   pTS   pTT 
-## -9.52 31.29  3.00  0.00  0.00  0.00
+##     TO     TS     TT    pTO    pTS    pTT 
+## -10.58  37.61   3.00   0.00   0.00   0.00
 ```
 
 ```r
@@ -342,9 +342,9 @@ tos
 ```
 
 ```
-##  [1]  -7.097592  -8.420534 -12.299247 -12.392999  -9.942578 -10.821156
-##  [7]  -8.397493 -11.654006  -8.220155  -6.530343  -5.135286 -10.244191
-## [13] -10.078399  -8.829286 -12.767082
+##  [1] -12.264829  -6.349883 -11.856998  -9.011983 -13.733660 -10.859878
+##  [7] -10.357064 -13.174994 -12.743754  -8.427299 -11.495815  -8.892588
+## [13] -11.795365  -6.502960 -11.165541
 ```
 
 ```r
@@ -353,7 +353,7 @@ summary(tos)
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-## -12.767 -11.238  -9.943  -9.522  -8.309  -5.135
+## -13.734 -12.061 -11.166 -10.576  -8.952  -6.350
 ```
 
 ```r
@@ -389,8 +389,8 @@ t.test(hrtl10, hrtl20)
 ## t = 0, df = 28, p-value = 1
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -2.651862  2.651862
+##  -5.116392  5.116392
 ## sample estimates:
 ## mean of x mean of y 
-##  34.07982  34.07982
+##  39.36397  39.36397
 ```

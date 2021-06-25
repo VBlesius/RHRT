@@ -15,8 +15,8 @@ source("../RHRT/R/constants.R")
 # normal intervals
 HRTPattern <- c(0.6, 1.4, # couplI and compI
                 rep(0.9, 2), # first two parameters, fast HR increase
-                seq(0.9, 1.1, length.out = 6), # slow HR decrease
-                seq(1.1, 1, length.out = 7)) # return to original HR
+                seq(0.9, 1.1, length.out = 5), # slow HR decrease
+                seq(1.1, 1, length.out = 8)) # return to original HR
 
 #-------------------------------------------------------------------------------
 ### Functions

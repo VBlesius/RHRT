@@ -235,7 +235,7 @@ Beside the heart rate, TS is biased by the number of HRTs used to calculate it (
 
   nTS = TS - ( 0.02475 * (numPostRRs-2)^0.9449 * (RMSSD / √#VPCSs) )
     
-RHRT uses this normalisation per default. This can be changed with the boolean parameter `normHallstrom` in `vectorToHRT` and `calcAvHRT`. 
+RHRT uses this normalisation per default. This can be changed with the boolean parameter `normHallstrom` in `vectorToHRT` and `calcAvHRT`.
 
 [NTS1]: https://doi.org/10.1088/1361-6579/ab98b3 "Blesius et al., HRT assessment reviewed: a systematic review of heart rate turbulence methodology, 2020, Physiol. Meas. 41 08TR01"
 [NTS2]: https://doi.org/10.1046/j.1540-8167.2004.03613.x "Cygankiewicz et al., Relationship between heart rate turbulence and heart rate, heart rate variability, and number of ventricular premature beats in coronary patients, 2004, J. Cardiovasc. Electrophysiol. 15 731–7"

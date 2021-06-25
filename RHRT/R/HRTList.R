@@ -370,14 +370,27 @@ setMethod("calcAvHRT", "HRTList", function(HRTListObj, av = mean, orTO = "avAfte
     nTSs <- getHRTParams(HRTListObj, "nTS")
     nintercepts <- getHRTParams(HRTListObj, "nintercept")
   }
+  
+  # auxiliary function to set p values
+  setPVal <- function(params, alt, mu) {
+    if (!length(unique(params)) == 1) {
+      # calculates p-value if varying parameter values are present
+      return(t.test(params, alternative = alt, mu = mu)$p.value)
+    } else if (length(params) != 1) {
+      # sets p-value to 0 if there are more than 1 HRT, but all parameter values are the same
+      # this can happen with TT in a low number of HRTs
+      return(0)
+    } else {
+      # sets p-value to NA if there is only one HRT
+      return (NA_real_)
+    }
+  }
 
-
-  notconstant <- function(x) !length(unique(x)) == 1
   # calculates p-values
-  if (notconstant(TOs)) avHRT@pTO <- t.test(TOs, alternative = "less", mu = coTO)$p.value
-  if (notconstant(TSs)) avHRT@pTS <- t.test(TSs, alternative = "greater", mu = coTS)$p.value
-  if (notconstant(TTs)) avHRT@pTT <- t.test(TTs, alternative = "less", mu = coTT)$p.value
-  if (notconstant(nTSs)) avHRT@pnTS <- t.test(nTSs, alternative = "greater", mu = coTS)$p.value
+  avHRT@pTO <- setPVal(TOs, "less", coTO)
+  avHRT@pTS <- setPVal(TSs, "greater", coTS)
+  avHRT@pTT <- setPVal(TTs, "less", coTT)
+  avHRT@pnTS <- setPVal(nTSs, "greater", coTS)
 
   # calculates TO, first in default order, secondly from an averaged tachogram
   if (orTO == "avAfter") {

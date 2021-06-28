@@ -1,7 +1,7 @@
 Package: RHRT
 Type: Package
 Title: Heart Rate Turbulence Analysis
-Version: 1.0
+Version: 1.0.1
 Date: 2021-06-17
 Authors@R: person(role = c("aut", "cre"), given = "Valeria", family = "Blesius", email = "valeria.blesius@mni.thm.de", comment = c(ORCID = "0000-0002-2391-242X"))
 BugReports: https://github.com/VBlesius/RHRT/issues

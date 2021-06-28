@@ -18,7 +18,7 @@ affiliations:
  - name: THM University of Applied Sciences, Giessen, Germany
    index: 1
 date: 17 June 2021
-bibliography: RHRT.bib
+bibliography: paper.bib
 
 ---
 

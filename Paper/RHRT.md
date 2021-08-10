@@ -41,7 +41,7 @@ The package works best and fastest when given annotation data, but can also find
 Most filtering parameters and calculation methods can be freely adjusted to enable research on the methodology itself.
 In addition to parameter calculation, ``RHRT`` can classify the data into common risk categories (HRT0-2 and HRTA-C) and estimate the reliability of the results based on the number and parameter values of the HRTs.
 
-The package can be found on [CRAN] and [GitHub](https://github.com/VBlesius/RHRT).
+The package can be found on [CRAN](https://cran.r-project.org/package=RHRT) and [GitHub](https://github.com/VBlesius/RHRT).
 
 # Statement of need
 

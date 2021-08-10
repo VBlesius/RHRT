@@ -55,12 +55,12 @@ HRT analysis is already used for risk stratification in the clinical practice, a
 
 To install ``RHRT`` use
 
-install.packages("RHRT")
+`install.packages("RHRT")`
 
 for the version on CRAN.
 To install the continuosly developed version on GitHub you can use the devtools package:
 
-devtools::install_github("VBlesius/RHRT/RHRT")
+`devtools::install_github("VBlesius/RHRT/RHRT")`
 
 
 

@@ -9,3 +9,6 @@ It is sorted into:
 * all files needed for the [publication](/Paper) in JOSS
 
 All contents of the repository are licensed under the [GNU GPL v2](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+
+Please feel free to submit pull requests and use the issue tracker for issues or problems with the package.
+For any other support or questions please contact [Valeria Blesius](mailto:rhrt@blesius.eu).

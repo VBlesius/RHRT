@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased] TBA
 
+
+## [1.0.1] 2021-06-28
+
 ### Changed
 - the reliability check returns now 0 as p-values (formerly NA) if parameter values are all identical (and there is more than one HRT in the HRTList)
 ### Fixed

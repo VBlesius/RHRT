@@ -208,7 +208,7 @@ getHRTs <- function(intervals, annotations = NULL, PVCAnn = "V", numPreRRs = c_n
 #' Checks RR-intervals for HRT criteria and returns an HRT object
 #'
 #' @inheritParams getHRTs
-#' @return (HRT) A single HRT object
+#' @return (HRT) A single HRT object or NULL
 #'
 checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs) {
   # Defines coupling, compensatory, preceding and following intervals and sums up regular intervals
@@ -244,4 +244,5 @@ checkForHRT <- function(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPo
       return(tempHRT)
     }
   }
+  return(NULL)
 }

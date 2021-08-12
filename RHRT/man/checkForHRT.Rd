@@ -14,7 +14,7 @@ checkForHRT(intervals, numPreRRs = c_numPreRRs, numPostRRs = c_numPostRRs)
 \item{numPostRRs}{(Numeric) Number of RRs after the compensatory interval that are used for filtering}
 }
 \value{
-(HRT) A single HRT object
+(HRT) A single HRT object or NULL
 }
 \description{
 Checks RR-intervals for HRT criteria and returns an HRT object

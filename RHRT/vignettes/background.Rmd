@@ -88,7 +88,7 @@ The order in which the HRT parameters are calculated has an impact on the result
 
 --------
 
-Further information can be found in the other vignettes: [synopsis](synopsis.html), [objects & functions](objects_functions.html) and [example pipelines](examples.html).
+Further information can be found in the other vignettes: [synopsis](synopsis.md), [objects & functions](objects_functions.md) and [example pipelines](examples.md).
 
 <!---
 # Part of RHRT: R package to assess Heart Rate Turbulence from RR interval data 

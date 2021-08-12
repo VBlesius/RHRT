@@ -58,7 +58,7 @@ t.test(hrtl10, hrtl20)
 
 --------
 
-Further information can be found in the other vignettes: [synopsis](synopsis.html), [objects & functions](objects_functions.html) and [scientific background](background.html).
+Further information can be found in the other vignettes: [synopsis](synopsis.md), [objects & functions](objects_functions.md) and [scientific background](background.md).
 
 <!---
 # Part of RHRT: R package to assess Heart Rate Turbulence from RR interval data 

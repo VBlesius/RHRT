@@ -32,7 +32,7 @@ ann <- testdataLong_Ann
 
 ## Checking interval data for HRTs
 
-The **core function** of RHRT is `vectorToHRT` that finds valid VPCs in RR intervals and returns an `HRTList` object (see *HRTList object* in [Objects & Functions](objects_functions.html) for more information):
+The **core function** of RHRT is `vectorToHRT` that finds valid VPCs in RR intervals and returns an `HRTList` object (see *HRTList object* in [Objects & Functions](objects_functions.md) for more information):
 
 
 ```r
@@ -50,7 +50,7 @@ Other parameters are:
 
 * `numPreRRs` & `numPostRRs` are used to modify the **filter rules** to find HRTs (number of intervals before and after the VPC that have to match the filter criteria).
 * `minHRT` is the **minimal number of HRTs** needed to calculate HRT / create a HRTList
-* `normHallstrom` defines whether TS should be **normalised** with the method of Hallstrom et al. (see the chapter *Normalisation of Turbulence Slope* in the [scientific background](background.html) for more information). 
+* `normHallstrom` defines whether TS should be **normalised** with the method of Hallstrom et al. (see the chapter *Normalisation of Turbulence Slope* in the [scientific background](background.md) for more information). 
 
 ## Getting HRT parameters or class
 
@@ -62,7 +62,7 @@ getResults(hrtl) # get the HRT class of the data
 ## [1] "HRT0"
 ```
 
-Per default `getResults` checks whether all needed HRT parameters can be calculated reliably. This is done via a t-test per parameter value (for more information see chapter *Reliability Check* in the [scientific background](background.html) vignette). If any of the parameter values is **not reliable** `getResults` returns NR (not reliable). 
+Per default `getResults` checks whether all needed HRT parameters can be calculated reliably. This is done via a t-test per parameter value (for more information see chapter *Reliability Check* in the [scientific background](background.md) vignette). If any of the parameter values is **not reliable** `getResults` returns NR (not reliable). 
 
 
 ```r
@@ -122,7 +122,7 @@ plot(hrtl, cropped = FALSE) # shows also coupling and compensatory interval
 
 --------
 
-Further information can be found in the other vignettes about the [objects and functions](objects_functions.html), the [scientific background](background.html) or with [example pipelines](examples.html).
+Further information can be found in the other vignettes about the [objects and functions](objects_functions.md), the [scientific background](background.md) or with [example pipelines](examples.md).
 
 <!---
 # Part of RHRT: R package to assess Heart Rate Turbulence from RR interval data 

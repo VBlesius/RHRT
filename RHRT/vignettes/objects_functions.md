@@ -31,7 +31,7 @@ An HRT object saves the data of one VPCS and its HRT results. It consists of the
   - `TO`
   - `TS`
   - `TT`
-  - `nTS`: normalised TS, for more Information see chapter *Normalisation of Turbulence Slope* in [Scientific Background](background.html)
+  - `nTS`: normalised TS, for more Information see chapter *Normalisation of Turbulence Slope* in [Scientific Background](background.md)
 
 - **Line coefficients**
   - `intercept`: The intercept of the TS regression line that is needed for plotting
@@ -93,7 +93,7 @@ An avHRT object is stored in an HRTList and inherits from the HRT object. It is 
 In addition to the HRT slots avHRT stores data about its calculation and the parameter validity:
 
 - `av`, `orTO` and `orTS`: for more information see *HRTList: Functions (calcAvHRT)*
-- `pTO`, `pTS`, `pTT` and `pnTS`: p-values from the reliability check, for more information see *Reliability Check* in [Scientific Background](background.html)
+- `pTO`, `pTS`, `pTT` and `pnTS`: p-values from the reliability check, for more information see *Reliability Check* in [Scientific Background](background.md)
 - `nRMSSD`: the RMSSD normalised to the a given heart rate, per default to 75 bpm
 
 ## vectorToHRT
@@ -118,7 +118,7 @@ The `IL` and `RMSSD` can be highly biased through outliers. Since ECG data can i
 
 --------
 
-Further information can be found in the other vignettes: [synopsis](synopsis.html), [scientific background](background.html) and [example pipelines](examples.html).
+Further information can be found in the other vignettes: [synopsis](synopsis.md), [scientific background](background.md) and [example pipelines](examples.md).
 
 <!---
 # Part of RHRT: R package to assess Heart Rate Turbulence from RR interval data 

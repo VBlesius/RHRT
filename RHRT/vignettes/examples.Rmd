@@ -1,0 +1,78 @@
+<!---
+# Part of RHRT: R package to assess Heart Rate Turbulence from RR interval data 
+# Copyright (C) 2021 Valeria Blesius
+
+# RHRT is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 2 only.
+
+# RHRT is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with RHRT.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+---
+title: "RHRT: Example Pipelines"
+author: "Valeria Blesius"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
+vignette: >
+  %\VignetteIndexEntry{RHRT: Example Pipelines}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+--------
+
+## Determining the HRT class of a person
+
+The main focus of the package is to determine the HRT parameters or class of a person by a long-term ECG measurement. Load the data as a numeric vector and use `vectorToHRT` to find HRTs, then `getResults` and `plot` to check the results:
+
+```{r, fig.width=7, fig.height=4}
+library("RHRT")
+hrtl <- vectorToHRT(testdataLong) # create the HRTList
+getResults(hrtl) # get the averaged HRT parameters
+plot(hrtl) # plot the HRTs and check the variability
+```
+
+The results do not pass the reliability check so we get "NR" as HRT class. The plot shows that firstly TO is near to zero and secondly there is a high variability in the VPCSs. We can go deeper into the data by checking the exact parameters (including TT as an additional hint to the person's status) and zooming out of the plot:
+
+```{r, fig.width=7, fig.height=4}
+round(
+  getResults(hrtl, "full", TT = TRUE),
+digits = 2) # get the parameters and p-values of the variability check
+plot(hrtl, cropped = FALSE) # plot the full VPCSs
+```
+
+As expected TO is not reliable with a p-value over 0.05. The VPCSs still seem to fluctuate a lot with the first two postRRs that determine TO varying above and below the ones of the avHRT. We can can get a picture on all TO values by using `getHRTParams`:
+
+```{r}
+tos <- getHRTParams(hrtl, "TO")
+tos
+summary(tos)
+boxplot(tos)
+```
+
+These results can help to come to a well-founded decision on whether to classify the patient as HRT0/HRTA and trust the TO value or rather classify them conservatively as HRT1/HRTB. 
+
+## Comparing HRT results with different methodological parameters
+
+This is an example how the package can be used to analyse the HRT methodology. Due to data size we use a set of HRTs of one person rather than a set of averaged HRTs. For example, we can compare the difference in `TS` values when using different `numPostRRs`.
+
+```{r, fig.width=4, fig.height=4}
+library("RHRT")
+hrtl10 <- getHRTParams(vectorToHRT(testdataLong, numPostRRs = 10), "TS")
+hrtl20 <- getHRTParams(vectorToHRT(testdataLong, numPostRRs = 20), "TS")
+boxplot(hrtl10, hrtl20, names = c("TSRR = 10", "TSRR = 20"))
+t.test(hrtl10, hrtl20)
+```
+
+--------
+
+Further information can be found in the other vignettes: [synopsis](synopsis.html), [objects & functions](objects_functions.html) and [scientific background](background.html).

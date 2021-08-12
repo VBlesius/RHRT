@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Valeria Blesius" />
+
+<meta name="date" content="2021-08-12" />
+
+<title>RHRT: Objects and Functions</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">RHRT: Objects and Functions</h1>
+<h4 class="author">Valeria Blesius</h4>
+<h4 class="date">2021-08-12</h4>
+
+
+
+<p>This vignette gives a detailed overview of all objects and functions provided by RHRT.</p>
+<hr />
+<div id="hrt-object" class="section level2">
+<h2>HRT Object</h2>
+<div id="slots" class="section level3">
+<h3>Slots</h3>
+<p>An HRT object saves the data of one VPCS and its HRT results. It consists of the following slots:</p>
+<ul>
+<li><strong>Intervals</strong>
+<ul>
+<li><code>preRRs</code>: preceding regular intervals, 5 per default</li>
+<li><code>couplRR</code>: CPI</li>
+<li><code>compRR</code>: CMI</li>
+<li><code>postRRs</code>: following regular intervals, 15 per default</li>
+</ul></li>
+<li><strong>HRT Parameters</strong>
+<ul>
+<li><code>TO</code></li>
+<li><code>TS</code></li>
+<li><code>TT</code></li>
+<li><code>nTS</code>: normalised TS, for more Information see chapter <em>Normalisation of Turbulence Slope</em> in <a href="background.html">Scientific Background</a></li>
+</ul></li>
+<li><strong>Line coefficients</strong>
+<ul>
+<li><code>intercept</code>: The intercept of the TS regression line that is needed for plotting</li>
+<li><code>nintercept</code>: Analogously, the intercept of <code>nTS</code></li>
+</ul></li>
+</ul>
+</div>
+<div id="functions" class="section level3">
+<h3>Functions</h3>
+<ul>
+<li><p><strong><code>getRRs</code></strong>    This function returns all intervals saved in the HRT object. This if helpful for i.e. calculating an averaged VPCS out of a set of HRT objects.</p></li>
+<li><p><strong><code>plot</code></strong>    Per default <code>plot</code> displays a zoomed in plot of the VPCS with highlighted TO and TS and a legend given the rounded HRT parameter values. In addition to the common parameters of graphics.plot the method accepts the following parameters:</p>
+<ul>
+<li><code>cropped</code>: switches between showing a zoomed in version and the full VPCS including CPI and CMI, the default is <code>TRUE</code></li>
+<li><code>add</code>: adds the plot to the current one</li>
+<li><code>TT</code>: highlights TT and includes it to the legend</li>
+<li><code>paramsLegend</code>: switches between showing and hiding the parameter values in the legend, the default is <code>TRUE</code></li>
+<li><code>colTO</code>, <code>colTS</code> and <code>colTT</code> determine the colour in which the different parameters are highlighted in the plot (red, blue and purple per default).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="hrtlist-object" class="section level2">
+<h2>HRTList Object</h2>
+<p>An HRTList object is created when <code>vectorToHRT</code> is called. All HRT parameters are calculated automatically in this process and can be called with the <code>getHRTParams</code>-methods.</p>
+<div id="slots-1" class="section level3">
+<h3>Slots</h3>
+<p>The HRTList object sums up all HRTs found in the given dataset. The slots are:</p>
+<ul>
+<li><code>name</code>: The name of the object if given to <code>vectorToHRT</code></li>
+<li><code>IL</code>: the average length of all intervals in the given cleaned vector (see <em>vectorToHRT: Cleaning Input</em> for more information)</li>
+<li><code>pos</code>: the indices of the CPIs as found in the given vector</li>
+<li><code>HRTs</code>: list of all HRT objects found</li>
+<li><code>avHRT</code>: an avHRT object averaged from all HRTs</li>
+<li><code>RMSSD</code>: the HRV parameter RMSSD calculated from all intervals in the given cleaned vector (see <em>vectorToHRT: Cleaning Input</em> for more information)</li>
+</ul>
+</div>
+<div id="functions-1" class="section level3">
+<h3>Functions</h3>
+<ul>
+<li><strong><code>calcAvHRT</code></strong>    The function calculates the parameters of the averaged HRT. This is called automatically when using <code>vectorToHRT</code> with default parameters. If the avHRT should be calculated differently the following options are available:
+<ul>
+<li><code>av</code>: The function with which averaging should be done: <code>mean</code> or <code>median</code>.</li>
+<li><code>orTO</code> and <code>orTS</code>: sets the order in which TO and TS should be calculated. With <code>avAfter</code> the parameter is assessed separately for every HRT and averaged afterwards, with <code>avBefore</code> the intervals of all VPCSs are averaged first and the parameter is assessed afterwards. The default is <code>avAfter</code> for <code>orTO</code> and <code>avBefore</code> for <code>orTS</code>.</li>
+<li><code>IL</code>: the average interval length that is needed to calculate nTS. The default value is automatically calculated from the whole cleaned vector (see <em>VectorToHRT: Cleaning Input</em> for more information) when calling <code>vectorToHRT</code> and saved in the <code>IL</code> slot of the HRTList object.</li>
+<li><code>normIL</code>: the interval length to which the other parameters should be normalised. The default is 800 ms.</li>
+<li><code>normHallstrom</code>: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is <code>TRUE</code>.</li>
+<li><code>coTO</code>, <code>coTS</code> and <code>coTT</code>: The cut-off that should be used to calculate the reliability check for the different parameters. The default is <code>coTO</code> 0, <code>coTS</code> 2.5 and <code>coTT</code> 10.</li>
+</ul></li>
+<li><strong><code>getResults</code></strong>    This function returns either the HRT class or the parameter values. You can determine the output with
+<ul>
+<li><code>type</code>: “class” returns the HRT class (system HRT0-2 or HRTA-C depending on <code>TT</code>), “parameter” returns the HRT parameters and “full” returns the HRT parameters and the p-values of the reliability check.</li>
+<li><code>TT</code>: Should TT be included in the return? The default is <code>TRUE</code>.</li>
+<li><code>nTS</code>: Switches between giving TS (default) and nTS.</li>
+<li><code>safe</code>: Per default <code>safe</code> is <code>TRUE</code> so only results that are reliable are returned. For not reliable results the function returns “NR” or, if <code>num</code> is <code>TRUE</code>, <code>NA</code>.</li>
+<li><code>pmax</code>: The cut-off of the p-value to determine reliability. Per default this is 0.05.</li>
+<li><code>num</code>: Forces the function to return numerics. Keep in mind that this is inapplicable when using <code>type</code> “class”, in this case the function gives a warning and returns <code>NA</code>. With <code>type</code> “full” <code>num</code> is ignored, because in that case the result is already numeric.</li>
+<li><code>coTO</code>, <code>coTS</code> and <code>coTT</code>: Analogously to <code>calcAvHRT</code> the cut-off that should be used to determine whether the parameter values are normal. The default is <code>coTO</code> 0, <code>coTS</code> 2.5 and <code>coTT</code> 10. Be sure to give the same cut-offs to <code>calcAvHRT</code> and <code>getResults</code> if you don’t use the result, otherwise the p-values won’t match the results.</li>
+</ul></li>
+<li><strong><code>getHRTParams</code></strong>    Returns the values of the given slot of all HRT objects in the <code>HRTList.</code> This can be used to quickly list all separate HRT parameters of an <code>HRTList</code>. Although the function name focuses on the HRT parameters, it can return any other slot of the HRT objects.</li>
+<li><strong><code>getPositions</code></strong>    Returns the positions of the couplRRs which is identical to <code>HRTList@pos</code>.</li>
+<li><strong><code>plot</code></strong>    Analogously to the plot function of the HRT object HRTList objects can be plotted. This function plots the avHRT and adds the VPCSs of all HRTs as grey lines in the background.</li>
+</ul>
+</div>
+</div>
+<div id="avhrt-object" class="section level2">
+<h2>avHRT Object</h2>
+<p>An avHRT object is stored in an HRTList and inherits from the HRT object. It is averaged from the other HRTs in the HRTList automatically and can be recalculated with calcAvHRT.</p>
+<div id="slots-2" class="section level3">
+<h3>Slots</h3>
+<p>In addition to the HRT slots avHRT stores data about its calculation and the parameter validity:</p>
+<ul>
+<li><code>av</code>, <code>orTO</code> and <code>orTS</code>: for more information see <em>HRTList: Functions (calcAvHRT)</em></li>
+<li><code>pTO</code>, <code>pTS</code>, <code>pTT</code> and <code>pnTS</code>: p-values from the reliability check, for more information see <em>Reliability Check</em> in <a href="background.html">Scientific Background</a></li>
+<li><code>nRMSSD</code>: the RMSSD normalised to the a given heart rate, per default to 75 bpm</li>
+</ul>
+</div>
+</div>
+<div id="vectortohrt" class="section level2">
+<h2>vectorToHRT</h2>
+<p>This is the core function of the package. It finds VPCs, checks the respective VPCS for validity and saves the results in an HRTList object. Its parameters are</p>
+<ul>
+<li><code>input</code>: RR interval data that should be searched for HRT. Data formatted as timestamps should be converted before using <code>vectorToHRT</code>.</li>
+<li><code>annotations</code>: If no annotations are given <code>vectorToHRT</code> searches for matching patterns of interval lengths in the given vector regardless of any other information in respect to the type of beats. Therefore, the function could also save HRTs based on atrial premature complexes or other arrhythmia if the surrounding intervals match the filter rules (for more information see <em>Methods &amp; Background: Filter Rules</em>). If annotations are given the function only checks the intervals marked to stem from ventricular beats. This leads to more accurate results and speeds up the runtime considerably. The annotations should match the beats <em>at the end</em> of the intervals.</li>
+<li><code>PVCAnn</code>: A character or string with which the VPCs are marked in the annotation vector. The default is “V”.</li>
+<li><code>normIL</code>: The interval length to which the other parameters should be normalised. The default is 800 ms.</li>
+<li><code>normHallstrom</code>: Should nTS be normalised with the method by Hallstrom et al. or just based on the interval length? The default is <code>TRUE</code>.</li>
+<li><code>numPreRRs</code> and <code>numPostRRs</code>: The number of regular intervals before and after the CPI and CMI, respectively, on which the filter rules are applied and from which TS and nTS are being calculated. The default is 5 and 15, respectively.</li>
+<li><code>inputName</code>: You can give a name to the <code>HRTList</code> to easier organise your data. If no name is given, the slot is set with <code>NA</code>.</li>
+<li><code>minHRT</code>: This sets the minimal amount of HRTs that have to be found. Per default an <code>HRTList</code> is only created if the vector contains 5 or more HRTs.</li>
+<li><code>cleaning</code>: To calculate <code>IL</code> and <code>RMSSD</code> the data is cleaned per default. (for more information see <em>VectorToHRT: Cleaning Input</em>).</li>
+</ul>
+<div id="cleaning-input" class="section level3">
+<h3>Cleaning Input</h3>
+<p>The <code>IL</code> and <code>RMSSD</code> can be highly biased through outliers. Since ECG data can include artefacts, especially at the end and the beginning, RHRT cleans the data before calculating these parameters. Intervals are removed if they</p>
+<ul>
+<li>are greater than 2000 or less than 300 ms or</li>
+<li>differ more than 20 % of their own value from the next interval.</li>
+</ul>
+<hr />
+<p>Further information can be found in the other vignettes: <a href="synopsis.html">synopsis</a>, <a href="background.html">scientific background</a> and <a href="examples.html">example pipelines</a>.</p>
+<!---
+# Part of RHRT: R package to assess Heart Rate Turbulence from RR interval data 
+# Copyright (C) 2021 Valeria Blesius
+
+# RHRT is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 2 only.
+
+# RHRT is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with RHRT.  If not, see <https://www.gnu.org/licenses/>.
+-->
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

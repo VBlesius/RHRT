@@ -1,7 +1,7 @@
 ---
 title: "RHRT: Objects and Functions"
 author: "Valeria Blesius"
-date: "`r Sys.Date()`"
+date: "2021-08-12"
 output: 
   rmarkdown::html_vignette:
     keep_md: true

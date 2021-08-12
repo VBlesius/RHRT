@@ -64,7 +64,7 @@ chf201 <- read.table("~/some/path/chf201.csv")
 hrtl <- RHRT::vectorToHRT(chf201[[1]]*1000, ann = chf201[[2]])
 ```
 
-More example workflows can be found in the vignettes: [Quick start guide](vignettes/synopsis.md), [Objects & Functions](vignettes/objects_functions.md), [Scientific Background](vignettes/background.md) and [Example Pipelines](vignettes/examples.md).
+More example workflows can be found in the vignettes.
 
 <!---
 # Part of RHRT: R package to assess Heart Rate Turbulence from RR interval data 

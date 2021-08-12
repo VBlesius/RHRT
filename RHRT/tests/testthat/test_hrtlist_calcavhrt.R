@@ -45,6 +45,6 @@ test_that("parameter handling: others", {
 
 test_that("Recalculating TS", {
   expect_equal(testdataVariant_HRTObj@avHRT, calcAvHRT(testdataVariant_HRTObj))
-  expect_equal(vectorToHRT(testdataVariant, normIL = 1000)@avHRT, calcAvHRT(testdataVariant_HRTObj, normIL = 1000))
+  expect_warning(expect_equal(vectorToHRT(testdataVariant, normIL = 1000)@avHRT, calcAvHRT(testdataVariant_HRTObj, normIL = 1000)))
   expect_warning(calcAvHRT(testdataVariant_HRTObj, normIL = 1000), "HRT objects and avHRT do not match anymore")
 })

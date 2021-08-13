@@ -36,12 +36,11 @@ This variability of interval lengths is an indicator for the condition of the au
 While no reaction to the premature ventricular beat and therefore no variation suggests an underlying pathology, a distinctive turbulence is considered healthy.
 Therefore, HRT can be used in medicine to determine the risk status of a person especially with certain diseases or conditions, e.g. after a myocardial infarction. [reviewed in @bauer_heart_2008]
 
-``RHRT`` finds occurrences of HRT in heart beat interval data, calculates the most used parameters (Turbulence Onset (TO), Turbulence Slope (TS), Turbulence Timing (TT) and normalised Turbulence Slope (nTS)) and plots the results.
+To assess HRT in R we wrote the package ``RHRT`` that can be found on [CRAN](https://cran.r-project.org/package=RHRT) and [GitHub](https://github.com/VBlesius/RHRT).
+It finds occurrences of HRT in heart beat interval data, calculates the most used parameters (Turbulence Onset (TO), Turbulence Slope (TS), Turbulence Timing (TT) and normalised Turbulence Slope (nTS)) and plots the results.
 The package works best and fastest when given annotation data, but can also find HRT based on commonly accepted filtering rules that were first published in @grimm_heart_2003.
 Most filtering parameters and calculation methods can be freely adjusted to enable research on the methodology itself.
 In addition to parameter calculation, ``RHRT`` can classify the data into common risk categories (HRT0-2 and HRTA-C) and estimate the reliability of the results based on the number and parameter values of the HRTs.
-
-The package can be found on [CRAN](https://cran.r-project.org/package=RHRT) and [GitHub](https://github.com/VBlesius/RHRT).
 
 # Statement of need
 

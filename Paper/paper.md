@@ -47,8 +47,14 @@ In addition to parameter calculation, ``RHRT`` can classify the data into common
 [](clearly illustrates the research purpose of the software)
 
 Since it reflects the status of the autonomic nervous system, HRT is a feasible method to estimate the health risk of a person [@lombardi_origin_2011].
-HRT analysis is already used for risk stratification in the clinical practice, although the optimal methodology for HRT assessment has still not been systematically set [@blesius_hrt_2020].
-``RHRT`` is the first R package for HRT analysis and aims to enable further research about the usefulness of HRT and its methodology.
+Together with other autonomic markers as heart rate variability, HRT analysis is already used for risk stratification in the clinical practice.
+Several tools for HRT analysis have been published until now, but are not available anymore (an HRT program available on request on the discontinued [www.h-r-t.org](www.h-r-t.org) and a software tool published in [@kudrynski_computer_2011]) or are restricted to specific platforms like HRVAnalysis to Windows [@pichot_hrvanalysis_2016].
+Furthermore, they focus on risk stratification and therefore implement the standard HRT assessment workflows and parameters.
+
+However, analysis of the methodology of HRT assessment is still needed [@blesius_hrt_2020], because optimal filtering and calculation parameters have not been systematically assessed yet.
+Variations in methodology can lead to less comparable or even conflicting data and reduce the validity of HRT.
+To tackle this, a tool like ``RHRT`` is required with batch processing and the possibility to alter the used methodology.
+For example, the package enabled us to study the optimal number of intervals needed for TS calculation, which is a continous issue that leads to reduced comparability of research data (study not yet published).
 
 # Minimal example
 

@@ -54,7 +54,7 @@ Furthermore, they focus on risk stratification and therefore implement the stand
 However, analysis of the methodology of HRT assessment is still needed [@blesius_hrt_2020], because optimal filtering and calculation parameters have not been systematically assessed yet.
 Variations in methodology can lead to less comparable or even conflicting data and reduce the validity of HRT.
 To tackle this, a tool like ``RHRT`` is required with batch processing and the possibility to alter the used methodology.
-For example, the package enabled us to study the optimal number of intervals needed for TS calculation, which is a continous issue that leads to reduced comparability of research data (study not yet published).
+For example, the package enabled us to study the optimal number of intervals needed for TS calculation, which is a continous issue that leads to reduced comparability of research data (unpublished).
 
 # Minimal example
 

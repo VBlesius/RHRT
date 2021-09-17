@@ -12,7 +12,7 @@
 
 <meta name="author" content="Valeria Blesius" />
 
-<meta name="date" content="2021-08-12" />
+<meta name="date" content="2021-09-17" />
 
 <title>RHRT: Objects and Functions</title>
 
@@ -46,7 +46,7 @@
 
 <h1 class="title toc-ignore">RHRT: Objects and Functions</h1>
 <h4 class="author">Valeria Blesius</h4>
-<h4 class="date">2021-08-12</h4>
+<h4 class="date">2021-09-17</h4>
 
 
 
@@ -106,7 +106,7 @@
 <li><code>pos</code>: the indices of the CPIs as found in the given vector</li>
 <li><code>HRTs</code>: list of all HRT objects found</li>
 <li><code>avHRT</code>: an avHRT object averaged from all HRTs</li>
-<li><code>RMSSD</code>: the HRV parameter RMSSD calculated from all intervals in the given cleaned vector (see <em>vectorToHRT: Cleaning Input</em> for more information)</li>
+<li><code>RMSSD</code>: the HRV parameter RMSSD calculated from all intervals in the given cleaned vector (see <em>vectorToHRT: Cleaning Input</em> for more information): RMSSD is the square root of the mean of the squared respective differences of the successive RR intervals, in R calculated as <code>sqrt(mean(diff(intervals)^2))</code></li>
 </ul>
 </div>
 <div id="functions-1" class="section level3">

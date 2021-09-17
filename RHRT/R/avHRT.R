@@ -31,7 +31,7 @@
 #' @slot pTS (Numeric) p-value of t-test checking the validity of TS
 #' @slot pTT (Numeric) p-value of t-test checking the validity of TT
 #' @slot pnTS (Numeric) p-value of t-test checking the validity of normalised TS
-#' @param nRMSSD (Numeric) RMSSD normalised to HR
+#' @slot nRMSSD (Numeric) RMSSD normalised to HR
 #'
 #' @name avHRT
 #'

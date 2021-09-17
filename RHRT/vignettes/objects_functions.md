@@ -1,7 +1,7 @@
 ---
 title: "RHRT: Objects and Functions"
 author: "Valeria Blesius"
-date: "2021-08-12"
+date: "2021-09-17"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
@@ -61,7 +61,7 @@ The HRTList object sums up all HRTs found in the given dataset. The slots are:
 - `pos`: the indices of the CPIs as found in the given vector
 - `HRTs`: list of all HRT objects found
 - `avHRT`: an avHRT object averaged from all HRTs
-- `RMSSD`: the HRV parameter RMSSD calculated from all intervals in the given cleaned vector (see *vectorToHRT: Cleaning Input* for more information)
+- `RMSSD`: the HRV parameter RMSSD calculated from all intervals in the given cleaned vector (see *vectorToHRT: Cleaning Input* for more information): RMSSD is the square root of the mean of the squared respective differences of the successive RR intervals, in R calculated as `sqrt(mean(diff(intervals)^2))`
 
 ### Functions
 

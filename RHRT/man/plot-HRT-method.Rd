@@ -11,7 +11,9 @@
   pch = 20,
   xlab = "# of RR interval",
   ylab = "length of RR interval (ms)",
+  plotLegend = TRUE,
   paramsLegend = TRUE,
+  pvalsLegend = FALSE,
   colTO = "#ec2023",
   colTS = "#006AFF",
   colTT = "#6800DE",
@@ -33,7 +35,11 @@ To show all points use FALSE.}
 
 \item{ylab}{(Character) Label for the y axis}
 
+\item{plotLegend}{(Boolean) Should a legend be plotted?}
+
 \item{paramsLegend}{(Boolean) Should the parameter values of the HRT be plotted?}
+
+\item{pvalsLegend}{(Boolean) Should the p-values of the reliability check be plotted?}
 
 \item{colTO}{(Character) Colour used to highlight TO}
 

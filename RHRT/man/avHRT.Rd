@@ -80,5 +80,7 @@ or "avBefore" (averaging of the VPCSs and assessment of parameter)}
 \item{\code{pTT}}{(Numeric) p-value of t-test checking the validity of TT}
 
 \item{\code{pnTS}}{(Numeric) p-value of t-test checking the validity of normalised TS}
+
+\item{\code{nRMSSD}}{(Numeric) RMSSD normalised to HR}
 }}
 

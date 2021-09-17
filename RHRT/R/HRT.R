@@ -239,7 +239,9 @@ setMethod("getRRs", "HRT", function(HRTObj) {
 #' @param pch (Numeric) Plotting character, for other options see graphics::var
 #' @param xlab (Character) Label for the x axis
 #' @param ylab (Character) Label for the y axis
+#' @param plotLegend (Boolean) Should a legend be plotted?
 #' @param paramsLegend (Boolean) Should the parameter values of the HRT be plotted?
+#' @param pvalsLegend (Boolean) Should the p-values of the reliability check be plotted?
 #' @param colTO (Character) Colour used to highlight TO
 #' @param colTS (Character) Colour used to highlight TS
 #' @param colTT (Character) Colour used to highlight TT
@@ -273,7 +275,9 @@ setMethod("plot", "HRT", function(x,
                                   pch = 20,
                                   xlab = "# of RR interval",
                                   ylab = "length of RR interval (ms)",
+                                  plotLegend = TRUE,
                                   paramsLegend = TRUE,
+                                  pvalsLegend = FALSE,
                                   colTO = "#ec2023",
                                   colTS = "#006AFF",
                                   colTT = "#6800DE",
@@ -311,16 +315,19 @@ setMethod("plot", "HRT", function(x,
     labels = c(seq(-n_preRRs, -1), "couplRR", "compRR", seq(1:(length(rrs) - n_preRRs - 2)))
   )
 
-  legend("bottomright",
-    c(paste("TO", if(paramsLegend) {round(x@TO, 2)}),
-      paste("TS", if(paramsLegend) {round(x@TS, 2)}),
-      if (TT) {paste("TT", if(paramsLegend) {round(x@TT, 2)})}),
-    lty = c(0, 3, 0),
-    pch = c(pchParams),
-    col = c(colTO, colTS, colTT),
-    pt.bg = c(colTO, 0, 0),
-    pt.cex = c(1, 1, 2)
-  )
+  if(plotLegend) {
+    legend("bottomright",
+      c(paste("TO", if(paramsLegend) {round(x@TO, 2)}, if(pvalsLegend) {round(x@pTO, 2)}),
+        paste("TS", if(paramsLegend) {round(x@TS, 2)}, if(pvalsLegend) {round(x@pTS, 2)}),
+        if (TT) {paste("TT", if(paramsLegend) {round(x@TT, 2)}, if(pvalsLegend) {round(x@pTT, 2)})}),
+      lty = c(0, 3, 0),
+      pch = c(pchParams),
+      col = c(colTO, colTS, colTT),
+      pt.bg = c(colTO, 0, 0),
+      pt.cex = c(1, 1, 2),
+      bg = "white"
+    )
+  }
 
   # Turbulence onset
   to_indices <- c(n_preRRs - 1, n_preRRs, n_preRRs + 3, n_preRRs + 4)

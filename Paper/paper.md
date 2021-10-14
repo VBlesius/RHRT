@@ -34,7 +34,7 @@ After a premature ventricular contraction (VPC) – an atypical heart beat that 
 This fluctuation consists of a fast increase and later decrease in heart rate.
 This variability of interval lengths is an indicator for the condition of the autonomic nervous system:
 While no reaction to the premature ventricular beat and therefore no variation suggests an underlying pathology, a distinctive turbulence is considered healthy.
-Therefore, HRT can be used in medicine to determine the risk status of a person especially with certain diseases or conditions, e.g. after a myocardial infarction. [reviewed in @bauer_heart_2008]
+Therefore, HRT can be used in medicine to determine the risk status of a person especially with certain diseases or conditions, e.g. after a myocardial infarction. [@bauer_heart_2008]
 
 To assess HRT in R we wrote the package ``RHRT`` that can be found on [CRAN](https://cran.r-project.org/package=RHRT) and [GitHub](https://github.com/VBlesius/RHRT).
 It finds occurrences of HRT in heart beat interval data, calculates the most used parameters (Turbulence Onset (TO), Turbulence Slope (TS), Turbulence Timing (TT) and normalised Turbulence Slope (nTS)) and plots the results.
@@ -48,13 +48,13 @@ In addition to parameter calculation, ``RHRT`` can classify the data into common
 
 Since it reflects the status of the autonomic nervous system, HRT is a feasible method to estimate the health risk of a person [@lombardi_origin_2011].
 Together with other autonomic markers as heart rate variability, HRT analysis is already used for risk stratification in the clinical practice.
-Several tools for HRT analysis have been published until now, but are not available anymore (an HRT program available on request on the discontinued [www.h-r-t.org](www.h-r-t.org) and a software tool published in [@kudrynski_computer_2011]) or are restricted to specific platforms like HRVAnalysis to Windows [@pichot_hrvanalysis_2016].
+Several tools for HRT analysis have been published until now, but are not available anymore (an HRT program available on request on the discontinued [www.h-r-t.org](www.h-r-t.org) and a software tool published in @kudrynski_computer_2011) or are restricted to specific platforms like HRVAnalysis to Windows [@pichot_hrvanalysis_2016].
 Furthermore, they focus on risk stratification and therefore implement the standard HRT assessment workflows and parameters.
 
 However, analysis of the methodology of HRT assessment is still needed [@blesius_hrt_2020], because optimal filtering and calculation parameters have not been systematically assessed yet.
 Variations in methodology can lead to less comparable or even conflicting data and reduce the validity of HRT.
 To tackle this, a tool like ``RHRT`` is required with batch processing and the possibility to alter the used methodology.
-For example, the package enabled us to study the optimal number of intervals needed for TS calculation, which is a continous issue that leads to reduced comparability of research data (unpublished).
+For example, the package enabled us to study the optimal number of intervals needed for TS calculation, which is a continous issue that leads to reduced comparability of research data [@blesius_comparability_2021].
 
 # Minimal example
 
